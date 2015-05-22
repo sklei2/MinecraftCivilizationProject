@@ -22,4 +22,5 @@ public class ResourceCost {
 	public int getCobbleStone(){
 		return cobbleStone;
 	}
+	//comment
 }
