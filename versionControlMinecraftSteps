@@ -1,0 +1,36 @@
+Steps for the minecraft version control.
+
+FOR RJ (or other clueless people)
+
+I'm assuming that you already have minecraft installed (or at least have the jar).
+
+1. get the forge-1.8-11.14.1.1334-installer.jar and -src.zip, both found
+at http://files.minecraftforge.net/
+
+2. run the forge-installer.jar and just keep hitting next. To run in the terminal just cd to whereever the installer.jar is and then type "java -jar *.jar" where the * should be whater the name of the jar is.
+
+3. put the forge-src.zip into a folder on the desktop called "Minecraft".
+
+4. Unzip the forge-src.zip in the "Minecraft" folder and it should leave a folder called "forge-1.8-11.14.1.1334-src" in the folder.
+
+5. Use the terminal to go to "~/Desktop/Minecraft/forge-1.8-11.14.1.1334-src" Then type the following command "./gradlew setupDecompWorkspace --refresh-dependencies". Now I'm just going to assume this works. So if it doesn't you'll need to mess with JAVA_HOME or the path variable or something.
+
+6. Then once 5 is done type "./gradlew eclipse" Again...assuming this works.
+
+7. Open eclipse. Then make sure that the workspace you go to is "~/Desktop/Minecraft/forge-1.8-11.14.1.1334-src/eclipse" This will make sure that the workspace you use will have the minecraft forge files needed for modding.
+
+8. BACK TO THE TERMINAL!!! Then cd into the directory "~/Desktop/Minecraft" (This folder should ONLY have the forge-1.8-11.14.1.1334-src in it.
+
+9. Once there run the following commands:
+    "git init"
+    "git remote add origin ***" where *** is the HTTPS link from the repository found on github.com
+
+10. Then to verify that it is the at the correct reposity type:
+     "git remote -v"
+    This should return the https link twice (one for fetch and one for push)
+
+11. Know that the first time you need to push or to pull you need to type "git push -u origin master" or "git pull -u origin master", respectively. After doing this the first time it should be all setup and you won't need to type the "-u..." part. 
+
+Now that should set it up. We're going to screw the eclipse git and use the Terminal. Just make sure that you are in the directory "~/Desktop/Minecraft" when you try do do any commits. Also, when adding make sure to specify the specific file pretty please??? Also I don't think we should add our .project file. Just in case.
+
+
