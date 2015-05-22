@@ -45,7 +45,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 public class CivilizationMod
 {
     public static final String MODID = "Minecraft Civilization Project";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "0.0.0";
     WorldServer w;
     public String hostname;
     MinecraftServer ms;
@@ -53,39 +53,55 @@ public class CivilizationMod
     EntityPlayer host;
     KingVillager king;
     
+    // entities and items should be registered here!
+    @EventHandler
+    public void preinit(FMLInitializationEvent event){
+    	
+    	MinecraftForge.TERRAIN_GEN_BUS.register(new WorldLoadEventHandler());
+   	 	MinecraftForge.EVENT_BUS.register(new WorldLoadEventHandler());
+   	 	MinecraftForge.EVENT_BUS.register(new CivilizationManager());
+   	    	     	 
+   	 	ItemExplodingArrow i = new ItemExplodingArrow();
+   	 	//GameRegistry.registerItem(i, "Exploding Arrow");
+   	 
+   	 	ItemExplodingBow b = new ItemExplodingBow();
+   	 	GameRegistry.registerItem(b, "Exploding Bow");
+   	 	
+		int redColor = (255 << 16);
+		int orangeColor = (255 << 16)+ (200 << 8);
+		EntityRegistry.registerGlobalEntityID(KingVillager.class, "King Villager", EntityRegistry.findGlobalUniqueEntityId(), redColor, orangeColor);
+		EntityRegistry.registerGlobalEntityID(PeasantVillager.class, "Peasant Villager", EntityRegistry.findGlobalUniqueEntityId(), orangeColor, redColor);
+   	 
+    }
+    
+    // recipes should be initialized here!
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	 MinecraftForge.TERRAIN_GEN_BUS.register(new WorldLoadEventHandler());
-    	 MinecraftForge.EVENT_BUS.register(new WorldLoadEventHandler());
-    	 MinecraftForge.EVENT_BUS.register(new CivilizationManager());
+    	
+    	//TODO learn how to do textures and icons...
     	 
-    	 // TODO make a client server side to deal with textures and icons..
-    	     	 
-    	 ItemExplodingArrow i = new ItemExplodingArrow();
-    	 GameRegistry.registerItem(i, "Exploding Arrow");
+    	// This should make a recipe for the exploding arrow.
     	 
-    	 // This should make a recipe for the exploding arrow.
+    	//what you get from the recipe
+    	ItemStack explodingArrowStack = new ItemStack(Item.getByNameOrId("Exploding Arrow"),2);
+    	// what you need
+    	ItemStack redStoneTorchStack = new ItemStack(Blocks.redstone_torch);
+    	ItemStack gunpowderStack = new ItemStack(Item.getByNameOrId("gunpowder"),3);
+    	ItemStack featherStack = new ItemStack(Item.getByNameOrId("feather"));
     	 
-    	 ItemStack explodingArrowStack = new ItemStack(Item.getByNameOrId("Exploding Arrow"),2);
-    	 ItemStack redStoneTorchStack = new ItemStack(Blocks.redstone_torch);
-    	 ItemStack gunpowderStack = new ItemStack(Item.getByNameOrId("gunpowder"),3);
-    	 ItemStack featherStack = new ItemStack(Item.getByNameOrId("feather"));
+    	/*
+    	 * To make it should be...
+    	 * |3 x gunpowder    | | |
+    	 * |1 redstone torch | | |   -> 2 x Exploding Arrow
+    	 * |1 feather        | | |
+    	 */
+    	GameRegistry.addRecipe(explodingArrowStack,
+    			"x",
+    			"y",
+    			"z",
+    			'x',gunpowderStack,'y',redStoneTorchStack,'z',featherStack);
     	 
-    	 GameRegistry.addRecipe(explodingArrowStack,
-    			 "x",
-    			 "y",
-    			 "z",
-    			 'x',gunpowderStack,'y',redStoneTorchStack,'z',featherStack);
-    	 
-    	 // This should make a recipe for the exploding bow.
-    	 
-    	 ItemExplodingBow b = new ItemExplodingBow();
-    	 GameRegistry.registerItem(b, "Exploding Bow");
-    	 int redColor = (255 << 16);
-    	 int orangeColor = (255 << 16)+ (200 << 8);
-    	 EntityRegistry.registerGlobalEntityID(KingVillager.class, "King Villager", EntityRegistry.findGlobalUniqueEntityId(), redColor, orangeColor);
-    	 EntityRegistry.registerGlobalEntityID(PeasantVillager.class, "Peasant Villager", EntityRegistry.findGlobalUniqueEntityId(), orangeColor, redColor);
     }
     
     @EventHandler
