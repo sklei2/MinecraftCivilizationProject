@@ -19,8 +19,7 @@ public class ResourceCost {
 		return goldNuggets;
 	}
 	
-	public int getCobbleStone(){
+	public int getCobbleStoneCost(){
 		return cobbleStone;
 	}
-	//comment
 }

@@ -16,6 +16,7 @@ public class KingVillager extends EntityVillager{
 		this.worldIn = worldIn;
 		System.out.println("I think therefore I am King!");
 		loyalSubjects = new ArrayList<PeasantVillager>();
+		foundTown();
 	}
 	
 	public void addLoyalSubject(PeasantVillager p){

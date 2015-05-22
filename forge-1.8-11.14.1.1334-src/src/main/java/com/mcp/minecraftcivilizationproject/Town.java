@@ -10,7 +10,8 @@ import net.minecraft.world.WorldServer;
 public class Town extends Village{
 	
 	public Town(World w, BlockPos center){
-		center = center.add(0, -1, 0);
+		center = center.add(2, -1, 0);
+		TownHouse th = new TownHouse(w, center);
 		
 	}
 }
