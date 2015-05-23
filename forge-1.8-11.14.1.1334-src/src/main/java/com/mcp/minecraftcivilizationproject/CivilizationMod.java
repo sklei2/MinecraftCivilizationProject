@@ -44,7 +44,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 @Mod(modid = CivilizationMod.MODID, version = CivilizationMod.VERSION)
 public class CivilizationMod
 {
-    public static final String MODID = "Minecraft Civilization Project";
+    public static final String MODID = "MCP";
     public static final String VERSION = "0.0.0";
     WorldServer w;
     public String hostname;
@@ -62,10 +62,9 @@ public class CivilizationMod
    	 	MinecraftForge.EVENT_BUS.register(new CivilizationManager());
    	    	     	 
    	 	ItemExplodingArrow i = new ItemExplodingArrow();
-   	 	//GameRegistry.registerItem(i, "Exploding Arrow");
    	 
    	 	ItemExplodingBow b = new ItemExplodingBow();
-   	 	GameRegistry.registerItem(b, "Exploding Bow");
+  
    	 	
 		int redColor = (255 << 16);
 		int orangeColor = (255 << 16)+ (200 << 8);
@@ -84,14 +83,14 @@ public class CivilizationMod
     	// This should make a recipe for the exploding arrow.
     	 
     	//what you get from the recipe
-    	ItemStack explodingArrowStack = new ItemStack(Item.getByNameOrId("Exploding Arrow"),2);
+    	ItemStack explodingArrowStack = new ItemStack(Item.getByNameOrId("ExplodingArrow"),2);
     	// what you need
     	ItemStack redStoneTorchStack = new ItemStack(Blocks.redstone_torch);
     	ItemStack gunpowderStack = new ItemStack(Item.getByNameOrId("gunpowder"),3);
     	ItemStack featherStack = new ItemStack(Item.getByNameOrId("feather"));
     	 
     	/*
-    	 * To make it should be...
+    	 * To make, it should be...
     	 * |3 x gunpowder    | | |
     	 * |1 redstone torch | | |   -> 2 x Exploding Arrow
     	 * |1 feather        | | |
@@ -102,6 +101,21 @@ public class CivilizationMod
     			"z",
     			'x',gunpowderStack,'y',redStoneTorchStack,'z',featherStack);
     	 
+    	
+    	// This should make a recipe for the exploding bow.
+    	ItemStack stringStack = new ItemStack(Item.getByNameOrId("string"));
+    	ItemStack explodingBowStack = new ItemStack(Item.getByNameOrId("ExplodingBow"));
+    	/*
+    	 * To make, it should be...
+    	 * |1 redstone torch |                 | |
+    	 * |1 string         | 1 redstone torch| |
+    	 * |1 redstone torch |                 | | 
+    	 */
+    	GameRegistry.addRecipe(explodingBowStack,
+    			"x",
+    			"yx",
+    			"x",
+    			'x',redStoneTorchStack,'y',stringStack);
     }
     
     @EventHandler
