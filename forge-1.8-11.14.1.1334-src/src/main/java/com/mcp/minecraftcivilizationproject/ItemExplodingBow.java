@@ -1,5 +1,6 @@
 package com.mcp.minecraftcivilizationproject;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,8 +11,23 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemExplodingBow extends ItemBow{
+	
+	
+	private final String name = "ExplodingBow";
+	
+	public ItemExplodingBow(){
+		GameRegistry.registerItem(this, name);
+		setUnlocalizedName(CivilizationMod.MODID + "_" + name);
+		setCreativeTab(CreativeTabs.tabCombat);
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
 	 /**
      * Called when the player stops using an Item (stops holding the right mouse button).
      *  
@@ -27,7 +43,7 @@ public class ItemExplodingBow extends ItemBow{
 
         boolean flag = playerIn.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
 
-        if (flag || playerIn.inventory.hasItem(Items.arrow))
+        if (flag || playerIn.inventory.hasItem(Item.getByNameOrId("ExplodingArrow")))
         {
             float f = (float)j / 20.0F;
             f = (f * f + f * 2.0F) / 3.0F;
