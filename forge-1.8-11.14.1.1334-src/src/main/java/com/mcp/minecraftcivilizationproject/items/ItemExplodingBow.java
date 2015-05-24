@@ -1,4 +1,6 @@
-package com.mcp.minecraftcivilizationproject;
+package com.mcp.minecraftcivilizationproject.items;
+
+import com.mcp.minecraftcivilizationproject.CivilizationMod;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;

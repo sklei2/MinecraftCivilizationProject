@@ -1,4 +1,6 @@
-package com.mcp.minecraftcivilizationproject;
+package com.mcp.minecraftcivilizationproject.items;
+
+import com.mcp.minecraftcivilizationproject.CivilizationMod;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -13,7 +15,7 @@ public class ItemExplodingArrow extends Item {
 	public ItemExplodingArrow() {
 		GameRegistry.registerItem(this, name);
 		setUnlocalizedName(CivilizationMod.MODID + "_" + name);
-		setCreativeTab(CreativeTabs.tabMisc);
+		setCreativeTab(CreativeTabs.tabCombat);
 	}
 	
 	public String getName(){

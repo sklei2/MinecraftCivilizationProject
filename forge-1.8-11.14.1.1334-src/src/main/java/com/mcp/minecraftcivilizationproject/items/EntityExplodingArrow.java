@@ -1,4 +1,4 @@
-package com.mcp.minecraftcivilizationproject;
+package com.mcp.minecraftcivilizationproject.items;
 
 import java.util.List;
 
