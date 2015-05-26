@@ -1,10 +1,10 @@
 package com.mcp.minecraftcivilizationproject.items;
 
-import com.mcp.minecraftcivilizationproject.CivilizationMod;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import com.mcp.minecraftcivilizationproject.Reference;
 
 public class ItemExplodingArrow extends Item {
 	
@@ -14,7 +14,7 @@ public class ItemExplodingArrow extends Item {
 	// the constructor will register the item and set its unlocalized name
 	public ItemExplodingArrow() {
 		super();
-		setUnlocalizedName(CivilizationMod.MODID + "_" + name);
+		setUnlocalizedName(Reference.MOD_ID + "_" + name);
 		GameRegistry.registerItem(this, name);
 		setCreativeTab(CreativeTabs.tabCombat);
 	}
