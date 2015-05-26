@@ -13,14 +13,11 @@ public class ItemExplodingArrow extends Item {
 	
 	// the constructor will register the item and set its unlocalized name
 	public ItemExplodingArrow() {
-		super();
+		//super();
 		setUnlocalizedName(Reference.MOD_ID + "_" + name);
-		GameRegistry.registerItem(this, name);
+		GameRegistry.registerItem(this, this.getUnlocalizedName().substring(5));
 		setCreativeTab(CreativeTabs.tabCombat);
 	}
-	
-	public String getName(){
-		return name;
-	}
+
 	
 }

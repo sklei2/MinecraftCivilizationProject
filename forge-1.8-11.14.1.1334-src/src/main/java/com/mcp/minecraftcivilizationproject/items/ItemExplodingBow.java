@@ -20,15 +20,12 @@ public class ItemExplodingBow extends ItemBow{
 	private final String name = "ExplodingBow";
 	
 	public ItemExplodingBow(){
-		super();
-		GameRegistry.registerItem(this, name);
+		//super();
+		GameRegistry.registerItem(this, this.getUnlocalizedName().substring(5));
 		setUnlocalizedName(Reference.MOD_ID + "_" + name);
 		setCreativeTab(CreativeTabs.tabCombat);
 	}
-	
-	public String getName(){
-		return name;
-	}
+
 	
 	 /**
      * Called when the player stops using an Item (stops holding the right mouse button).
