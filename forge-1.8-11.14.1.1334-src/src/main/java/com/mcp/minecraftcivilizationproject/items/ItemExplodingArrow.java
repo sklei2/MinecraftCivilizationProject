@@ -13,8 +13,9 @@ public class ItemExplodingArrow extends Item {
 	
 	// the constructor will register the item and set its unlocalized name
 	public ItemExplodingArrow() {
-		GameRegistry.registerItem(this, name);
+		super();
 		setUnlocalizedName(CivilizationMod.MODID + "_" + name);
+		GameRegistry.registerItem(this, name);
 		setCreativeTab(CreativeTabs.tabCombat);
 	}
 	

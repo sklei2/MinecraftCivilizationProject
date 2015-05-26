@@ -7,6 +7,8 @@ import java.util.List;
 import java.awt.Color;
 
 import com.google.common.base.Predicate;
+import com.mcp.minecraftcivilizationproject.items.ItemExplodingArrow;
+import com.mcp.minecraftcivilizationproject.items.ItemExplodingBow;
 
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;

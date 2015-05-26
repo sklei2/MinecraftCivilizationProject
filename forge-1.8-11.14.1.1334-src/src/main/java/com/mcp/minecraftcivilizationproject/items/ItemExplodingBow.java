@@ -21,6 +21,7 @@ public class ItemExplodingBow extends ItemBow{
 	private final String name = "ExplodingBow";
 	
 	public ItemExplodingBow(){
+		super();
 		GameRegistry.registerItem(this, name);
 		setUnlocalizedName(CivilizationMod.MODID + "_" + name);
 		setCreativeTab(CreativeTabs.tabCombat);
