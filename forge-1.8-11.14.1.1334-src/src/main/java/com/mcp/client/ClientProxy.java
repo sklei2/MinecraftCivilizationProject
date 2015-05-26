@@ -10,6 +10,7 @@ public class ClientProxy extends CommonProxy{
 	@Override
 	public void registerRenderers(){
 		// THIS is where all of the actual renderering for icons and items.
+		ItemRenderRegister.registerItemRenderer();
 	}
 	
 	@Override
