@@ -52,6 +52,7 @@ public class CivilizationMod
     PlayerManager pm;
     EntityPlayer host;
     KingVillager king;
+    CivilizationManager manager;
     
     // entities and items should be registered here!
     @EventHandler
@@ -59,7 +60,7 @@ public class CivilizationMod
     	
     	MinecraftForge.TERRAIN_GEN_BUS.register(new WorldLoadEventHandler());
    	 	MinecraftForge.EVENT_BUS.register(new WorldLoadEventHandler());
-   	 	MinecraftForge.EVENT_BUS.register(new CivilizationManager());
+   	 	MinecraftForge.EVENT_BUS.register(manager = new CivilizationManager());
    	    	     	 
    	 	ItemExplodingArrow i = new ItemExplodingArrow();
    	 

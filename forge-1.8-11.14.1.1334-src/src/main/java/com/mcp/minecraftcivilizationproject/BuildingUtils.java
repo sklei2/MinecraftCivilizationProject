@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 public class BuildingUtils {
 	public static final int OAK_WOOD = 17;
+	public static final int OAK_PLANKS = 5;
 	
 	/**
 	 * Makes a column of blocks
@@ -145,6 +146,7 @@ public class BuildingUtils {
 				++z;
 			}
 			++x;
+			z = 0;
 		}
 	}
 }
