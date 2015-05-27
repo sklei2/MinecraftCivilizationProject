@@ -7,6 +7,10 @@ import java.util.List;
 import java.awt.Color;
 
 import com.google.common.base.Predicate;
+import com.mcp.client.render.items.ItemRenderRegister;
+import com.mcp.minecraftcivilizationproject.items.ItemExplodingArrow;
+import com.mcp.minecraftcivilizationproject.items.ItemExplodingBow;
+import com.mcp.minecraftcivilizationproject.items.ModItems;
 
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,6 +20,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -41,11 +46,13 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent.SpecialSpawn;
 import net.minecraft.server.management.PlayerManager;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
-@Mod(modid = CivilizationMod.MODID, version = CivilizationMod.VERSION)
+@Mod(modid = Reference.MOD_ID, version = Reference.VERSION)
 public class CivilizationMod
 {
-    public static final String MODID = "MCP";
-    public static final String VERSION = "0.0.0";
+	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
+    public static CommonProxy proxy;
+	
+	
     WorldServer w;
     public String hostname;
     MinecraftServer ms;
@@ -62,9 +69,8 @@ public class CivilizationMod
    	 	MinecraftForge.EVENT_BUS.register(new WorldLoadEventHandler());
    	 	MinecraftForge.EVENT_BUS.register(manager = new CivilizationManager());
    	    	     	 
-   	 	ItemExplodingArrow i = new ItemExplodingArrow();
-   	 
-   	 	ItemExplodingBow b = new ItemExplodingBow();
+   	 	ModItems.createItems(); // create all the mod items
+   	 	ItemRenderRegister.registerItemRenderer(); // register them...
   
    	 	
 		int redColor = (255 << 16);
@@ -79,6 +85,7 @@ public class CivilizationMod
     public void init(FMLInitializationEvent event)
     {
     	
+    	proxy.registerRenderers();
     	//TODO learn how to do textures and icons...
     	 
     	// This should make a recipe for the exploding arrow.
