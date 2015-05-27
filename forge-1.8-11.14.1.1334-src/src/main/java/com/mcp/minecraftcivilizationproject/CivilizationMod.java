@@ -11,6 +11,7 @@ import com.mcp.client.render.items.ItemRenderRegister;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingArrow;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingBow;
 import com.mcp.minecraftcivilizationproject.items.ModItems;
+import com.mcp.minecraftcivilizationproject.recipes.ModRecipes;
 
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +30,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -79,50 +81,14 @@ public class CivilizationMod
    	 
     }
     
-    // recipes should be initialized here!
+   
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
     	
     	proxy.registerRenderers();
-    	//TODO learn how to do textures and icons...
+    	ModRecipes.registerRecipes(); //create and register every recipe
     	 
-    	// This should make a recipe for the exploding arrow.
-    	 
-    	//what you get from the recipe
-    	ItemStack explodingArrowStack = new ItemStack(Item.getByNameOrId("ExplodingArrow"),2);
-    	// what you need
-    	ItemStack redStoneTorchStack = new ItemStack(Blocks.redstone_torch);
-    	ItemStack gunpowderStack = new ItemStack(Item.getByNameOrId("gunpowder"),3);
-    	ItemStack featherStack = new ItemStack(Item.getByNameOrId("feather"));
-    	 
-    	/*
-    	 * To make, it should be...
-    	 * |3 x gunpowder    | | |
-    	 * |1 redstone torch | | |   -> 2 x Exploding Arrow
-    	 * |1 feather        | | |
-    	 */
-    	GameRegistry.addRecipe(explodingArrowStack,
-    			"x",
-    			"y",
-    			"z",
-    			'x',gunpowderStack,'y',redStoneTorchStack,'z',featherStack);
-    	 
-    	
-    	// This should make a recipe for the exploding bow.
-    	ItemStack stringStack = new ItemStack(Item.getByNameOrId("string"));
-    	ItemStack explodingBowStack = new ItemStack(Item.getByNameOrId("ExplodingBow"));
-    	/*
-    	 * To make, it should be...
-    	 * |1 redstone torch |                 | |
-    	 * |1 string         | 1 redstone torch| |
-    	 * |1 redstone torch |                 | | 
-    	 */
-    	GameRegistry.addRecipe(explodingBowStack,
-    			"x",
-    			"yx",
-    			"x",
-    			'x',redStoneTorchStack,'y',stringStack);
     }
     
     @EventHandler
