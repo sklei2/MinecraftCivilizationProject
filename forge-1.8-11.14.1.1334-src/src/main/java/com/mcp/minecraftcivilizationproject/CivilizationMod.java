@@ -10,6 +10,7 @@ import com.google.common.base.Predicate;
 import com.mcp.client.render.items.ItemRenderRegister;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingArrow;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingBow;
+import com.mcp.minecraftcivilizationproject.items.ItemSturdyStick;
 import com.mcp.minecraftcivilizationproject.items.ModItems;
 import com.mcp.minecraftcivilizationproject.recipes.ModRecipes;
 
@@ -148,8 +149,26 @@ public class CivilizationMod
         public class SturdyStickDropManager{
         	@SubscribeEvent
         	public void onEvent(HarvestDropsEvent event){
-        		BlockPos location = event.pos;
-        		//write the rest here
+        		// a stack i'm going to compare the events to.
+        		ItemStack saplingStack = new ItemStack(Item.getItemFromBlock(Blocks.sapling),1);
+        		boolean needsAStick = false;		
+        		for(ItemStack dropped : event.drops){ // for every stack the block drops...
+        			/*
+        			 * Since comparing items in a stack relies on the damage of the item
+        			 * I need to get the damage of the item that dropped. Then say that my
+        			 * sapling also has the same damage.
+        			 */
+        			int droppedItemDamage = dropped.getItem().getDamage(dropped); 
+        			saplingStack.getItem().setDamage(saplingStack, droppedItemDamage);
+        			if(dropped.isItemEqual(saplingStack)){ // if it drops a sapling
+        				// then it also drops a sturdy stick.
+        				needsAStick = true;
+        			}
+        		}
+        		if(needsAStick){
+        			event.drops.add(new ItemStack(Item.getByNameOrId(Reference.MOD_ID + ":" + Reference.MOD_ID + "_SturdyStick"),1));
+        		}
         	}
+        		
         }
 }

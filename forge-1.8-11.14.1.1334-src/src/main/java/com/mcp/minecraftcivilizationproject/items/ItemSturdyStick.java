@@ -26,15 +26,4 @@ public class ItemSturdyStick extends Item {
 		GameRegistry.registerItem(this, this.getUnlocalizedName().substring(5));
 		setCreativeTab(CreativeTabs.tabMaterials);
 	}
-	
-	@SubscribeEvent
-	public void onDrop(HarvestDropsEvent event){
-		ItemStack saplingStack = new ItemStack(Item.getItemFromBlock(Blocks.sapling));
-		for(ItemStack dropped : event.drops){
-			if(dropped.getIsItemStackEqual(saplingStack)){
-				event.drops.add(new ItemStack(Item.getByNameOrId(Reference.MOD_ID + "_" + name)));
-			}
-		}
-	}
-	
 }
