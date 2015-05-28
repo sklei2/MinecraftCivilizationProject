@@ -18,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -70,6 +71,7 @@ public class CivilizationMod
     	MinecraftForge.TERRAIN_GEN_BUS.register(new WorldLoadEventHandler());
    	 	MinecraftForge.EVENT_BUS.register(new WorldLoadEventHandler());
    	 	MinecraftForge.EVENT_BUS.register(manager = new CivilizationManager());
+   	 	MinecraftForge.EVENT_BUS.register(new SturdyStickDropManager());
    	    	     	 
    	 	ModItems.createItems(); // create all the mod items
    	 	ItemRenderRegister.registerItemRenderer(); // register them...
@@ -141,5 +143,13 @@ public class CivilizationMod
             			king.addLoyalSubject(peasant);            			
             		}
             	}
+        }
+        
+        public class SturdyStickDropManager{
+        	@SubscribeEvent
+        	public void onEvent(HarvestDropsEvent event){
+        		BlockPos location = event.pos;
+        		//write the rest here
+        	}
         }
 }
