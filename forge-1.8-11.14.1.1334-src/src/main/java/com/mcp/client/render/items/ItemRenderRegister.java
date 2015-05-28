@@ -14,7 +14,11 @@ public final class ItemRenderRegister {
 	public static void registerItemRenderer(){
 		// for all the mod items register the rendering.
 		for(Item i : ModItems.getModItems()){
-			reg(i);
+			try{
+				reg(i);
+			}catch(NullPointerException e){
+				
+			}
 		}
 	}
 	

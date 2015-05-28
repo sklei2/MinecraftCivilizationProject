@@ -1,5 +1,16 @@
 package com.mcp.minecraftcivilizationproject.items;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+
 import com.mcp.minecraftcivilizationproject.Reference;
 
 import net.minecraft.block.Block;
@@ -36,14 +47,12 @@ public class ItemBuildingSaver extends Item{
 			int posY = initialPos.getY();
 			int posZ = initialPos.getZ();
 			BlockPos pos;
-			System.out.println(posX + " " + posY + " " + posZ);
 			String s = "";
 			int[][][] building = new int[10][10][10];
 			for(int x = (int)posX; x < (int)posX + 10; ++x){
 				for(int y = (int)posY; y < (int)posY + 10; ++y){
 					for(int z = (int)posZ; z < (int)posZ + 10; ++z){
 						pos = new BlockPos(x, y, z);
-						System.out.println(pos);
 						building[x - (int)posX][y - (int)posY][z - (int)posZ] = Block.getStateId((worldIn.getBlockState(pos)));
 						s += building[x - (int)posX][y - (int)posY][z - (int)posZ] + " ";
 					}
