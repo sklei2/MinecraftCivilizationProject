@@ -164,7 +164,6 @@ public class CivilizationMod
             		if(event.entity instanceof KingVillager){
             			System.out.println("Begin the game");
             			king = (KingVillager)event.entity;
-            			king.foundTown();
             		}else if(event.entity instanceof PeasantVillager){
             			if(king == null || king.isDead){
             				//Dies from lack of leadership
