@@ -11,7 +11,6 @@ public final class ModItems {
 	public static void createItems(){
 		modItems.add(new ItemExplodingArrow());
 		modItems.add(new ItemExplodingBow());		
-		modItems.add(new ItemExplodingBow());
 		modItems.add(new ItemSturdyStick());
 		//modItems.add(new ItemSpear());
 	}
