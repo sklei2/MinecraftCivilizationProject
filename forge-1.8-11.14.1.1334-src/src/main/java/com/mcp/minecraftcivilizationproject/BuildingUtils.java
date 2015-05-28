@@ -149,4 +149,15 @@ public class BuildingUtils {
 			z = 0;
 		}
 	}
+	
+	public static void blockStatesToBuilding(World w, int[][][] layout, BlockPos location){
+		//right now hardcoded to a 10x10x10 cube
+		for(int x = 0; x < 10; ++x){
+			for(int y = 0; y < 10; ++y){
+				for(int z = 0; z < 10; ++z){
+					w.setBlockState(location.add(x, y, z), Block.getStateById(layout[x][y][z]));
+				}
+			}
+		}
+	}
 }

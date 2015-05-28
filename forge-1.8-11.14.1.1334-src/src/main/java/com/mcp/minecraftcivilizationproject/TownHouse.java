@@ -1,5 +1,7 @@
 package com.mcp.minecraftcivilizationproject;
 
+import java.util.concurrent.Delayed;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockLog;
@@ -27,12 +29,35 @@ public class TownHouse implements BuildingLayout{
 	
 	@Override
 	public void executeLayout() {
-		buildFloor();
-		buildFrame();
-		fillWalls();
-		buildRoof();
-		furnishHouse();
-		isCompleted = true;
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				buildFloor();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+				}
+				buildFrame();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+				}
+				fillWalls();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+				}
+				buildRoof();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+				}
+				furnishHouse();
+				isCompleted = true;				
+			}
+		};
+		Thread t = new Thread(r);
+		t.start();
 	}
 
 	@Override
@@ -112,5 +137,6 @@ public class TownHouse implements BuildingLayout{
 	private void furnishHouse(){
 		w.setBlockState(location.add(2, 3, 1), Blocks.torch.getStateFromMeta(3));
 		w.setBlockState(location.add(2, 3, 3), Blocks.torch.getStateFromMeta(4));
+		w.setBlockState(location.add(1, 1, 1), Blocks.crafting_table.getDefaultState());
 	}
 }
