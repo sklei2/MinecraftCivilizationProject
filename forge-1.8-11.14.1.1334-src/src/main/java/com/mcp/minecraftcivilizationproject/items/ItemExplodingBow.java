@@ -1,5 +1,6 @@
 package com.mcp.minecraftcivilizationproject.items;
 
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -11,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.mcp.minecraftcivilizationproject.Reference;
 
@@ -103,4 +106,30 @@ public class ItemExplodingBow extends ItemBow{
             }
         }
     }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining){
+		
+		ModelResourceLocation location = new ModelResourceLocation(Reference.MOD_ID + ":" + this.getUnlocalizedName().substring(5),"inventory");
+		
+		if(stack.getItem() == this && player.getItemInUse()!=null){
+			
+			if(useRemaining >= 18){
+				location = new ModelResourceLocation(Reference.MOD_ID + ":" + 
+						this.getUnlocalizedName().substring(5) + "_pulling0","inventory");
+			}
+			else if(useRemaining > 13){
+				location = new ModelResourceLocation(Reference.MOD_ID + ":" + 
+						this.getUnlocalizedName().substring(5) + "_pulling1","inventory");
+			}
+			else if(useRemaining > 0){
+				location = new ModelResourceLocation(Reference.MOD_ID + ":" + 
+						this.getUnlocalizedName().substring(5) + "_pulling2","inventory");
+			}
+			
+		}
+		
+		return location;
+	}
 }
