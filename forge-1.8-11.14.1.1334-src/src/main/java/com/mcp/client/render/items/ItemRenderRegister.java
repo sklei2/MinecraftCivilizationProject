@@ -5,6 +5,8 @@ import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.mcp.minecraftcivilizationproject.Reference;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingBow;
@@ -14,6 +16,7 @@ public final class ItemRenderRegister {
 
 	public static String modid = Reference.MOD_ID;
 	
+	@SideOnly(Side.CLIENT)
 	public static void registerItemRenderer(){
 		// for all the mod items register the rendering.
 		for(Item i : ModItems.getModItems()){
@@ -24,7 +27,6 @@ public final class ItemRenderRegister {
 			}
 		}
 	}
-	
 	public static void reg(Item i){
 		
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher()

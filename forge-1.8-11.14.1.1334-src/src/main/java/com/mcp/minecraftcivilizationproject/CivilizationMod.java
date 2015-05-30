@@ -24,9 +24,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,106 +53,60 @@ import net.minecraft.server.management.PlayerManager;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 @Mod(modid = Reference.MOD_ID, version = Reference.VERSION)
-public class CivilizationMod
-{
+public class CivilizationMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
-    public static CommonProxy proxy;
-	
-	
-    WorldServer w;
-    public String hostname;
-    MinecraftServer ms;
-    PlayerManager pm;
-    EntityPlayer host;
-    KingVillager king;
-    CivilizationManager manager;
-    
-    // entities and items should be registered here!
-    @EventHandler
-    public void preinit(FMLInitializationEvent event){
-    	
-    	MinecraftForge.TERRAIN_GEN_BUS.register(new WorldLoadEventHandler());
-   	 	MinecraftForge.EVENT_BUS.register(new WorldLoadEventHandler());
-   	 	MinecraftForge.EVENT_BUS.register(manager = new CivilizationManager());
-   	 	MinecraftForge.EVENT_BUS.register(new SturdyStickDropManager());
-   	    	     	 
-   	 	ModItems.createItems(); // create all the mod items
-   	 	ItemRenderRegister.registerItemRenderer(); // register them...
-  
-   	 	
-		int redColor = (255 << 16);
-		int orangeColor = (255 << 16)+ (200 << 8);
-		EntityRegistry.registerGlobalEntityID(KingVillager.class, "King Villager", EntityRegistry.findGlobalUniqueEntityId(), redColor, orangeColor);
-		EntityRegistry.registerGlobalEntityID(PeasantVillager.class, "Peasant Villager", EntityRegistry.findGlobalUniqueEntityId(), orangeColor, redColor);
-   	 
-    }
-    
-   
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-    	
-    	proxy.registerRenderers();
-    	ModRecipes.registerRecipes(); //create and register every recipe
-    	 
-    }
-    
-    @EventHandler
-    public void load(FMLInitializationEvent event){
-      
-    }
-    
-    public class WorldLoadEventHandler{
-        @SubscribeEvent
-    	    public void onEvent(WorldEvent.Load event){
-    	    	w = DimensionManager.getWorld(0);
-    	    	
-    	    	//clean the world
-    	    	Predicate p = new Predicate<Object>() {
-					@Override
-					public boolean apply(Object input) {
-						return true;
-					}
-				};
-    	    	List<KingVillager> kings = w.getEntities(KingVillager.class, p);
-    	    	List<PeasantVillager> peasants = w.getEntities(PeasantVillager.class, p);
-    	    	for(KingVillager king : kings){
-    	    		king.setDead();
-    	    	}
-    	    	for(PeasantVillager peasant : peasants){
-    	    		peasant.setDead();
-    	    	}
-    	    	pm = w.getPlayerManager();
-    	    	ms = w.getMinecraftServer();
-    	    	hostname = ms.getServerOwner();
-    	    	System.out.println(hostname);
-    	    }
-    }
-        
-        public class CivilizationManager{
-            @SubscribeEvent
-        	    public void onEvent(EntityJoinWorldEvent event){
-            		if(event.entity instanceof KingVillager){
-            			System.out.println("Begin the game");
-            			king = (KingVillager)event.entity;
-            			king.foundTown();
-            		}else if(event.entity instanceof PeasantVillager){
-            			if(king == null || king.isDead){
-            				//Dies from lack of leadership
-            				event.entity.setDead();
-            				return;
-            			}
-            			PeasantVillager peasant = (PeasantVillager)event.entity; 
-            			king.addLoyalSubject(peasant);            			
-            		}
-            	}
-        }
-        
-        public class SturdyStickDropManager{
-        	@SubscribeEvent
-        	public void onEvent(HarvestDropsEvent event){
-        		BlockPos location = event.pos;
-        		//write the rest here
-        	}
-        }
+	public static CommonProxy proxy;
+
+	boolean preinitDone = false;
+
+	// entities and items should be registered here!
+	@EventHandler
+	public void preinit(FMLPreInitializationEvent event) {
+		proxy.preInit(event);
+		MinecraftForge.EVENT_BUS.register(new SturdyStickDropManager());
+
+		preinitDone = true;
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		proxy.registerRenderers();
+		proxy.registerRecipes();
+	}
+
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
+
+	}
+
+	public class SturdyStickDropManager {
+		@SubscribeEvent
+		public void onEvent(HarvestDropsEvent event) {
+			// a stack i'm going to compare the events to.
+			ItemStack saplingStack = new ItemStack(
+					Item.getItemFromBlock(Blocks.sapling), 1);
+			boolean needsAStick = false;
+			for (ItemStack dropped : event.drops) { // for every stack the block
+													// drops...
+				/*
+				 * Since comparing items in a stack relies on the damage of the
+				 * item I need to get the damage of the item that dropped. Then
+				 * say that my sapling also has the same damage.
+				 */
+				int droppedItemDamage = dropped.getItem().getDamage(dropped);
+				saplingStack.getItem().setDamage(saplingStack,
+						droppedItemDamage);
+				if (dropped.isItemEqual(saplingStack)) { // if it drops a
+															// sapling
+					// then it also drops a sturdy stick.
+					needsAStick = true;
+				}
+			}
+			if (needsAStick) {
+				event.drops.add(new ItemStack(Item
+						.getByNameOrId(Reference.MOD_ID + ":"
+								+ Reference.MOD_ID + "_SturdyStick"), 1));
+			}
+		}
+	}
 }
