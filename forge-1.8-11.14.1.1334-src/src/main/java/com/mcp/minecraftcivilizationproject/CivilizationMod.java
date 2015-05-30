@@ -10,6 +10,7 @@ import com.google.common.base.Predicate;
 import com.mcp.client.render.items.ItemRenderRegister;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingArrow;
 import com.mcp.minecraftcivilizationproject.items.ItemExplodingBow;
+import com.mcp.minecraftcivilizationproject.items.ItemSturdyStick;
 import com.mcp.minecraftcivilizationproject.items.ModItems;
 import com.mcp.minecraftcivilizationproject.recipes.ModRecipes;
 
