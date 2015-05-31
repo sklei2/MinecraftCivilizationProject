@@ -25,7 +25,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -58,15 +61,10 @@ public class CivilizationMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;
 
-	boolean preinitDone = false;
-
-	// entities and items should be registered here!
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new SturdyStickDropManager());
-
-		preinitDone = true;
 	}
 
 	@EventHandler
@@ -76,8 +74,13 @@ public class CivilizationMod {
 	}
 
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
+	public void load(FMLLoadEvent event) {
 
+	}
+	
+	@EventHandler
+	public void serverStarted(FMLServerStartingEvent event){
+		proxy.serverStarted(event);
 	}
 
 	public class SturdyStickDropManager {
