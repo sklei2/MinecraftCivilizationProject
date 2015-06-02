@@ -1,0 +1,18 @@
+{
+    "parent": "builtin/generated",
+    "textures": {
+        "layer0": "mcp:items/MCP_Spear_STONE"
+    },
+    "display": {
+        "thirdperson": {
+            "rotation": [ 0, 90, -35 ],
+            "translation": [ 0, 1.25, -2.75 ],
+            "scale": [ 2.0, 0.85, 0.85 ]
+        },
+        "firstperson": {
+            "rotation": [ 0, -135, 25 ],
+            "translation": [ 0, 4, 1.0 ],
+            "scale": [ 2.5, 1.7, 1.7 ]
+        }
+    }
+}

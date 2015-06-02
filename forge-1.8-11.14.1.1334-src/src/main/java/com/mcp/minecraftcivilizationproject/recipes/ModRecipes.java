@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.mcp.minecraftcivilizationproject.Reference;
+import com.mcp.minecraftcivilizationproject.items.ItemSpear;
 import com.mcp.minecraftcivilizationproject.items.ModItems;
 
 
@@ -55,20 +56,58 @@ public class ModRecipes {
     	
     	
     	// This should make a recipe for the exploding bow.
-    	//what you get from it...
+    	// what you get from it...
     	ItemStack explodingBowStack = new ItemStack(Item.getByNameOrId(Reference.MOD_ID + "_ExplodingBow"));
     	/*
     	 * To make, it should be...
-    	 * |1 redstone torch |                 | |
-    	 * |1 string         | 1 redstone torch| |   -> 1 ExplodingBow
-    	 * |1 redstone torch |                 | | 
+    	 * |                 |1 redstone torch |1 string |
+    	 * |1 redstone torch |                 |1 string |   -> 1 ExplodingBow
+    	 * |                 |1 redstone torch |1 string | 
     	 */
     	GameRegistry.addRecipe(explodingBowStack,
-    			"x",
-    			"yx",
-    			"x",
+    			" xy",
+    			"x y",
+    			" xy",
     			'x',redStoneTorchStack,'y',stringStack);
+    	
+    	/*
+    	 * These next few recipes are for all the variations of the spear.
+    	 * Since we need a recipe for EACH type of spear
+    	 */
+    	
+    	//registerSpearVariant(Item.ToolMaterial.STONE);
+    	//registerSpearVariant(Item.ToolMaterial.IRON);
+    	//registerSpearVariant(Item.ToolMaterial.EMERALD);
+    	//registerSpearVariant(Item.ToolMaterial.GOLD);
+    
+	}
+	
+	/*
+	 * Instead of having this repeat 4 times in the above method, lets just
+	 * throw it here. This method will create the recipe for the spear, when
+	 * given a specific material.
+	 */
+	private static void registerSpearVariant(Item.ToolMaterial material){
 		
+		// what you get...
+		ItemStack spearStack = new ItemStack(new ItemSpear(material),1);
+		
+		// what you need
+		ItemStack sturdyStickStack = new ItemStack(ModItems.getModItems().get(2));
+		ItemStack materialStack = new ItemStack(material.getRepairItem());
+		
+		/*
+		 * To make a spear...
+		 * |               |               |1 Material |
+		 * |               |1 Sturdy Stick |           |  -> 1 Spear
+		 * |1 Sturdy Stick |               |           |
+		 */
+		
+		GameRegistry.addRecipe(spearStack,
+				"  x",
+				" y ",
+				"y  ",
+				"x", materialStack, "y", sturdyStickStack);
 	}
 	
 	private static void registerSmeltingRecipes(){

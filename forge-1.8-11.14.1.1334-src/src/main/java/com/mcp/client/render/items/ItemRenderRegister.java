@@ -23,7 +23,7 @@ public final class ItemRenderRegister {
 			try{
 				reg(i);
 			}catch(NullPointerException e){
-				
+				System.out.println("Didn't register the item");
 			}
 		}
 	}
