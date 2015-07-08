@@ -1,0 +1,18 @@
+{
+    "parent": "builtin/generated",
+    "textures": {
+        "layer0": "mcp:items/MCP_Javelin"
+    },
+    "display": {
+        "thirdperson": {
+            "rotation": [ 0, 100, -150 ],
+            "translation": [ 0, 1.25, -1.75 ],
+            "scale": [ 1.6, 0.75, 0.75 ]
+        },
+        "firstperson": {
+            "rotation": [ 0, 100, -100 ],
+            "translation": [ 0, 4, 1.0 ],
+            "scale": [ 2.5, 1.7, 1.7 ]
+        }
+    }
+}

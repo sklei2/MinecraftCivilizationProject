@@ -17,6 +17,7 @@ public final class ModItems {
 		// really a diamond spear. Yes, I know it says "EMERALD"
 		modItems.add(new ItemSpear(Item.ToolMaterial.EMERALD)); // 5
 		modItems.add(new ItemSpear(Item.ToolMaterial.GOLD)); // 6
+		modItems.add(new ItemJavelin()); // 7
 		
 	}
 	
