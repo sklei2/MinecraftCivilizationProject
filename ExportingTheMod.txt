@@ -1,5 +1,0 @@
-1. Navigate into the forge-1.8-11.14.1.1334-src folder in the Minecraft folder
-2. On linux, run ./gradlew build
-3. Look in the build folder under libs
-4. Take the jar file there (which is the mod) and move it to .minecraft/mods
-5. Run the game (with your forge profile)!!!!
