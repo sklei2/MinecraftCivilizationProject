@@ -8,11 +8,8 @@ import java.util.logging.Logger;
 
 public class ClientProxy extends CommonProxy {
 
-    private static Logger logger = Logger.getLogger("ClientProxy");
-
     @Override
     public void preInit(FMLPreInitializationEvent e) {
-        logger.info("oh hey what's up?");
         super.preInit(e);
     }
 
