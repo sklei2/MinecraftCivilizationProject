@@ -1,7 +1,7 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
+  "modid": "minecraftcivproject",
+  "name": "Minecraft Civ Project",
   "description": "Example placeholder mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",

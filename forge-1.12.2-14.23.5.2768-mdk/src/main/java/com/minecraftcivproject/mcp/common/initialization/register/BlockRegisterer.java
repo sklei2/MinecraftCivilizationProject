@@ -5,15 +5,20 @@ import com.google.common.base.Preconditions;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.common.initialization.blocks.TribeBlock;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class BlockRegisterer {
@@ -25,18 +30,20 @@ public class BlockRegisterer {
         private static final Block TRIBE_BLOCK = new TribeBlock();
 
 
-        public static final Set<ItemBlock> ITEM_BLOCKS = new HashSet<>();
+        public static final ItemBlock[] ITEM_BLOCKS = {
+            new ItemBlock(TRIBE_BLOCK)
+        };
+
+        public static final Block[] BLOCKS = {
+                TRIBE_BLOCK
+        };
 
 
         @SubscribeEvent
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             final IForgeRegistry<Block> registry = event.getRegistry();
 
-            final Block[] blocks = {
-                    TRIBE_BLOCK
-            };
-
-            registry.registerAll(blocks);
+            registry.registerAll(BLOCKS);
         }
 
 
@@ -52,7 +59,14 @@ public class BlockRegisterer {
                 final Block block = item.getBlock();
                 final ResourceLocation registryName = Preconditions.checkNotNull(block.getRegistryName(), "Block %s has null registry name", block);
                 registry.register(item.setRegistryName(registryName));
-                ITEM_BLOCKS.add(item);
+            }
+        }
+
+        @SubscribeEvent
+        public static void registerRenders(ModelRegistryEvent event){
+            for(ItemBlock itemBlock : ITEM_BLOCKS){
+                Item item = Item.getItemFromBlock(itemBlock.getBlock());
+                ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
             }
         }
     }
