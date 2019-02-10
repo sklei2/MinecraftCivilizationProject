@@ -29,8 +29,6 @@ public class TribeBlock extends BlockBase{
         super.onBlockAdded(worldIn, pos, state);
 
         logger.info("oh hey, I'm a tribe block!");
-        TribeRegistry.addTribe("Sean", new TribeManager());
-
-
+        TribeRegistry.addTribe("Sean", new TribeManager(), pos);
     }
 }
