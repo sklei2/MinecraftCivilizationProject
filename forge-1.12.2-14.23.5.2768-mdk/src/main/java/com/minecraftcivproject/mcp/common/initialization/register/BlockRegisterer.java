@@ -24,14 +24,17 @@ public class BlockRegisterer {
     public static class RegistrationHandler {
 
         private static final Block TRIBE_BLOCK = new TribeBlock();
+        private static final Block MY_BLOCK = new MyBlock();
 
 
         public static final ItemBlock[] ITEM_BLOCKS = {
-            new ItemBlock(TRIBE_BLOCK)
+            new ItemBlock(TRIBE_BLOCK),
+                new ItemBlock(MY_BLOCK)
         };
 
         public static final Block[] BLOCKS = {
-                TRIBE_BLOCK
+                TRIBE_BLOCK,
+                MY_BLOCK
         };
 
 
@@ -46,7 +49,8 @@ public class BlockRegisterer {
         @SubscribeEvent
         public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
             final ItemBlock[] items = {
-                    new ItemBlock(TRIBE_BLOCK)
+                    new ItemBlock(TRIBE_BLOCK),
+                    new ItemBlock(MY_BLOCK)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
