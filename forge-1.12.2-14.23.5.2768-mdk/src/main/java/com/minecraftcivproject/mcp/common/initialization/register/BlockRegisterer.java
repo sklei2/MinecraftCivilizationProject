@@ -3,6 +3,7 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 
 import com.google.common.base.Preconditions;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
+import com.minecraftcivproject.mcp.common.initialization.blocks.MyBlock;
 import com.minecraftcivproject.mcp.common.initialization.blocks.TribeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -23,15 +24,17 @@ public class BlockRegisterer {
     @Mod.EventBusSubscriber(modid = MinecraftCivProject.MODID)
     public static class RegistrationHandler {
 
+        // Block Repository
         private static final Block TRIBE_BLOCK = new TribeBlock();
-        private static final Block MY_BLOCK = new MyBlock();
+        private static final Block MY_BLOCK = new MyBlock();            // Needed to just alt+Enter to resolve issue???
 
-
+        // What does this do again?
         public static final ItemBlock[] ITEM_BLOCKS = {
             new ItemBlock(TRIBE_BLOCK),
                 new ItemBlock(MY_BLOCK)
         };
 
+        // What does this do again?
         public static final Block[] BLOCKS = {
                 TRIBE_BLOCK,
                 MY_BLOCK

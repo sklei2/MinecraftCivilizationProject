@@ -1,12 +1,12 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
-import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;
+//import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;      // This may be causing the issue, as it is unused by MyBlock but used by TribeBlock
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import registry.TribeRegistry;
+//import registry.TribeRegistry;
 
 import java.util.logging.Logger;
 
