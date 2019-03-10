@@ -19,7 +19,7 @@ public class BlueprintReader {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         String fileContents = resourceFileHelper.readFileAsString(getBlueprintPath(relativePath));
-        return gsonBuilder.create().fromJson(fileContents, Blueprint.class);
+        return gsonBuilder.excludeFieldsWithoutExposeAnnotation().create().fromJson(fileContents, Blueprint.class);
     }
 
     private String getBlueprintPath(String relativePath){

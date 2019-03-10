@@ -65,7 +65,7 @@ public class BlueprintLayer {
 
     private void createBlockAssignmentMap(Collection<BlockAssignment> blockAssignments){
         for(BlockAssignment blockAssignment : blockAssignments){
-            blockAssignmentMap.put(blockAssignment.character, BlockLookup.find(blockAssignment.name));
+            blockAssignmentMap.put(blockAssignment.getCharacter(), BlockLookup.find(blockAssignment.getName()));
         }
     }
 }

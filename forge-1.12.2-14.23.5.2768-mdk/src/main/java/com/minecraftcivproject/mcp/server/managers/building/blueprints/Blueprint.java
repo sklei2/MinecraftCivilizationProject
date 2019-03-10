@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.server.managers.building.blueprints;
 
+import com.google.gson.annotations.Expose;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -10,22 +11,18 @@ import java.util.List;
 public class Blueprint {
 
     //public fields needed for deserialization.
-    public String name;
+    @Expose
+    private String name;
 
     //notice how BlockAssignment is defined for deserialization as well
-    public Collection<BlockAssignment> blocks;
-    public Collection<Collection<String>> layers;
+    @Expose
+    private Collection<BlockAssignment> blocks;
 
+    @Expose
+    private Collection<Collection<String>> layers;
 
-    public Collection<BlueprintLayer> getBlockLayers(){
-        List<BlueprintLayer> blueprintLayers = new ArrayList<>();
+    private Collection<BlueprintLayer> blockLayers;
 
-        for(Collection<String> layer: layers){
-            blueprintLayers.add(new BlueprintLayer(blocks, layer));
-        }
-
-        return blueprintLayers;
-    }
 
     public void apply(World world, BlockPos startingPosition){
 
@@ -40,5 +37,20 @@ public class Blueprint {
 
             layerLevel ++;
         }
+    }
+
+    private Collection<BlueprintLayer> getBlockLayers(){
+        //caching this so it doesn't have to happen every time you place a blueprint
+        if(blockLayers != null){
+            return blockLayers;
+        }
+
+        List<BlueprintLayer> blockLayers = new ArrayList<>();
+
+        for(Collection<String> layer: layers){
+            blockLayers.add(new BlueprintLayer(blocks, layer));
+        }
+
+        return blockLayers;
     }
 }
