@@ -1,0 +1,59 @@
+{
+  "name": "simple_house",
+  "blocks": [
+    {"name": "cobblestone", "character": "c"},
+    {"name": "log", "character": "w"},
+    {"name": "air", "character": " "}
+  ],
+  "layers": [
+    [
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "ccccc"
+    ],
+    [
+      "wwwww",
+      "w   w",
+      "w   w",
+      "w   w",
+      "wwwww"
+    ],
+    [
+      "wwwww",
+      "w   w",
+      "w   w",
+      "w   w",
+      "wwwww"
+    ],
+    [
+      "wwwww",
+      "w   w",
+      "w   w",
+      "w   w",
+      "wwwww"
+    ],
+    [
+      "wwwww",
+      "w   w",
+      "w   w",
+      "w   w",
+      "wwwww"
+    ],
+    [
+      " www ",
+      " w w ",
+      " w w ",
+      " w w ",
+      " www "
+    ],
+    [
+      "     ",
+      "  w  ",
+      "  w  ",
+      "  w  ",
+      "     "
+    ]
+  ]
+}
