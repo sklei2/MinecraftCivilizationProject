@@ -5,8 +5,8 @@ import net.minecraft.item.Item;
 
 public class ItemBase extends Item {    // Class is somewhat comparable to a structure in C; String is a wrapper on a character array
     public ItemBase(String name, CreativeTabs tabs){
-        this(name, tabs, 64);   // Why is maxSize only an input down below and why is there two constructors here???
-    } // Constructor (public constructors can be used anywhere in the code)
+        this(name, tabs, 64);   // Why is maxSize only an input down below and why is there two constructors here? Are we just giving two options/variants for this constructor to be called with?
+    }       // What I think the explanation is: there are two constructors for ItemBase.  If the maxSize (stack) is not specified the object is created using the above constructor.
 
     public ItemBase(String name, CreativeTabs tabs, int maxSize){
         setUnlocalizedName(name);
