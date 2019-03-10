@@ -7,11 +7,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class BlueprintLayer {
 
     private Map<String, Block> blockAssignmentMap = new HashMap<>();
     private List<List<Block>> blockLayer = new ArrayList<>();
+
+    private static final Logger LOG = Logger.getLogger("BlueprintLayer");
 
     public BlueprintLayer(Collection<BlockAssignment> blockAssignments, Collection<String> rawLayer){
         createBlockAssignmentMap(blockAssignments);

@@ -15,7 +15,7 @@ public class BlueprintReaderTest {
 
         Blueprint blueprint = blueprintReader.readBlueprint("test");
 
-        Collection<BlueprintLayer> layers = blueprint.getLayers();
+        Collection<BlueprintLayer> layers = blueprint.getBlockLayers();
 
         System.out.println(blueprint);
     }

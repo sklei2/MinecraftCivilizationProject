@@ -2,7 +2,7 @@
   "name": "simple_house",
   "blocks": [
     {"name": "cobblestone", "character": "c"},
-    {"name": "oak_wood", "character": "w"},
+    {"name": "log", "character": "w"},
     {"name": "air", "character": " "}
   ],
   "layers": [

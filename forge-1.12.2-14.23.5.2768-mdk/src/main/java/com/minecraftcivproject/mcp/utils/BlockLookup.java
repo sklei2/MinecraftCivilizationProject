@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 public class BlockLookup {
 
     private static Map<String, Block> backupTableForTesting = new HashMap<String, Block>(){{
-        put("oak_wood", createMockBlock("oak_wood"));
+        put("log", createMockBlock("log"));
         put("cobblestone", createMockBlock("cobblestone"));
         put("air", createMockBlock("air"));
     }};

@@ -14,19 +14,13 @@ public class Blueprint {
 
     //notice how BlockAssignment is defined for deserialization as well
     public Collection<BlockAssignment> blocks;
-    public Collection<Collection<String>> rawLayers;
-
-    private Collection<BlueprintLayer> layers;
+    public Collection<Collection<String>> layers;
 
 
-    public Blueprint(){
-        this.layers = getLayers();
-    }
-
-    public Collection<BlueprintLayer> getLayers(){
+    public Collection<BlueprintLayer> getBlockLayers(){
         List<BlueprintLayer> blueprintLayers = new ArrayList<>();
 
-        for(Collection<String> layer: rawLayers){
+        for(Collection<String> layer: layers){
             blueprintLayers.add(new BlueprintLayer(blocks, layer));
         }
 
@@ -39,7 +33,7 @@ public class Blueprint {
         int startingX = startingPosition.getX();
         int startingZ = startingPosition.getZ();
 
-        for(BlueprintLayer layer : layers){
+        for(BlueprintLayer layer : getBlockLayers()){
 
             BlockPos blockPos = new BlockPos(startingX, layerLevel, startingZ);
             layer.applyLayer(world, blockPos);
