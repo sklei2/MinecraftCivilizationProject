@@ -1,10 +1,9 @@
 package com.minecraftcivproject.mcp.proxy;
 
+import com.minecraftcivproject.mcp.common.initialization.register.BlueprintRegisterer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
-import java.util.logging.Logger;
 
 public class ClientProxy extends CommonProxy {
 
@@ -21,5 +20,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit(FMLPostInitializationEvent e) {
         super.postInit(e);
+
+        new BlueprintRegisterer().register();
     }
 }
