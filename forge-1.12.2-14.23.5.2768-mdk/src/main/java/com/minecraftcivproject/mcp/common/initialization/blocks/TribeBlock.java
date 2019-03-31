@@ -1,6 +1,6 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
 import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

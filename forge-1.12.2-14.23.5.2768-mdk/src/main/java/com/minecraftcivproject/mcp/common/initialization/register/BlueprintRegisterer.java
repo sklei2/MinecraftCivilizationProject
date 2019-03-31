@@ -1,7 +1,7 @@
 package com.minecraftcivproject.mcp.common.initialization.register;
 
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.Blueprint;
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.BlueprintReader;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.BlueprintReader;
 import registry.BlueprintRegistry;
 
 public class BlueprintRegisterer {

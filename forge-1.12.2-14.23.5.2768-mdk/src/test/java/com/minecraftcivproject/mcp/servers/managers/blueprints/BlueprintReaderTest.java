@@ -1,8 +1,8 @@
 package com.minecraftcivproject.mcp.servers.managers.blueprints;
 
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.Blueprint;
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.BlueprintLayer;
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.BlueprintReader;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.BlueprintLayer;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.BlueprintReader;
 import org.junit.Test;
 
 import java.util.Collection;
