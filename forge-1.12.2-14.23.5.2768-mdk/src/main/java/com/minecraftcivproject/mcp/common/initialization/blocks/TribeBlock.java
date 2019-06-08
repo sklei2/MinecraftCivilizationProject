@@ -1,13 +1,13 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
 import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import registry.BlueprintRegistry;
+import registry.TownBlueprintRegistry;
 import registry.TribeRegistry;
 
 import java.util.logging.Logger;
@@ -33,7 +33,13 @@ public class TribeBlock extends BlockBase{
         logger.info("oh hey, I'm a tribe block!");
         TribeRegistry.addTribe("Sean", new TribeManager(), pos);
 
-        Blueprint blueprint = BlueprintRegistry.getBlueprint("test");
-        blueprint.apply(worldIn, pos);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("test_town");
+        townBlueprint.apply(worldIn, pos);
     }
 }

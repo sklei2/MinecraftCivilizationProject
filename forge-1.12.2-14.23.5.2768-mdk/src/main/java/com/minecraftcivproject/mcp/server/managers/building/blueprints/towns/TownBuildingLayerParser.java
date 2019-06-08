@@ -18,14 +18,11 @@ public class TownBuildingLayerParser {
         for(BuildingChar[] charRow : buildingChars){
             int col = 0;
             for(BuildingChar buildingChar : charRow){
-                if(buildingChar.isParsed()){
-                    continue;
+                if(!(buildingChar.isParsed() || buildingChar.character == ' ')) {
+                    Blueprint building = buildingAssignmentMap.get(buildingChar.getCharacter() + "");
+                    markBuilding(buildingChars, row, col, building);
+                    townBuildings.add(new TownBuildingBlueprint(building, row, col));
                 }
-
-                Blueprint building = buildingAssignmentMap.get(buildingChar.getCharacter() + "");
-                markBuilding(buildingChars, row, col, building);
-                townBuildings.add(new TownBuildingBlueprint(building, row, col));
-
                 ++col;
             }
             ++row;

@@ -15,7 +15,7 @@ public class TownBlueprint {
 
     //notice how BuildingAssignment is defined for deserialization as well
     @Expose
-    private Collection<BuildingAssignment> buildingBlocks;
+    private Collection<BuildingAssignment> buildings;
 
     @Expose
     private Collection<Collection<String>> layers;
@@ -47,7 +47,7 @@ public class TownBlueprint {
         buildingLayers = new ArrayList<>();
 
         for(Collection<String> layer: layers){
-            buildingLayers.add(new TownBlueprintLayer(buildingBlocks, layer));
+            buildingLayers.add(new TownBlueprintLayer(buildings, layer));
         }
 
         return buildingLayers;

@@ -7,7 +7,7 @@ import registry.BlueprintRegistry;
 public class BlueprintRegisterer {
 
     private static final String[] blueprintNames = new String[] {
-            "test"
+            "simple_house"
     };
 
     private final BlueprintReader blueprintReader;
