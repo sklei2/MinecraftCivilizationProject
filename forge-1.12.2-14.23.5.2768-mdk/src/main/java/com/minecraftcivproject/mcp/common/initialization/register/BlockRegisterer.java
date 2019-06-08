@@ -58,7 +58,7 @@ public class BlockRegisterer {
 
             final IForgeRegistry<Item> registry = event.getRegistry();
 
-            for (final ItemBlock item : items) {
+            for (final ItemBlock item : ITEM_BLOCKS) {
                 final Block block = item.getBlock();
                 final ResourceLocation registryName = Preconditions.checkNotNull(block.getRegistryName(), "Block %s has null registry name", block);
                 registry.register(item.setRegistryName(registryName));

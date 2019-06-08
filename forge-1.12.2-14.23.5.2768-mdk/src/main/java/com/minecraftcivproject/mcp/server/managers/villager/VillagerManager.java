@@ -1,5 +1,7 @@
 package com.minecraftcivproject.mcp.server.managers.villager;
 
+import com.minecraftcivproject.mcp.common.npc.LoyalVillager;
+
 public class VillagerManager {
 
     private final VillagerPoolManager villagerPoolManager;
@@ -12,5 +14,9 @@ public class VillagerManager {
     public VillagerManager(VillagerPoolManager villagerPoolManager, VillagerTaskManager villagerTaskManager){
         this.villagerPoolManager = villagerPoolManager;
         this.villagerTaskManager = villagerTaskManager;
+    }
+
+    public void addNewVillager(LoyalVillager loyalVillager){
+        villagerPoolManager.addVillager(loyalVillager);
     }
 }

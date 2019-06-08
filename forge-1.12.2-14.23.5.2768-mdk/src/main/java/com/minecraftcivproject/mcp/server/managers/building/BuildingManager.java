@@ -1,5 +1,7 @@
 package com.minecraftcivproject.mcp.server.managers.building;
 
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.BlueprintManager;
+
 public class BuildingManager {
 
     private final BlueprintManager blueprintManager;

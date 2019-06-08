@@ -19,4 +19,6 @@ public class GoalManager {
         this.resourceManager = resourceManager;
         this.villagerManager = villagerManager;
     }
+
+    //random stuff
 }
