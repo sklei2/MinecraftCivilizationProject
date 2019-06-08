@@ -1,0 +1,23 @@
+{
+  "name": "test_town",
+  "buildings": [
+    {"name": "simple_house", "character": "h"}
+  ],
+  "layers": [
+    [
+      "hhhhh     hhhhh",
+      "hhhhh     hhhhh",
+      "hhhhh     hhhhh",
+      "hhhhh     hhhhh",
+      "hhhhh     hhhhh",
+      "               ",
+      "               ",
+      "               ",
+      "     hhhhh     ",
+      "     hhhhh     ",
+      "     hhhhh     ",
+      "     hhhhh     ",
+      "     hhhhh     "
+    ]
+  ]
+}

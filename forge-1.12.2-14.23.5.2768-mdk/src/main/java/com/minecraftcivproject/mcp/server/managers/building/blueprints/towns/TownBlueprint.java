@@ -1,4 +1,4 @@
-package com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings;
+package com.minecraftcivproject.mcp.server.managers.building.blueprints.towns;
 
 import com.google.gson.annotations.Expose;
 import net.minecraft.util.math.BlockPos;
@@ -6,9 +6,8 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class Blueprint {
+public class TownBlueprint {
 
     //public fields needed for deserialization.
     @Expose
@@ -16,12 +15,12 @@ public class Blueprint {
 
     //notice how BuildingAssignment is defined for deserialization as well
     @Expose
-    private Collection<BlockAssignment> blocks;
+    private Collection<BuildingAssignment> buildingBlocks;
 
     @Expose
     private Collection<Collection<String>> layers;
 
-    private List<BlueprintLayer> blockLayers;
+    private Collection<TownBlueprintLayer> buildingLayers;
 
 
     public void apply(World world, BlockPos startingPosition){
@@ -30,7 +29,7 @@ public class Blueprint {
         int startingX = startingPosition.getX();
         int startingZ = startingPosition.getZ();
 
-        for(BlueprintLayer layer : getBlockLayers()){
+        for(TownBlueprintLayer layer : getBuildingLayers()){
 
             BlockPos blockPos = new BlockPos(startingX, layerLevel, startingZ);
             layer.applyLayer(world, blockPos);
@@ -39,30 +38,18 @@ public class Blueprint {
         }
     }
 
-    public int getBlueprintRows(){
-        getBlockLayers();
-
-        return blockLayers.get(0).getRows();
-    }
-
-    public int getBlueprintCols(){
-        getBlockLayers();
-
-        return blockLayers.get(0).getCols();
-    }
-
-    private Collection<BlueprintLayer> getBlockLayers(){
+    private Collection<TownBlueprintLayer> getBuildingLayers(){
         //caching this so it doesn't have to happen every time you place a blueprint
-        if(blockLayers != null){
-            return blockLayers;
+        if(buildingLayers != null){
+            return buildingLayers;
         }
 
-        blockLayers = new ArrayList<>();
+        buildingLayers = new ArrayList<>();
 
         for(Collection<String> layer: layers){
-            blockLayers.add(new BlueprintLayer(blocks, layer));
+            buildingLayers.add(new TownBlueprintLayer(buildingBlocks, layer));
         }
 
-        return blockLayers;
+        return buildingLayers;
     }
 }

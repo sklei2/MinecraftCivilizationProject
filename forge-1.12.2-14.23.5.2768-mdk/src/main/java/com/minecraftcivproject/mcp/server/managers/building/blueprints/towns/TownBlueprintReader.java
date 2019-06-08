@@ -1,25 +1,25 @@
-package com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings;
+package com.minecraftcivproject.mcp.server.managers.building.blueprints.towns;
 
 import com.google.gson.GsonBuilder;
 import com.minecraftcivproject.mcp.utils.ResourceFileHelper;
 
 
-public class BlueprintReader {
+public class TownBlueprintReader {
 
-    private static final String BLUEPRINT_RESOURCE_ROOT = "blueprints/buildings";
+    private static final String BLUEPRINT_RESOURCE_ROOT = "blueprints/towns";
     private final ResourceFileHelper resourceFileHelper;
 
-    public BlueprintReader(){
+    public TownBlueprintReader(){
         this.resourceFileHelper = new ResourceFileHelper();
     }
 
-    public Blueprint readBlueprint(String relativePath){
+    public TownBlueprint readBlueprint(String relativePath){
 
         //uses googles json deserializer. Looks at TownBlueprint using reflection
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         String fileContents = resourceFileHelper.readFileAsString(getBlueprintPath(relativePath));
-        return gsonBuilder.excludeFieldsWithoutExposeAnnotation().create().fromJson(fileContents, Blueprint.class);
+        return gsonBuilder.excludeFieldsWithoutExposeAnnotation().create().fromJson(fileContents, TownBlueprint.class);
     }
 
     private String getBlueprintPath(String relativePath){

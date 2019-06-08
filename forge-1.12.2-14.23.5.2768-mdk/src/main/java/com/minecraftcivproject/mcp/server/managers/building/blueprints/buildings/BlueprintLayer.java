@@ -14,7 +14,7 @@ public class BlueprintLayer {
     private Map<String, Block> blockAssignmentMap = new HashMap<>();
     private List<List<Block>> blockLayer = new ArrayList<>();
 
-    private static final Logger LOG = Logger.getLogger("BlueprintLayer");
+    private static final Logger LOG = Logger.getLogger("TownBlueprintLayer");
 
     public BlueprintLayer(Collection<BlockAssignment> blockAssignments, Collection<String> rawLayer){
         createBlockAssignmentMap(blockAssignments);
@@ -39,6 +39,14 @@ public class BlueprintLayer {
 
             xOffset ++;
         }
+    }
+
+    public int getRows(){
+        return blockLayer.size();
+    }
+
+    public int getCols(){
+        return blockLayer.get(0).size();
     }
 
     private void createBlockLayer(Collection<String> rawLayer){
