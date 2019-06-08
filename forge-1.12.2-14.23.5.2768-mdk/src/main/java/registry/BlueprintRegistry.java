@@ -1,6 +1,6 @@
 package registry;
 
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
 
 import java.util.HashMap;
 import java.util.Map;

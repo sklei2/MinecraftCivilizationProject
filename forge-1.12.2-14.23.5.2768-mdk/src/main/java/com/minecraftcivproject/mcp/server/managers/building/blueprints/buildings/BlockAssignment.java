@@ -1,4 +1,4 @@
-package com.minecraftcivproject.mcp.server.managers.building.blueprints;
+package com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings;
 
 import com.google.gson.annotations.Expose;
 

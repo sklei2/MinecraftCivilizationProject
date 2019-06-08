@@ -1,11 +1,8 @@
 package com.minecraftcivproject.mcp.servers.managers.blueprints;
 
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.Blueprint;
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.BlueprintLayer;
-import com.minecraftcivproject.mcp.server.managers.building.blueprints.BlueprintReader;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.BlueprintReader;
 import org.junit.Test;
-
-import java.util.Collection;
 
 public class BlueprintReaderTest {
 
@@ -15,7 +12,7 @@ public class BlueprintReaderTest {
 
         Blueprint blueprint = blueprintReader.readBlueprint("test");
 
-        Collection<BlueprintLayer> layers = blueprint.getBlockLayers();
+        //Collection<BlueprintLayer> layers = blueprint.getBlockLayers();
 
         System.out.println(blueprint);
     }
