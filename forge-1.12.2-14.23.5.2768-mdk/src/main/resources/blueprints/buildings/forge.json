@@ -1,0 +1,52 @@
+{
+  "name": "forge",
+  "blocks": [
+    {"name": "cobblestone", "character": "c"},
+    {"name": "cobblestone_wall", "character": "w"},
+    {"name": "flowing_lava", "character": "l"},
+    {"name": "anvil", "character": "a"},
+    {"name": "air", "character": " "}
+  ],
+  "layers": [
+    [
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "ccccc"
+    ],
+    [
+      "ccccc",
+      "clllc",
+      "ccccc",
+      "   a ",
+      "w   w"
+    ],
+    [
+      "ccccc",
+      "c   c",
+      "w   w",
+      "     ",
+      "w   w"
+    ],
+    [
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "     ",
+      "w   w"
+    ],
+    [
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "ccccc",
+      "ccccc"
+    ]
+  ]
+
+
+
+
+
+}

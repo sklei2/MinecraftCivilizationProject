@@ -13,9 +13,8 @@ out
 *.iml
 .idea
 
-# gradle
-build
-.gradle
+#build files
+build/
 
 # other
 eclipse
