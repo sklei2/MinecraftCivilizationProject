@@ -33,6 +33,12 @@ public class MyBlock extends BlockBase{
         logger.info("oh hey, I'm my block!");
         //TribeRegistry.addTribe("Sean", new TribeManager());
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Blueprint forgeBlueprint = BlueprintRegistry.getBlueprint("forge");
         forgeBlueprint.apply(worldIn, pos);
     }
