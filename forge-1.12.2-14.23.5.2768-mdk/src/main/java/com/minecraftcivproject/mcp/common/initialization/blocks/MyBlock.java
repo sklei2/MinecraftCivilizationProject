@@ -1,12 +1,14 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
 //import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;      // This may be causing the issue, as it is unused by MyBlock but used by TribeBlock
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-//import registry.TribeRegistry;
+import registry.BlueprintRegistry;
+//import registry.TribeRegistry;        // Should we associate a specific building with a tribe or just a town?
 
 import java.util.logging.Logger;
 
@@ -31,6 +33,7 @@ public class MyBlock extends BlockBase{
         logger.info("oh hey, I'm my block!");
         //TribeRegistry.addTribe("Sean", new TribeManager());
 
-
+        Blueprint forgeBlueprint = BlueprintRegistry.getBlueprint("forge");
+        forgeBlueprint.apply(worldIn, pos);
     }
 }
