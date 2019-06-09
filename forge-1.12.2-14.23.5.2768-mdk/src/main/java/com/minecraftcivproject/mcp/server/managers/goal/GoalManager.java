@@ -4,6 +4,7 @@ import com.minecraftcivproject.mcp.server.managers.building.BuildingManager;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
 import com.minecraftcivproject.mcp.server.managers.resource.ResourceManager;
 import com.minecraftcivproject.mcp.server.managers.villager.VillagerManager;
+import net.minecraft.util.math.BlockPos;
 
 public class GoalManager {
 
@@ -11,8 +12,8 @@ public class GoalManager {
     private final ResourceManager resourceManager;
     private final VillagerManager villagerManager;
 
-    public GoalManager(TownBlueprint townBlueprint){
-        this(new BuildingManager(townBlueprint), new ResourceManager(), new VillagerManager());
+    public GoalManager(TownBlueprint townBlueprint, BlockPos blockPos){
+        this(new BuildingManager(townBlueprint, blockPos), new ResourceManager(), new VillagerManager());
     }
 
     public GoalManager(BuildingManager buildingManager, ResourceManager resourceManager, VillagerManager villagerManager){

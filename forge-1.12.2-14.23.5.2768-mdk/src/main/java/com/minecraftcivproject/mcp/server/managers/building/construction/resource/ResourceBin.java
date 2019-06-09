@@ -1,37 +1,33 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction.resource;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
+import net.minecraft.block.BlockChest;
+import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.Map;
 
-public class ResourceBin {
+public class ResourceBin extends BlockChest {
 
-    private Map<String, Integer> resourceCount;
     private ResourceRequirements resourceRequirements;
+    private ResourceBinTileEntity tileEntityChest;
+    private Runnable fullCallback;
 
-    public ResourceBin(ResourceRequirements resourceRequirements, String ... requiredResources){
-        resourceCount = new HashMap<>();
-
-        for(String requiredResource: requiredResources){
-            resourceCount.put(requiredResource, 0);
-        }
+    public ResourceBin(ResourceRequirements resourceRequirements, Runnable fullCallback){
+        super(Type.BASIC);
 
         this.resourceRequirements = resourceRequirements;
+
+        this.fullCallback = fullCallback;
     }
 
-    public void addToResource(String resource, int count){
-        int current = resourceCount.get(resource);
-        resourceCount.put(resource, current + count);
-    }
-
-    public int getResources(String resource){
-        return resourceCount.get(resource);
+    public ResourceRequirements getResourceRequirements() {
+        return resourceRequirements;
     }
 
     public boolean isFull(){
-        for(String resource : resourceCount.keySet()){
-            int current = resourceCount.get(resource);
+        for(String resource : resourceRequirements.getRequirements()){
+            int current = get(resource);
             int required = resourceRequirements.getRequirement(resource);
 
             if(current < required){
@@ -40,5 +36,37 @@ public class ResourceBin {
         }
 
         return true;
+    }
+
+    public void onUpdate(){
+        if(isFull()){
+            fullCallback.run();
+        }
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        this.tileEntityChest = new ResourceBinTileEntity(this::onUpdate);
+        return this.tileEntityChest;
+    }
+
+    public void add(Item i, int count){
+        this.tileEntityChest.add(i, count);
+    }
+
+    public void add(String name, int count){
+        add(Item.getByNameOrId(name), count);
+    }
+
+    public void remove(Item i, int count){
+        this.tileEntityChest.remove(i, count);
+    }
+
+    public int get(Item i){
+        return this.tileEntityChest.getCount(i);
+    }
+
+    public int get(String name){
+        return get(Item.getByNameOrId(name));
     }
 }

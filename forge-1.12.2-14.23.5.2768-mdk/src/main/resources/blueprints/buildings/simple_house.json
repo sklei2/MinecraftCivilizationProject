@@ -5,6 +5,10 @@
     {"name": "log", "character": "w"},
     {"name": "air", "character": " "}
   ],
+  "resources":[
+    {"resource": "cobblestone", "required": 25},
+    {"resource": "log", "required": 79}
+  ],
   "layers": [
     [
       "ccccc",

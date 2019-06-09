@@ -40,6 +40,6 @@ public class TribeBlock extends BlockBase{
 
         logger.info("oh hey, I'm a tribe block!");
         TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("test_town");
-        TribeRegistry.addTribe("Sean", new TribeManager("Sean", townBlueprint));
+        TribeRegistry.addTribe("Sean", new TribeManager("Sean", townBlueprint, pos));
     }
 }
