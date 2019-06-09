@@ -24,6 +24,8 @@ public class TribesUi extends JFrame {
         for(String tribe : tribes){
             addButton(tribe);
         }
+
+        revalidate();
     }
 
     private void addButton(String text){

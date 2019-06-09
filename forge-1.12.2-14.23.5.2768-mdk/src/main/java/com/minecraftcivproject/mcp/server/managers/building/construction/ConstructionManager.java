@@ -2,8 +2,8 @@ package com.minecraftcivproject.mcp.server.managers.building.construction;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBuildingBlueprint;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class ConstructionManager {
@@ -11,7 +11,7 @@ public class ConstructionManager {
     private final Queue<ConstructionProject> constructionQueue;
 
     public ConstructionManager(){
-        constructionQueue = new PriorityQueue<>();
+        constructionQueue = new LinkedList<>();
     }
 
     public void queue(TownBuildingBlueprint townBuildingBlueprint){
