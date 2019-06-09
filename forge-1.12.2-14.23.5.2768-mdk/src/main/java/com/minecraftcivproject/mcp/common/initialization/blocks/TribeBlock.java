@@ -28,10 +28,8 @@ public class TribeBlock extends BlockBase{
 
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        super.onBlockAdded(worldIn, pos, state);
 
-        logger.info("oh hey, I'm a tribe block!");
-        TribeRegistry.addTribe("Sean", new TribeManager(), pos);
+        super.onBlockAdded(worldIn, pos, state);
 
         try {
             Thread.sleep(5000);
@@ -39,7 +37,9 @@ public class TribeBlock extends BlockBase{
             e.printStackTrace();
         }
 
+
+        logger.info("oh hey, I'm a tribe block!");
         TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("test_town");
-        townBlueprint.apply(worldIn, pos);
+        TribeRegistry.addTribe("Sean", new TribeManager("Sean", townBlueprint, pos));
     }
 }
