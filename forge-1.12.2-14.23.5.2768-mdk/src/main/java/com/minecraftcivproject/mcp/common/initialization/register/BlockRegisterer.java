@@ -3,8 +3,9 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 
 import com.google.common.base.Preconditions;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
-import com.minecraftcivproject.mcp.common.initialization.blocks.MyBlock;
 import com.minecraftcivproject.mcp.common.initialization.blocks.TribeBlock;
+import com.minecraftcivproject.mcp.common.initialization.blocks.MyBlock;
+import com.minecraftcivproject.mcp.common.initialization.blocks.VillagerBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -26,18 +27,21 @@ public class BlockRegisterer {
 
         // Block Repository
         private static final Block TRIBE_BLOCK = new TribeBlock();
-        private static final Block MY_BLOCK = new MyBlock();            // Needed to just alt+Enter to resolve issue???
+        private static final Block MY_BLOCK = new MyBlock();            // Needed to just alt+Enter to resolve issue?? -> Yes, alt+Enter adds the missing imports to the BlockRegister class
+        private static final Block VILLAGER_BLOCK = new VillagerBlock();
 
-        // What does this do again?
+        // Creates Item Blocks (different than an Item)
         public static final ItemBlock[] ITEM_BLOCKS = {
             new ItemBlock(TRIBE_BLOCK),
-                new ItemBlock(MY_BLOCK)
+            new ItemBlock(MY_BLOCK),
+            new ItemBlock(VILLAGER_BLOCK)
         };
 
-        // What does this do again?
+        // Creates a list of blocks to get registered on startup
         public static final Block[] BLOCKS = {
                 TRIBE_BLOCK,
-                MY_BLOCK
+                MY_BLOCK,
+                VILLAGER_BLOCK
         };
 
 
@@ -53,7 +57,8 @@ public class BlockRegisterer {
         public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
             final ItemBlock[] items = {
                     new ItemBlock(TRIBE_BLOCK),
-                    new ItemBlock(MY_BLOCK)
+                    new ItemBlock(MY_BLOCK),
+                    new ItemBlock(VILLAGER_BLOCK)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
