@@ -5,6 +5,7 @@ import com.minecraftcivproject.mcp.common.initialization.register.TownBlueprintR
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import ui.tribe.TribesUi;
 
 public class ClientProxy extends CommonProxy {
 
@@ -24,5 +25,7 @@ public class ClientProxy extends CommonProxy {
 
         new BlueprintRegisterer().register();
         new TownBlueprintRegisterer().register();
+
+        new TribesUi().setVisible(true);
     }
 }

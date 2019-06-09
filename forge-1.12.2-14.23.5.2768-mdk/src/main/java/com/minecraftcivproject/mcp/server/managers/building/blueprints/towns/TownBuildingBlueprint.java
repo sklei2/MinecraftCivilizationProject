@@ -1,6 +1,7 @@
 package com.minecraftcivproject.mcp.server.managers.building.blueprints.towns;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
+import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
 
 public class TownBuildingBlueprint {
     private Blueprint buildingBlueprint;
@@ -23,5 +24,9 @@ public class TownBuildingBlueprint {
 
     public int getStartCol() {
         return startCol;
+    }
+
+    public ResourceRequirements getResourceRequirements(){
+        return buildingBlueprint.getResourceRequirements();
     }
 }
