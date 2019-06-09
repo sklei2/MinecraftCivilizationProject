@@ -40,6 +40,9 @@ public class BlockRegisterer {
             final IForgeRegistry<Block> registry = event.getRegistry();
 
             registry.registerAll(BLOCKS);
+
+            //following what the example mod does
+            TileEntityRegisterer.registerTileEntities();
         }
 
 
