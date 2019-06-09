@@ -1,24 +1,26 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBuildingBlueprint;
+import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
+import com.minecraftcivproject.mcp.server.managers.queue.TribeQueue;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class ConstructionManager {
 
-    private final Queue<ConstructionProject> constructionQueue;
+    private final QueueManager queueManager;
     private final BlockPos corner;
 
-    public ConstructionManager(BlockPos blockPos){
-        constructionQueue = new LinkedList<>();
+
+    public ConstructionManager(QueueManager queueManager, BlockPos blockPos){
+        this.queueManager = queueManager;
+        this.queueManager.addQueue(TribeQueue.CONSTRUCTION, ConstructionProject.class);
         corner = blockPos;
     }
 
     public void queue(TownBuildingBlueprint townBuildingBlueprint){
-        constructionQueue.add(new ConstructionProject(townBuildingBlueprint, corner));
+        queueManager.queue(TribeQueue.CONSTRUCTION, new ConstructionProject(townBuildingBlueprint, corner));
     }
 
     public void queueAll(List<TownBuildingBlueprint> buildings){
