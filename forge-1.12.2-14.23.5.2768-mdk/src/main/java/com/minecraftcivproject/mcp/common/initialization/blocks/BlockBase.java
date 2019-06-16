@@ -12,7 +12,7 @@ public class BlockBase extends Block {
 
     public BlockBase(String name, Material mat, CreativeTabs creativeTabs, float hardness, float resistance, float light){
         this(name, mat, creativeTabs, hardness, resistance);
-        setLightLevel(light);                                       // Why is this constructor in here???
+        setLightLevel(light);                                       // Why is this constructor in here?? Is this just another constructor that can be used?
     }
 
     public BlockBase(String name, Material mat, CreativeTabs creativeTabs, float hardness, float resistance){
@@ -21,6 +21,6 @@ public class BlockBase extends Block {
         setRegistryName(name);
         setHardness(hardness);
         setResistance(resistance);
-        setCreativeTab(creativeTabs);
+        setCreativeTab(creativeTabs);               // What would this be called? It doesn't seem like a constructor, more like the thing that assigns values for the constructor to use to construct an object
     }
 }
