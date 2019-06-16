@@ -31,9 +31,9 @@ public class EntityRegisterer {
         public static void registerEntities(final RegistryEvent.Register<EntityEntry> event) {
             final EntityEntry[] entries = {
                     createBuilder("loyal_villager")
-                            .entity(LoyalVillager.class)    // MP: Is this error because we don't have a directory called "entity"?
+                            .entity(LoyalVillager.class)
                             .tracker(80, 3, true)           // MP: What is this??
-                            //.egg(0x0DA70B, 0x101010)      // MP: No egg exists yet
+                            //.egg(0x0DA70B, 0x101010)                          // MP: No egg exists yet
                             .build(),
             };
 
