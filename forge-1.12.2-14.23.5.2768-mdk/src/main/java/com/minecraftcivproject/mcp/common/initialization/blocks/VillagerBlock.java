@@ -30,12 +30,18 @@ public class VillagerBlock extends BlockBase{
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         logger.info("A Loyal Villager has spawned!");
         //TribeRegistry.addTribe("Sean", new TribeManager());
 
         World world = MinecraftCivProject.getWorld();
         LoyalVillager villager = new LoyalVillager(world);
-        //EntityVillager villager = new EntityVillager(world);
+        //EntityVillager villager = new EntityVillager(world);       // For testing purposes only
 
         SpawningUtils.spawn(villager, pos);
     }
