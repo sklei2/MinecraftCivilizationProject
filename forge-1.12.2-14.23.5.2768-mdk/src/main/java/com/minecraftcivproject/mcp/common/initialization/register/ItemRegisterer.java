@@ -3,7 +3,9 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.common.initialization.items.Cement;
 import com.minecraftcivproject.mcp.common.initialization.items.HonedDiamond;
+import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,5 +44,20 @@ public class ItemRegisterer {
                 ITEMS.add(item);
             }
         }
+
+        @SubscribeEvent // This (last) part did the trick for textures/item model rendering!!!
+        public static void registerModels(final ModelRegistryEvent event){
+            final Item[] items = {
+                    HONED_DIAMOND,
+                    CEMENT
+            };
+
+            for(Item item : items) {
+                if (item instanceof IHasModel) {
+                    ((IHasModel)item).registerModels();
+                }
+            }
+        }
+
     }
 }
