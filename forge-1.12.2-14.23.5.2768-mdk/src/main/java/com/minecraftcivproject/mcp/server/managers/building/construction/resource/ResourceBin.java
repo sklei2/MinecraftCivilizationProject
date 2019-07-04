@@ -1,33 +1,32 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction.resource;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
-import net.minecraft.block.BlockChest;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
+import java.util.UUID;
 
-public class ResourceBin extends BlockChest {
+public class ResourceBin {
 
     private ResourceRequirements resourceRequirements;
-    private ResourceBinTileEntity tileEntityChest;
+    private ResourceBinBlock resourceBinBlock;
+    private UUID guid;
     private Runnable fullCallback;
 
-    public ResourceBin(ResourceRequirements resourceRequirements, Runnable fullCallback){
-        super(Type.BASIC);
-
+    public ResourceBin(ResourceRequirements resourceRequirements, Runnable runnable){
+        this.guid = UUID.randomUUID();
         this.resourceRequirements = resourceRequirements;
-
-        this.fullCallback = fullCallback;
+        this.resourceBinBlock = new ResourceBinBlock(guid);
+        this.fullCallback = runnable;
     }
 
     public ResourceRequirements getResourceRequirements() {
         return resourceRequirements;
     }
 
+
     public boolean isFull(){
         for(String resource : resourceRequirements.getRequirements()){
-            int current = get(resource);
+            int current = resourceBinBlock.get(resource);
             int required = resourceRequirements.getRequirement(resource);
 
             if(current < required){
@@ -38,35 +37,37 @@ public class ResourceBin extends BlockChest {
         return true;
     }
 
-    public void onUpdate(){
-        if(isFull()){
-            fullCallback.run();
-        }
+    public int add(Item i, int count){
+        return this.resourceBinBlock.add(i, count);
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        this.tileEntityChest = new ResourceBinTileEntity(this::onUpdate);
-        return this.tileEntityChest;
+    public int add(String name, int count){
+        return add(Item.getByNameOrId(name), count);
     }
 
-    public void add(Item i, int count){
-        this.tileEntityChest.add(i, count);
-    }
-
-    public void add(String name, int count){
-        add(Item.getByNameOrId(name), count);
-    }
-
-    public void remove(Item i, int count){
-        this.tileEntityChest.remove(i, count);
+    public int remove(Item i, int count){
+        return this.resourceBinBlock.remove(i, count);
     }
 
     public int get(Item i){
-        return this.tileEntityChest.getCount(i);
+        return this.resourceBinBlock.get(i);
     }
 
     public int get(String name){
         return get(Item.getByNameOrId(name));
+    }
+
+    public ResourceBinBlock getResourceBinBlock(){
+        return resourceBinBlock;
+    }
+
+    public void onUpdate(){
+        if(isFull()){
+            this.fullCallback.run();
+        }
+    }
+
+    public String getUniqueIdentifier(){
+        return guid.toString();
     }
 }

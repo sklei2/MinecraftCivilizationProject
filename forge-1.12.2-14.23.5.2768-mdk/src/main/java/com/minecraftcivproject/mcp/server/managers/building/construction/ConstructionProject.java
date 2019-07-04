@@ -5,21 +5,27 @@ import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.Tow
 import com.minecraftcivproject.mcp.server.managers.building.construction.resource.ResourceBin;
 import com.minecraftcivproject.mcp.utils.BlockUtils;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import registry.ResourceBinRegistry;
 
 public class ConstructionProject {
 
     private TownBuildingBlueprint townBuildingBlueprint;
     private ResourceBin resourceBin;
+    private World world;
     private BlockPos baseLocation;
 
-    public ConstructionProject(TownBuildingBlueprint blueprint, BlockPos baseLocation){
+    public ConstructionProject(TownBuildingBlueprint blueprint, World world, BlockPos baseLocation){
+        this.world = world;
         this.townBuildingBlueprint = blueprint;
         this.baseLocation = baseLocation;
 
         this.resourceBin = new ResourceBin(blueprint.getResourceRequirements(), this::completeProject);
 
         BlockPos binBlockPos = baseLocation.add(townBuildingBlueprint.getStartRow(),0, townBuildingBlueprint.getStartCol());
-        BlockUtils.placeBlock(binBlockPos, resourceBin);
+        BlockUtils.placeBlock(world, binBlockPos, resourceBin.getResourceBinBlock());
+
+        ResourceBinRegistry.add(this.resourceBin);
     }
 
     public void addResource(String resource, int count){
@@ -35,7 +41,7 @@ public class ConstructionProject {
     }
 
     private void completeProject(){
-        townBuildingBlueprint.apply(baseLocation);
+        townBuildingBlueprint.apply(world, baseLocation);
     }
 
 }

@@ -33,6 +33,6 @@ public class VillagerBlock extends BlockBase{
 
 
 
-        SpawningUtils.spawn(worldIn, LoyalVillager, pos);
+        SpawningUtils.spawn(worldIn, new LoyalVillager(worldIn), pos);
     }
 }
