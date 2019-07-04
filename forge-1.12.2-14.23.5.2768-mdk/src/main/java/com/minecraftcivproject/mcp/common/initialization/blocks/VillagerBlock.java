@@ -1,12 +1,11 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
 import com.minecraftcivproject.mcp.MinecraftCivProject;
-import com.minecraftcivproject.mcp.common.npc.LoyalVillager;
+import com.minecraftcivproject.mcp.common.entities.LoyalVillager;
 import com.minecraftcivproject.mcp.utils.SpawningUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.passive.EntityVillager;  // Added for testing purposes only
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -21,7 +20,7 @@ public class VillagerBlock extends BlockBase{
                 Material.IRON,
                 CreativeTabs.BUILDING_BLOCKS,
                 5F,
-                15F,
+                20F,
                 "pickaxe",
                 1);
     }

@@ -1,39 +1,47 @@
-package com.minecraftcivproject.mcp.common.npc;
+package com.minecraftcivproject.mcp.common.entities;
 
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.*;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 
 public class LoyalVillager extends EntityVillager {
 
     public LoyalVillager(World worldIn) {
         super(worldIn);
+        this.setSize(1.8F, 6F);
+    }
+
+
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));   // Attack task
+        this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
     }
 
 
     @Override
     protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
+        super.applyEntityAttributes();      // Does this take everything else from this method in the super class that's not overwritten below and apply it?
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
 
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);    // 2x default
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);  // 3x default
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(8.0D);  // 2x default
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0D);  // 2x default -> this might be causing the server to overload and skip ticks
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D); // A bit more (default = 0.5D)
     }
 
@@ -44,11 +52,9 @@ public class LoyalVillager extends EntityVillager {
      * Called when the entity is attacked.
      */
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount)      // "Attack LoyalVillager from attacker/player"
+    public boolean attackEntityFrom(DamageSource source, float amount)      // "Attack LoyalVillager from damage source" -> I don't think we need to override this one (LV's take damage just like villagers for now!)
     {
         super.attackEntityFrom(source, amount);
-
-        this.targetTasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, true));      // Task to attack
 
         return super.attackEntityFrom(source, amount);
     }

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "minecraftcivproject:blocks/lexicon_front",
+    "down": "minecraftcivproject:blocks/lexicon_top",
+    "up": "minecraftcivproject:blocks/lexicon_top",
+    "north": "minecraftcivproject:blocks/lexicon_front",
+    "east": "minecraftcivproject:blocks/lexicon_front",
+    "south": "minecraftcivproject:blocks/lexicon_front",
+    "west": "minecraftcivproject:blocks/lexicon_front"
+  }
+}

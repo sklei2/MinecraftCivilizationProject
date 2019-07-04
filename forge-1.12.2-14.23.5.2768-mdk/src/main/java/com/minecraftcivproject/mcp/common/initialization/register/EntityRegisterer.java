@@ -2,7 +2,7 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 
 
 import com.minecraftcivproject.mcp.MinecraftCivProject;
-import com.minecraftcivproject.mcp.common.npc.LoyalVillager;
+import com.minecraftcivproject.mcp.common.entities.LoyalVillager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
