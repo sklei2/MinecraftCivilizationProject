@@ -1,6 +1,7 @@
 package com.minecraftcivproject.mcp.common.initialization.items;
 
 import com.minecraftcivproject.mcp.MinecraftCivProject;
+import com.minecraftcivproject.mcp.common.initialization.register.ItemRegisterer;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

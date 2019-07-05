@@ -3,6 +3,7 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.common.initialization.items.Cement;
 import com.minecraftcivproject.mcp.common.initialization.items.Crystal;
+import com.minecraftcivproject.mcp.common.initialization.items.CustomSword;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -20,7 +21,13 @@ public class ItemRegisterer {
     /**
      *  Materials
      */
-    public static final Item.ToolMaterial CRYSTAL = EnumHelper.addToolMaterial("crystal", 4, 2048, 12f, 5.0f, 30);
+    public static final Item.ToolMaterial MATERIAL_CRYSTAL = EnumHelper.addToolMaterial("crystal", 4, 2500, 10f, 5.0f, 20);
+
+
+    /**
+     *  Tools
+     */
+    public static final CustomSword CRYSTAL_SWORD = new CustomSword ("crystal_sword", MATERIAL_CRYSTAL);
 
 
     /**
@@ -31,7 +38,7 @@ public class ItemRegisterer {
         public static final Set<Item> ITEMS = new HashSet<>();
 
         // Item Repository
-        public static final Item CRYSTAL_ITEM = new Crystal();
+        public static final Item CRYSTAL = new Crystal();
         public static final Item CEMENT = new Cement();
 
         /**
@@ -42,8 +49,9 @@ public class ItemRegisterer {
         @SubscribeEvent
         public static void registerItems(final RegistryEvent.Register<Item> event) {
             final Item[] items = {
-                    CRYSTAL_ITEM,
-                    CEMENT
+                    CRYSTAL,
+                    CEMENT,
+                    CRYSTAL_SWORD
                     //setItemName(new Crystal(), "crystal"),
                     //setItemName(new Cement(), "cement")
             };
@@ -59,8 +67,9 @@ public class ItemRegisterer {
         @SubscribeEvent // This (last) part did the trick for textures/item model rendering!!!
         public static void registerModels(final ModelRegistryEvent event){
             final Item[] items = {
-                    CRYSTAL_ITEM,
-                    CEMENT
+                    CRYSTAL,
+                    CEMENT,
+                    CRYSTAL_SWORD
             };
 
             for(Item item : items) {

@@ -3,10 +3,7 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 
 import com.google.common.base.Preconditions;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
-import com.minecraftcivproject.mcp.common.initialization.blocks.Lexicon;
-import com.minecraftcivproject.mcp.common.initialization.blocks.TribeBlock;
-import com.minecraftcivproject.mcp.common.initialization.blocks.MyBlock;
-import com.minecraftcivproject.mcp.common.initialization.blocks.VillagerBlock;
+import com.minecraftcivproject.mcp.common.initialization.blocks.*;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -30,13 +27,15 @@ public class BlockRegisterer {
         private static final Block MY_BLOCK = new MyBlock();
         private static final Block VILLAGER_BLOCK = new VillagerBlock();
         private static final Block LEXICON = new Lexicon();
+        private static final Block CRYSTAL_ORE = new CrystalOre();
 
         // Creates Item Blocks (different than an Item)
         public static final ItemBlock[] ITEM_BLOCKS = {
             new ItemBlock(TRIBE_BLOCK),
             new ItemBlock(MY_BLOCK),
             new ItemBlock(VILLAGER_BLOCK),
-            new ItemBlock(LEXICON)
+            new ItemBlock(LEXICON),
+            new ItemBlock(CRYSTAL_ORE)
         };
 
         // Creates a list of blocks to get registered on startup
@@ -44,7 +43,8 @@ public class BlockRegisterer {
                 TRIBE_BLOCK,
                 MY_BLOCK,
                 VILLAGER_BLOCK,
-                LEXICON
+                LEXICON,
+                CRYSTAL_ORE
         };
 
 
@@ -62,7 +62,8 @@ public class BlockRegisterer {
                     new ItemBlock(TRIBE_BLOCK),
                     new ItemBlock(MY_BLOCK),
                     new ItemBlock(VILLAGER_BLOCK),
-                    new ItemBlock(LEXICON)
+                    new ItemBlock(LEXICON),
+                    new ItemBlock(CRYSTAL_ORE)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -90,7 +91,8 @@ public class BlockRegisterer {
                     TRIBE_BLOCK,
                     MY_BLOCK,
                     VILLAGER_BLOCK,
-                    LEXICON
+                    LEXICON,
+                    CRYSTAL_ORE
             };
 
             for(Block block : blocks) {

@@ -33,7 +33,7 @@ public class Lexicon extends BlockBase {
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
-    }
+    }  // This might not be needed if we don't want anything to happen when this block is placed
 
     /**
      * Called when the block is right clicked by a player.
