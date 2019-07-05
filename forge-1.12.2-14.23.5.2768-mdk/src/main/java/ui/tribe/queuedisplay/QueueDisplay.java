@@ -1,5 +1,6 @@
 package ui.tribe.queuedisplay;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -12,9 +13,12 @@ public abstract class QueueDisplay<T> {
         this.queue = queue;
     }
 
-    public List<String> getDisplay(){
-        return queue.stream().map(this::displayElement).collect(Collectors.toList());
+    public List<QueueItem> getDisplay(){
+        return queue.stream().map(
+                t -> new QueueItem(this.displayElementName(t), this.displayElement(t))).collect(Collectors.toList());
     }
 
-    protected abstract String displayElement(T t);
+    protected abstract JPanel displayElement(T t);
+
+    protected abstract String displayElementName(T t);
 }

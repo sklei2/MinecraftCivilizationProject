@@ -37,4 +37,8 @@ public class TownBuildingBlueprint {
 
         this.buildingBlueprint.apply(world, buildingPosition);
     }
+
+    public String getName(){
+        return this.buildingBlueprint.getName();
+    }
 }

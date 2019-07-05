@@ -16,7 +16,7 @@ public class TribeUi extends DisplayWithList {
     }
 
     @Override
-    protected void selectContent(String selectedValue) {
+    protected void selectContent(int index, String selectedValue) {
         switch (selectedValue){
             case "Queues":
                 super.updateContent(tribeQueuesUi);

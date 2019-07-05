@@ -36,6 +36,10 @@ public class ConstructionProject {
         }
     }
 
+    public String getName(){
+        return this.townBuildingBlueprint.getName();
+    }
+
     public ResourceRequirements getResourceRequirements(){
         return this.resourceBin.getResourceRequirements();
     }

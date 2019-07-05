@@ -65,6 +65,10 @@ public class Blueprint {
         return resourceRequirements;
     }
 
+    public String getName(){
+        return name;
+    }
+
     private Collection<BlueprintLayer> getBlockLayers(){
         //caching this so it doesn't have to happen every time you place a blueprint
         if(blockLayers != null){

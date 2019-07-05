@@ -12,7 +12,7 @@ public class TribesUi extends DisplayWithList {
     }
 
     @Override
-    protected void selectContent(String selectedValue) {
+    protected void selectContent(int index, String selectedValue) {
         super.updateContent(TribeRegistry.getTribeUi(selectedValue));
 
         revalidate();

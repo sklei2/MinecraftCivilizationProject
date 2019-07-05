@@ -51,7 +51,7 @@ public abstract class DisplayWithList extends JPanel {
         clearContent();
     }
 
-    protected abstract void selectContent(String selectedValue);
+    protected abstract void selectContent(int index, String selectedValue);
 
     protected void updateList(Collection<String> listValues){
         setList(listValues);
@@ -90,7 +90,7 @@ public abstract class DisplayWithList extends JPanel {
             if(list.getSelectedIndex() == -1){
                 clearContent();
             } else{
-                selectContent(list.getSelectedValue());
+                selectContent(list.getSelectedIndex(), list.getSelectedValue());
             }
         }
     }

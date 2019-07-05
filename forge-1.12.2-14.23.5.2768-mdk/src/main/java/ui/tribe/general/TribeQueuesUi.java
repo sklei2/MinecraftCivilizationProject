@@ -39,7 +39,7 @@ public class TribeQueuesUi extends DisplayWithList {
     }
 
     @Override
-    protected void selectContent(String selectedValue) {
+    protected void selectContent(int index, String selectedValue) {
         super.updateContent(tribeQueueMap.get(selectedValue));
 
         revalidate();
