@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class TownBlueprint {
 
@@ -36,6 +37,17 @@ public class TownBlueprint {
 
             layerLevel ++;
         }
+    }
+
+    public List<TownBuildingBlueprint> getBuildings(){
+        List<TownBuildingBlueprint> buildings = new ArrayList<>();
+
+        Collection<TownBlueprintLayer> layers = getBuildingLayers();
+        for(TownBlueprintLayer layer : layers){
+            buildings.addAll(layer.getBuildings());
+        }
+
+        return buildings;
     }
 
     private Collection<TownBlueprintLayer> getBuildingLayers(){

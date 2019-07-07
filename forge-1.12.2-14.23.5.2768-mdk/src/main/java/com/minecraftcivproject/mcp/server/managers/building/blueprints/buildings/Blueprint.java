@@ -19,9 +19,13 @@ public class Blueprint {
     private Collection<BlockAssignment> blocks;
 
     @Expose
+    private Collection<ResourceRequirement> resources;
+
+    @Expose
     private Collection<Collection<String>> layers;
 
     private List<BlueprintLayer> blockLayers;
+    private ResourceRequirements resourceRequirements;
 
 
     public void apply(World world, BlockPos startingPosition){
@@ -49,6 +53,20 @@ public class Blueprint {
         getBlockLayers();
 
         return blockLayers.get(0).getCols();
+    }
+
+    public ResourceRequirements getResourceRequirements(){
+        if(this.resourceRequirements != null){
+            return resourceRequirements;
+        }
+
+        this.resourceRequirements = new ResourceRequirements(resources);
+
+        return resourceRequirements;
+    }
+
+    public String getName(){
+        return name;
     }
 
     private Collection<BlueprintLayer> getBlockLayers(){

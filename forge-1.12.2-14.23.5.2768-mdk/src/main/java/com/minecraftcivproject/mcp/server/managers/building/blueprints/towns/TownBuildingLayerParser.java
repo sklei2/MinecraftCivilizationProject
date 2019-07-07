@@ -22,6 +22,7 @@ public class TownBuildingLayerParser {
                     Blueprint building = buildingAssignmentMap.get(buildingChar.getCharacter() + "");
                     markBuilding(buildingChars, row, col, building);
                     townBuildings.add(new TownBuildingBlueprint(building, row, col));
+                    buildingChar.setParsed();
                 }
                 ++col;
             }

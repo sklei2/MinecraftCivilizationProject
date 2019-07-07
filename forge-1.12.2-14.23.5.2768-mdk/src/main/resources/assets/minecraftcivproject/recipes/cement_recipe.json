@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+          [
+            "GSG",
+            "SWS",
+            "GSG"
+          ],
+
+  "key":
+  {
+    "G":
+    {
+      "item": "minecraft:gravel"
+    },
+
+    "S":
+    {
+      "item": "minecraft:sand","data": 0
+    },
+
+    "W":
+    {
+      "item": "minecraft:water_bucket"
+    }
+  },
+
+  "result":
+  {
+    "item": "minecraftcivproject:cement",
+    "count": 1
+  }
+}

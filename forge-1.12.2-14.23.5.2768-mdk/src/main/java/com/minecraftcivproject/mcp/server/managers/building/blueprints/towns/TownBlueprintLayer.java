@@ -40,6 +40,10 @@ public class TownBlueprintLayer {
         }
     }
 
+    public Collection<TownBuildingBlueprint> getBuildings(){
+        return buildingLayer;
+    }
+
     private void createBuildingLayer(Collection<String> rawLayer){
         char[][] rawCharacters = layerToArray(rawLayer);
 

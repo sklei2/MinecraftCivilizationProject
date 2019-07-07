@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+          [
+            " C ",
+            " D ",
+            " S "
+          ],
+
+  "key":
+  {
+    "C":
+    {
+      "item": "minecraftcivproject:crystal"
+    },
+
+    "D":
+    {
+      "item": "minecraft:diamond"
+    },
+
+    "S":
+    {
+      "item": "minecraft:stick"
+    }
+  },
+
+  "result":
+  {
+    "item": "minecraftcivproject:crystal_sword",
+    "count": 1
+  }
+}
