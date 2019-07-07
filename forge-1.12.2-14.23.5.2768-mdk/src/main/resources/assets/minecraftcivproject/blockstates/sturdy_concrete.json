@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "normal":  { "model": "minecraftcivproject:sturdy_concrete" }
+  }
+}

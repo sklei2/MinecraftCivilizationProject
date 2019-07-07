@@ -1,0 +1,37 @@
+{
+  "name": "town_center_lvl1",
+  "buildings": [
+    {"name": "simple_house", "character": "h"},
+    {"name": "tree_farm_lvl1", "character":  "t"},
+    {"name": "town_nexus", "character": "n"},
+    {"name": "forge", "character": "f"}
+  ],
+  "layers": [
+    [
+      "hhhhh          hhhhh          hhhhh",
+      "hhhhh          hhhhh          hhhhh",
+      "hhhhh          hhhhh          hhhhh",
+      "hhhhh          hhhhh          hhhhh",
+      "hhhhh          hhhhh          hhhhh",
+      "                                   ",
+      "                                   ",
+      "                                   ",
+      "                                   ",
+      "                                   ",
+      "hhhhh                              ",
+      "hhhhh           nnn                ",
+      "hhhhh           nnn                ",
+      "hhhhh           nnn                ",
+      "hhhhh                              ",
+      "                          ttttttttt",
+      "                          ttttttttt",
+      "                          ttttttttt",
+      "                          ttttttttt",
+      "fffff                     ttttttttt",
+      "fffff                     ttttttttt",
+      "fffff                     ttttttttt",
+      "fffff                     ttttttttt",
+      "fffff                     ttttttttt"
+    ]
+  ]
+}

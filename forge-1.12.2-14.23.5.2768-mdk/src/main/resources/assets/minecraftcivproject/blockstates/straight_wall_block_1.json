@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "normal":  { "model": "minecraftcivproject:straight_wall_block_1" }
+  }
+}

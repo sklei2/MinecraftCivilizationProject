@@ -22,7 +22,7 @@ public class EntityRegisterer {
     public static class RegistrationHandler {
 
 
-        /**                                             // MP: What the hell type of comment is this???
+        /**
          * Register this mod's {@link Entity} types.
          *
          * @param event The event
@@ -33,7 +33,7 @@ public class EntityRegisterer {
                     createBuilder("loyal_villager")
                             .entity(LoyalVillager.class)
                             .tracker(80, 3, true)           // MP: What is this??
-                            //.egg(0x0DA70B, 0x101010)                          // MP: No egg exists yet
+                            .egg(0, 16711680)
                             .build(),
             };
 

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+          [
+            "EEE",
+            "ECE",
+            "EEE"
+          ],
+
+  "key":
+  {
+    "E":
+    {
+      "item": "minecraftcivproject:cement"
+    },
+
+    "C":
+    {
+      "item": "minecraft:cobblestone"
+    }
+  },
+
+  "result":
+  {
+    "item": "minecraftcivproject:sturdy_concrete",
+    "count": 1
+  }
+}

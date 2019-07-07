@@ -1,0 +1,31 @@
+{
+  "name": "town_nexus",
+  "blocks": [
+    {"name": "obsidian", "character": "o"},
+    {"name": "mob_spawner", "character": "m"},
+    {"name": "air", "character": " "}
+  ],
+  "layers": [
+    [
+      "ooo",
+      "ooo",
+      "ooo"
+    ],
+    [
+      "   ",
+      " o ",
+      "   "
+    ],
+    [
+      "   ",
+      " m ",
+      "   "
+    ]
+  ]
+
+
+
+
+
+
+}

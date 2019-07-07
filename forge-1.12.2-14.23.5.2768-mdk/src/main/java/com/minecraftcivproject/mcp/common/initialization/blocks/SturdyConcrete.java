@@ -10,20 +10,15 @@ import registry.BlueprintRegistry;
 
 import java.util.logging.Logger;
 
-public class SterdyConcrete extends BlockBase{
+public class SturdyConcrete extends BlockBase{
 
-    public SterdyConcrete(){
-        super("my_block",
-                Material.IRON,
+    public SturdyConcrete(){
+        super("sturdy_concrete",
+                Material.ROCK,
                 CreativeTabs.BUILDING_BLOCKS,
-                5F,
-                15F,
+                17F,
+                22F,
                 "pickaxe",
-                1);
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        super.onBlockAdded(worldIn, pos, state);
+                3);
     }
 }

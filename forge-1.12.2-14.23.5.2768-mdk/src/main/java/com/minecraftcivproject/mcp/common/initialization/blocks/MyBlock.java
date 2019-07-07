@@ -30,7 +30,7 @@ public class MyBlock extends BlockBase{
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
 
-        logger.info("oh hey, a forge!");
+        logger.info("oh hey, a tree farm!");
         //TribeRegistry.addTribe("Sean", new TribeManager());
 
         try {
@@ -39,7 +39,7 @@ public class MyBlock extends BlockBase{
             e.printStackTrace();
         }
 
-        Blueprint forgeBlueprint = BlueprintRegistry.getBlueprint("forge");
+        Blueprint forgeBlueprint = BlueprintRegistry.getBlueprint("tree_farm_lvl1");
         forgeBlueprint.apply(worldIn, pos);
     }
 }

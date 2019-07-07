@@ -23,19 +23,23 @@ public class BlockRegisterer {
     public static class RegistrationHandler {
 
         // Block Repository
-        private static final Block TRIBE_BLOCK = new TribeBlock();
-        private static final Block MY_BLOCK = new MyBlock();
-        private static final Block VILLAGER_BLOCK = new VillagerBlock();
-        private static final Block LEXICON = new Lexicon();
-        private static final Block CRYSTAL_ORE = new CrystalOre();
+        public static final Block TRIBE_BLOCK = new TribeBlock();
+        public static final Block MY_BLOCK = new MyBlock();
+        public static final Block VILLAGER_BLOCK = new VillagerBlock();
+        public static final Block LEXICON = new Lexicon();
+        public static final Block CRYSTAL_ORE = new CrystalOre();
+        public static final Block STURDY_CONCRETE = new SturdyConcrete();
+        public static final Block STRAIGHT_WALL_BLOCK_1 = new StraightWallBlock1();
 
         // Creates Item Blocks (different than an Item)
         public static final ItemBlock[] ITEM_BLOCKS = {
-            new ItemBlock(TRIBE_BLOCK),
-            new ItemBlock(MY_BLOCK),
-            new ItemBlock(VILLAGER_BLOCK),
-            new ItemBlock(LEXICON),
-            new ItemBlock(CRYSTAL_ORE)
+                new ItemBlock(TRIBE_BLOCK),
+                new ItemBlock(MY_BLOCK),
+                new ItemBlock(VILLAGER_BLOCK),
+                new ItemBlock(LEXICON),
+                new ItemBlock(CRYSTAL_ORE),
+                new ItemBlock(STURDY_CONCRETE),
+                new ItemBlock(STRAIGHT_WALL_BLOCK_1)
         };
 
         // Creates a list of blocks to get registered on startup
@@ -44,7 +48,9 @@ public class BlockRegisterer {
                 MY_BLOCK,
                 VILLAGER_BLOCK,
                 LEXICON,
-                CRYSTAL_ORE
+                CRYSTAL_ORE,
+                STURDY_CONCRETE,
+                STRAIGHT_WALL_BLOCK_1
         };
 
 
@@ -63,7 +69,9 @@ public class BlockRegisterer {
                     new ItemBlock(MY_BLOCK),
                     new ItemBlock(VILLAGER_BLOCK),
                     new ItemBlock(LEXICON),
-                    new ItemBlock(CRYSTAL_ORE)
+                    new ItemBlock(CRYSTAL_ORE),
+                    new ItemBlock(STURDY_CONCRETE),
+                    new ItemBlock(STRAIGHT_WALL_BLOCK_1)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -92,7 +100,9 @@ public class BlockRegisterer {
                     MY_BLOCK,
                     VILLAGER_BLOCK,
                     LEXICON,
-                    CRYSTAL_ORE
+                    CRYSTAL_ORE,
+                    STURDY_CONCRETE,
+                    STRAIGHT_WALL_BLOCK_1
             };
 
             for(Block block : blocks) {
