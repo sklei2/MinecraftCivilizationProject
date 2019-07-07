@@ -1,12 +1,11 @@
 package com.minecraftcivproject.mcp.common.initialization.items;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 
-public class HonedDiamond extends ItemBase {
+public class Crystal extends ItemBase {
 
-    public HonedDiamond(){
-        super("honed_diamond",
+    public Crystal(){
+        super("crystal",
                 CreativeTabs.MATERIALS,
                 64);
 

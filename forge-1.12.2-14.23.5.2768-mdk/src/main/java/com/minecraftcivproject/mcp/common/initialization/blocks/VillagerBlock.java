@@ -1,6 +1,7 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
-import com.minecraftcivproject.mcp.common.npc.LoyalVillager;
+import com.minecraftcivproject.mcp.MinecraftCivProject;
+import com.minecraftcivproject.mcp.common.entities.LoyalVillager;
 import com.minecraftcivproject.mcp.utils.SpawningUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +20,7 @@ public class VillagerBlock extends BlockBase{
                 Material.IRON,
                 CreativeTabs.BUILDING_BLOCKS,
                 5F,
-                15F,
+                20F,
                 "pickaxe",
                 1);
     }
@@ -28,11 +29,19 @@ public class VillagerBlock extends BlockBase{
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         logger.info("A Loyal Villager has spawned!");
         //TribeRegistry.addTribe("Sean", new TribeManager());
 
+        World world = MinecraftCivProject.getWorld();
+        LoyalVillager villager = new LoyalVillager(world);
+        //EntityVillager villager = new EntityVillager(world);       // For testing purposes only
 
-
-        SpawningUtils.spawn(worldIn, new LoyalVillager(worldIn), pos);
+        SpawningUtils.spawn(villager, pos);
     }
 }

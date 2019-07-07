@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+          [
+            "OOO",
+            "DTD",
+            "OOO"
+          ],
+
+  "key":
+  {
+    "O":
+    {
+      "item": "minecraft:obsidian"
+    },
+
+    "D":
+    {
+      "item": "minecraft:diamond"
+    },
+
+    "T":
+    {
+      "item": "minecraft:crafting_table"
+    }
+  },
+
+  "result":
+  {
+    "item": "minecraftcivproject:lexicon",
+    "count": 1
+  }
+}
