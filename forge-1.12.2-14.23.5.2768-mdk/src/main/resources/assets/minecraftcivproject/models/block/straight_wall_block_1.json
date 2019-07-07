@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "minecraftcivproject:blocks/straight_wall_block_1"
+  }
+}

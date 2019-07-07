@@ -1,0 +1,83 @@
+{
+  "name": "straight_wall_1",
+  "blocks": [
+    {"name": "minecraftcivproject:sturdy_concrete", "character": "c"},
+    {"name": "air", "character": " "}
+  ],
+  "resources":[
+    {"resource": "minecraftcivproject:sturdy_concrete", "required": 538}
+  ],
+  "layers": [
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "                         ",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "ccccccccccccccccccccccccc",
+      "                         "
+    ],
+    [
+      "c c c c c c c c c c c c c",
+      "                         ",
+      "                         ",
+      "                         "
+    ]
+  ]
+
+
+
+
+
+}

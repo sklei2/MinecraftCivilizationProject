@@ -7,12 +7,16 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 
 public class LoyalVillager extends EntityVillager {
+
+    private boolean areAdditionalTasksSet;
+
 
     public LoyalVillager(World worldIn) {
         super(worldIn);
@@ -32,6 +36,15 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
+    private void setAdditionalAItasks(){
+        if (!this.areAdditionalTasksSet)
+        {
+            this.areAdditionalTasksSet = true;
+
+        }
+    }
+
+
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();      // Does this take everything else from this method in the super class that's not overwritten below and apply it?
@@ -43,6 +56,11 @@ public class LoyalVillager extends EntityVillager {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);  // 3x default
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0D);  // 2x default -> this might be causing the server to overload and skip ticks
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D); // A bit more (default = 0.5D)
+    }
+
+
+    public void putItemInChest(ItemBlock item){
+        getRequestedItem
     }
 
 

@@ -1,0 +1,38 @@
+{
+  "name": "tree_farm_lvl1",
+  "blocks": [
+    {"name": "dirt", "data": 1, "character": "d"},
+    {"name": "sapling", "data": 0, "character": "s"},
+    {"name":  "air", "character": " "}
+  ],
+  "layers": [
+    [
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd",
+      "ddddddddd"
+    ],
+    [
+      "  s   s  ",
+      "         ",
+      "    s    ",
+      "         ",
+      "  s   s  ",
+      "         ",
+      "    s    ",
+      "         ",
+      "  s   s  "
+    ]
+  ]
+
+
+
+
+
+}
