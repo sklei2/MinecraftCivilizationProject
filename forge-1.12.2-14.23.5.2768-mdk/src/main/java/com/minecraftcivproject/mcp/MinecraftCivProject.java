@@ -17,6 +17,10 @@ public class MinecraftCivProject {
     public static final String VERSION = "1.0";
 
 
+    // GUIs - not sure if this is the best place to put these
+    public static final int guiIDLexicon = 1;
+
+
     private static final String CLIENTPROXY = "com.minecraftcivproject.mcp.proxy.ClientProxy";
     private static final String SERVERPROXY = "com.minecraftcivproject.mcp.proxy.ServerProxy";
 

@@ -30,6 +30,8 @@ public class BlockRegisterer {
         public static final Block CRYSTAL_ORE = new CrystalOre();
         public static final Block STURDY_CONCRETE = new SturdyConcrete();
         public static final Block STRAIGHT_WALL_BLOCK_1 = new StraightWallBlock1();
+        public static final Block MUDROCK_ORE = new MudrockOre();
+        public static final Block REINFORCED_COBBLESTONE = new ReinforcedCobblestone();
 
         // Creates Item Blocks (different than an Item)
         public static final ItemBlock[] ITEM_BLOCKS = {
@@ -39,7 +41,9 @@ public class BlockRegisterer {
                 new ItemBlock(LEXICON),
                 new ItemBlock(CRYSTAL_ORE),
                 new ItemBlock(STURDY_CONCRETE),
-                new ItemBlock(STRAIGHT_WALL_BLOCK_1)
+                new ItemBlock(STRAIGHT_WALL_BLOCK_1),
+                new ItemBlock(MUDROCK_ORE),
+                new ItemBlock(REINFORCED_COBBLESTONE)
         };
 
         // Creates a list of blocks to get registered on startup
@@ -50,7 +54,9 @@ public class BlockRegisterer {
                 LEXICON,
                 CRYSTAL_ORE,
                 STURDY_CONCRETE,
-                STRAIGHT_WALL_BLOCK_1
+                STRAIGHT_WALL_BLOCK_1,
+                MUDROCK_ORE,
+                REINFORCED_COBBLESTONE
         };
 
 
@@ -71,7 +77,9 @@ public class BlockRegisterer {
                     new ItemBlock(LEXICON),
                     new ItemBlock(CRYSTAL_ORE),
                     new ItemBlock(STURDY_CONCRETE),
-                    new ItemBlock(STRAIGHT_WALL_BLOCK_1)
+                    new ItemBlock(STRAIGHT_WALL_BLOCK_1),
+                    new ItemBlock(MUDROCK_ORE),
+                    new ItemBlock(REINFORCED_COBBLESTONE)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -102,7 +110,9 @@ public class BlockRegisterer {
                     LEXICON,
                     CRYSTAL_ORE,
                     STURDY_CONCRETE,
-                    STRAIGHT_WALL_BLOCK_1
+                    STRAIGHT_WALL_BLOCK_1,
+                    MUDROCK_ORE,
+                    REINFORCED_COBBLESTONE
             };
 
             for(Block block : blocks) {

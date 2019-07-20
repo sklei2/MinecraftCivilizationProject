@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 public class ItemBase extends Item implements IHasModel {    // MP: Class is somewhat comparable to a structure in C; String is a wrapper on a character array
-    public ItemBase(String name, CreativeTabs tabs){
+    public ItemBase(String name, CreativeTabs tabs){        // CONSTRUCTORS SHOULD NOT DO WORK
         this(name, tabs, 64);   // MP: Why is maxSize only an input down below and why is there two constructors here? Are we just giving two options/variants for this constructor to be called with?
     }       // MP: What I think the explanation is: there are two constructors for ItemBase.  If the maxSize (stack) is not specified the object is created using the above constructor. <- Yes, this is a quality of life thing where you don't have to specify the stack size if you don't want to (defaults to 64)
 

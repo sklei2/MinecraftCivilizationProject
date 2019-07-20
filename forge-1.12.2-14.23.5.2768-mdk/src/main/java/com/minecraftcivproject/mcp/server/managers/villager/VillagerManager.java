@@ -1,6 +1,6 @@
 package com.minecraftcivproject.mcp.server.managers.villager;
 
-import com.minecraftcivproject.mcp.common.entities.LoyalVillager;
+import com.minecraftcivproject.mcp.common.entity.LoyalVillager;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 
 public class VillagerManager {

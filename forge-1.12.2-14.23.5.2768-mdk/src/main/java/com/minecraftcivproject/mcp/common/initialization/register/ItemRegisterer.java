@@ -4,6 +4,7 @@ import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.common.initialization.items.Cement;
 import com.minecraftcivproject.mcp.common.initialization.items.Crystal;
 import com.minecraftcivproject.mcp.common.initialization.items.CustomSword;
+import com.minecraftcivproject.mcp.common.initialization.items.LVToken;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -21,7 +22,7 @@ public class ItemRegisterer {
     /**
      *  Materials
      */
-    public static final Item.ToolMaterial MATERIAL_CRYSTAL = EnumHelper.addToolMaterial("crystal", 4, 2500, 10f, 5.0f, 20);
+    public static final Item.ToolMaterial MATERIAL_CRYSTAL = EnumHelper.addToolMaterial("crystal", 4, 3000, 10f, 5.0f, 8);
 
 
     /**
@@ -40,6 +41,7 @@ public class ItemRegisterer {
         // Item Repository
         public static final Item CRYSTAL = new Crystal();
         public static final Item CEMENT = new Cement();
+        public static final Item LV_TOKEN = new LVToken();
 
         /**
          * Register this mod's {@link Item}s. -> also registers the registry names of the items: THROWS AN ERROR BECAUSE THE NAME OF THE ITEM ALREADY EXIST IN THE ITEM'S CLASS SUPER CONSTRUCTOR - SHOULD THIS BE REMOVED FROM ITS CONSTRUCTOR???
@@ -51,8 +53,9 @@ public class ItemRegisterer {
             final Item[] items = {
                     CRYSTAL,
                     CEMENT,
-                    CRYSTAL_SWORD
-                    //setItemName(new Crystal(), "crystal"),
+                    CRYSTAL_SWORD,
+                    LV_TOKEN
+                    //setItemName(new Crystal(), "crystal"),        --> might be how Choonster sets his item/block registry names
                     //setItemName(new Cement(), "cement")
             };
 
@@ -69,7 +72,8 @@ public class ItemRegisterer {
             final Item[] items = {
                     CRYSTAL,
                     CEMENT,
-                    CRYSTAL_SWORD
+                    CRYSTAL_SWORD,
+                    LV_TOKEN
             };
 
             for(Item item : items) {

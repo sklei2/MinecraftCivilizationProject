@@ -1,7 +1,17 @@
+itemGroup.minecraftcivproject = minecraftcivproject
+
 # Items
-item.minecraftcivproject:cement.name = Cement
-item.minecraftcivproject:crystal.name = Crystal
+item.Cement.name = Cement
+item.crystal.name = Crystal
+item.lv_token.name = LV Token
 
 # Blocks
-tile.minecraftcivproject:crystal_ore.name = Crystal Ore
-tile.minecraftcivproject:sterdy_concrete.name = Sturdy Concrete
+tile.CrystalOre.name = Crystal Ore
+tile.lexicon.name = Lexicon
+tile.my_block.name = My Block
+tile.sturdy_concrete.name = Sturdy Concrete
+tile.mudrock_ore.name = Mudrock Ore
+tile.reinforced_cobblestone.name = Reinforced Cobblestone
+
+# Entities
+entity.loyal_villager.name = Loyal Villager
