@@ -28,20 +28,20 @@ public class LoyalVillager extends EntityVillager {
     public LoyalVillager(World worldIn) {
         super(worldIn);
         //this.setSize(1.8F, 6F);     // This doesn't seem to make a different for in-game model atm
-        this.setBuildTask();
     }
 
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(5, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));   // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
         this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(1, new EntityAIBuild(world, this, Blocks.GLOWSTONE,0, 0,0)); // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED
+        this.tasks.addTask(5, new EntityAIBuild(world, this, Blocks.COBBLESTONE)); // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));   // Don't know if this works because of EntityAIAttackMelee
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+        this.setAdditionalAItasks();
     }
 
 
@@ -50,12 +50,17 @@ public class LoyalVillager extends EntityVillager {
         {
             this.areAdditionalTasksSet = true;
 
+            /* if (there is a chest place within the vicinity of the LV (aka the bounding box of BlockPos.getAllInBox)){
+                    this.setBuildTask;
+            }
+            */
+
         }
     }
 
 
     public void setBuildTask(){
-
+        // this.tasks.addTask(2, new EntityAIBuild(world, this, Blocks.COBBLESTONE));
     }
 
 

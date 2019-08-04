@@ -26,9 +26,10 @@ public class SearchArea {
     // This method search for a block starting at the entity's location (inside its legs) in the array [xLength,yLength,zLength]
     public BlockPos searchFor(World world, Block block, BlockPos startingLocation){
         for (int x = startingLocation.getX(); x <= startingLocation.getX() + xLength; x++) {
-            for (int y = startingLocation.getY()-1; y <= startingLocation.getY()-1 + yLength; y++) {
+            for (int y = startingLocation.getY(); y <= startingLocation.getY() + yLength; y++) {
                 for (int z = startingLocation.getZ(); z <= startingLocation.getZ() + zLength; z++) {
 
+                    // Used for debugging
                     //logger.info("Searching at " + x + "," + y + "," + z + "...");
                     /* This is for readability in the log
                     try {
@@ -39,10 +40,11 @@ public class SearchArea {
                     */
 
                     BlockPos pos = new BlockPos(x, y, z);
-                    logger.info("Found " + world.getBlockState(pos).getBlock().getLocalizedName() + " at " + + x + "," + y + "," + z);
+                    // Used for debugging - prints every block the entity finds
+                    //logger.info("Found " + world.getBlockState(pos).getBlock().getLocalizedName() + " at " + x + "," + y + "," + z);
 
                     if (world.getBlockState(pos).getBlock().equals(block)) {
-                        logger.info(block.getLocalizedName() + " was found!!!");
+                        //logger.info(block.getLocalizedName() + " was found at " + x + "," + y + "," + z + "!!!");
                         return pos;
                     }
 

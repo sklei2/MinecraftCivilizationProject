@@ -15,35 +15,49 @@ import java.util.logging.Logger;
 public class EntityAIBuild extends EntityAIBase {
 
     private static Logger logger = Logger.getLogger("EntityAIBuild");
-    private World world;
+    public World world;
     private EntityLiving entity;
     private Block block;
     public BlockPos entityPosition;     // BlockPos pos; pos.getX() pos.getY() pos.getZ() returns that x,y,z position of a block
     public BlockPos pos;        // This is the position of the desired block within the search area
-    private boolean blockIsFound;
-    private int xLength = 5;
-    private int yLength = 2;
-    private int zLength = 5;
+    public BlockPos newPos;     // This is the new position the entity should move to
+    private boolean continueTask;
+    private int xLength = 10;
+    private int yLength = 1;
+    private int zLength = 10;
+    private int breakDelay = 0;
+    public EntityAIMineBlock mineBlock;
 
 
-    public EntityAIBuild(World worldIn, EntityLiving entityIn, Block blockIn, int x, int y, int z){
+    /**
+     * Main constructor
+     */
+    public EntityAIBuild(World worldIn, EntityLiving entityIn, Block blockIn){
         this.world = worldIn;           // Assigns the field of "world" to the object, aka a new EntityAIBuild almost like a class specific global variable (.field)
         this.entity = entityIn;         // It seems like if a field like this is created, it can be referenced by any method inside of this class without having it as an input
         this.block = blockIn;
     }
 
-/* Need to:
-1) Stop the movement of the LV
-2) Get the current position of the LV
------ Covered in startExecuting() -----
-3) Search a X x Y x Z region around the LV
------ Covered in updateTask() -----
-4a) If nothing is found by the LV move 1 block North and try again (or expand the search volume from where its standing)
------ Covered in shouldKeepExecuting() -----
-4b) If the block is found move towards it until 1 block away/touching it
-5) Break the block and pick up the itemblock it drops
-6) Take the itemblock back to the chest
- */
+
+
+    /** TODO:
+    1) Stop the movement of the LV - not working currently
+    2) Get the current position of the LV
+    ----- Covered in startExecuting() -----
+    3) Search a X x Y x Z region around the LV
+    ----- Covered in startExecuting() -----
+    4a) If nothing is found by the LV move 1 block North and try again (or expand the search volume from where its standing)
+    ---- Covered in updateTask() -----
+    ----- Covered in shouldKeepExecuting() -----
+    4b) If the block is found move towards it until 1 block away/touching it
+    ----- Covered in updateTask() -----
+    5) Break the block and pick up the itemblock it drops
+    ----- Covered in updateTask() -----
+    6) Take the itemblock back to the chest
+    7) Repeat until order is satisfied
+     */
+
+
 
     /**
      * Returns whether the EntityAIBase should begin execution.
@@ -52,85 +66,112 @@ public class EntityAIBuild extends EntityAIBase {
     public boolean shouldExecute()
     {
         logger.info("The entity has started the Build Task!");      // This is used for debugging to see order of method calls, will remove later
-        /*try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         return true;
     }
 
 
     /**
-     * Returns whether an in-progress EntityAIBase should continue executing
+     * Returns whether an in-progress EntityAIBase should continue executing -> DOES THIS CONNECT TO updateTask()??? It looks like it does... which begs the question WHAT IN THE FUCK STOPS THE EntityAIBuild TASK???????
      */
     @Override
-    public boolean shouldContinueExecuting()     // Is the "stop" to updateTask()?? -> THIS IS NOT ENDING THE TASK EVEN IF FED "False"
+    public boolean shouldContinueExecuting()
     {
-        logger.info("The search continues...");
-        return(!blockIsFound);
-        /*
-        if(blockCheck(this.pos,this.entityPosition)){
-            BlockPos newPos = entityPosition.north();
-            this.entityPosition = this.moveEntity(entity, newPos, entityPosition);
-            return true;
-        }
-        else{
-            return false;
-        }
-        */
+        return(continueTask);
     }
+
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting()
-    {
-        //this.stopEntityMovement();    // This is a java method call (the this. isn't necessary, it just emphasizes this method is for the current object instance
+    public void startExecuting() {
+        //this.stopEntityMovement();    // INFO: This is a java method call (the this. isn't necessary, it just emphasizes this method is for the current object instance
         //logger.info("The entity stopped moving.");
-        //try {
-        //    Thread.sleep(2000);
-        //} catch (InterruptedException e) {
-        //    e.printStackTrace();
-        //}
+
 
         this.entityPosition = this.getEntityPosition();
         logger.info("The entity is at " + entityPosition.getX() + "," + entityPosition.getY() + "," + entityPosition.getZ());
 
 
-        SearchArea area = new SearchArea(xLength,yLength,zLength);
+        SearchArea area = new SearchArea(xLength, yLength, zLength);
         this.pos = area.searchFor(world, block, entityPosition);
+    }
 
-        if(this.pos.equals(this.entityPosition)){
+
+    /**
+     * Keep ticking a continuous task that has already been started
+     */
+    public void updateTask(){
+
+        /*SearchArea area = new SearchArea(xLength, yLength, zLength);
+        this.pos = area.searchFor(world, block, entityPosition);*/
+
+
+        if(this.pos == this.entityPosition){
 
             logger.info("A block of " + block.getLocalizedName() + " was not found...");
 
-            BlockPos newPos = entityPosition.north();
-            this.entityPosition = this.moveEntity(entity, newPos, entityPosition);    // Does this just return the position if the LV can get there? (found in EntityAIMoveIndoors) It might actually set the pat for travel (not sure how that feeds into actually moving the entity....)
-            this.entity.move(MoverType.SELF, newPos.getX(), newPos.getY(), newPos.getZ());  // LOOK MORE INTO THIS METHOD: I think line 1035 is where the entity start to move
+            BlockPos newPos = entityPosition.south();
+            //this.entityPosition = this.moveEntity(entity, newPos, entityPosition);    // Does this just return the position if the LV can get there? (found in EntityAIMoveIndoors) It might actually set the pat for travel (not sure how that feeds into actually moving the entity....)
+            this.entity.getNavigator().tryMoveToXYZ((double)newPos.getX(), (double)newPos.getY(), (double)newPos.getZ(), 0.8D);
 
-            this.blockIsFound = false;
-            logger.info("BlockIsFound set to " + blockIsFound);
+            this.continueTask = false;  // This seems to restart the whole task (not just this portion of updateTask())...
 
         }
+
         else{
 
-            logger.info("A block of " + block.getLocalizedName() + " was found!");
+            //logger.info("A block of " + block.getLocalizedName() + " was found!");    // For debugging
 
-            int newPosX = pos.getX()-1;
+            //BlockPos originalPosition = this.entityPosition;
+
+            int newPosX = pos.getX();
             int newPosY = pos.getY();
             int newPosZ = pos.getZ()-1;
-            logger.info("Entity's path is set to " + newPosX + "," + newPosY + "," + newPosZ);
-            this.entity.getNavigator().tryMoveToXYZ((double)newPosX, (double)newPosY, (double)newPosZ, 1.0D);
+            this.newPos = new BlockPos(newPosX,newPosY,newPosZ);
 
-            // Must delay return statement until the entity reaches the block.  There must be a better way to do this...
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            //logger.info("Entity's path is set to " + newPosX + "," + newPosY + "," + newPosZ);    // For debugging
+            this.entity.getNavigator().tryMoveToXYZ((double)newPosX, (double)newPosY, (double)newPosZ, 0.8D);
+            //this.entity.getNavigator().tryMoveToXYZ((double)originalPosition.getX(), (double)originalPosition.getY(), (double)originalPosition.getZ(), 0.8D);
+            this.entityPosition = this.getEntityPosition();     // Is this needed to update the entityPosition field?  It doesn't seem to be updating...
+            //logger.info("Entity: " + this.entityPosition + " New Pos: " + this.newPos);   // For debugging
+
+
+            // *** Attempt 3 ***                                // <--- THIS DOES SOLVE THE ISSUE OF THE TASK COMPLETELY REPEATING ITSELF IF THIS CONDITION IS NOT TRUE
+            if (entityPosition.getX() == newPos.getX() && entityPosition.getY() == newPos.getY() && entityPosition.getZ() == newPos.getZ()){        // NOTE: entityPosition == newPos DID NOT WORK (WHY I WILL NEVER KNOW) BUT THIS SHIT DOES!!!
+                logger.info("The logic worked!!!!!");
+                world.destroyBlock(pos,true);
             }
-            this.blockIsFound = true;       // Should I send this when the block is found? Wouldn't this end the task when we still need to break the block?
-            logger.info("BlockIsFound set to " + blockIsFound);
+
+
+            // *** Attempt 2 ***
+            //this.entity.tasks.addTask(1, this.mineBlock);      // This causes the game to crash...
+
+
+            // *** Attempt 1 ***
+            // Without this while loop, the entity moves to the correct position (newPos)
+            /*while (this.entityPosition != this.newPos) {
+                this.entityPosition = this.getEntityPosition();    // Updates this.entityPosition
+                logger.info((this.entityPosition == this.newPos) + " ---> entityPosition = " + entityPosition + ", newPos = " + newPos);    // For debugging
+
+                if (this.entityPosition == this.newPos) {
+                    world.destroyBlock(pos,true);
+                    break;
+                }
+            }*/
+
+            
+            /**
+                *Pick up item* -> this.setCanPickUpLoot? Or do villagers already have this set?
+
+                *Move back to chest location*
+
+                *Put item in chest*
+
+                *Repeat until the request is satisfied*
+             */
+
+
+            this.continueTask = true;   // This seems to restart just this portion of updateTask()...
 
         }
     }
@@ -180,12 +221,13 @@ public class EntityAIBuild extends EntityAIBase {
 
     }*/
 
-
+/*
     public void stopEntityMovement() {
         this.entity.motionX = 0.0D;
         this.entity.motionY = 0.0D;
         this.entity.motionZ = 0.0D;
-    }
+    }*/
+
 
 /*
     public boolean blockCheck(BlockPos pos, BlockPos startingLocation) {
@@ -203,7 +245,8 @@ public class EntityAIBuild extends EntityAIBase {
 
 
     public BlockPos getEntityPosition() {    // DOES THIS EVEN DO ANYTHING??? I LITERALLY PULLED THIS OUT OF THIN AIR AND THIS METHOD IS NOT DEFINED ANYWHERE ELSE - also, this.entity.posX is saying it's a de-reference of this.entity and could lead to a NullPointer - is this. whatever necessary here?
-        return new BlockPos(this.entity.posX, this.entity.posY + (double)this.entity.height, this.entity.posZ);     // posX, posY and posZ are the positions of the entity exist in Entity (where those fields are assigned to NBT memory)
+        return new BlockPos(this.entity.posX, this.entity.posY, this.entity.posZ);     // posX, posY and posZ are the positions of the entity exist in Entity (where those fields are assigned to NBT memory)
+        // Adding the entity height (+ (double)this.entity.height) to posY seems to make the position of the entity at its head block rather than its feet block
     }
 
 
@@ -220,25 +263,16 @@ public class EntityAIBuild extends EntityAIBase {
 
 
 
-
-    //Block.getBlockFromName() ?
-
-    /*
-    IBlockState current = getCurrentBlock();
-
-
-    public IBlockState getCurrentBlock()
-    {
-        return getWorld().getBlockState(getPos());
-    }
-    */
-
-
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void resetTask(){     // This seems to be called right after shouldContinueExecuting() - HOW DO I END THIS TASK????
-        this.entity.getNavigator().clearPath();
-        logger.info("The task has been reset.");
-    }
+    /*public void resetTask(){     // This seems to be called right after shouldContinueExecuting
+        //this.entity.getNavigator().clearPath();
+        this.entityPosition = this.getEntityPosition();
+        logger.info("The task has been interrupted and the state has been reset.");
+    }*/
+
+
+    // HOW DO I END THIS TASK????
+    // removeTask seems to be for a task with a task -> this is a indicator to maybe break up the moveTo and breakBlock tasks
 }
