@@ -7,7 +7,6 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -59,9 +58,6 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public void putItemInChest(ItemBlock item){
-        getRequestedItem
-    }
 
 
     // Base attack off of Wolf at first (passive -> aggressive on getting attacked)

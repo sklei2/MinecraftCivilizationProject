@@ -3,23 +3,25 @@ package com.minecraftcivproject.mcp.server.managers.building.construction.resour
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import registry.ResourceBinRegistry;
 
 import java.util.*;
 
 public class ResourceBinInventory extends InventoryBasic {
 
-    private UUID guid;
+    private final Runnable updatedCallback;
 
-    public ResourceBinInventory(UUID guid){
+    public ResourceBinInventory(Runnable updatedCallback){
         super("Test", false, 27);
-
-        this.guid = guid;
-        addInventoryChangeListener(new ResourceInventoryListener(this::contentsUpdated));
+        this.updatedCallback = updatedCallback;
     }
 
     public void contentsUpdated(){
-        ResourceBinRegistry.notify(guid.toString());
+        updatedCallback.run();
+    }
+
+    @Override
+    public void markDirty(){
+        contentsUpdated();
     }
 
     public int add(Item item, int count){

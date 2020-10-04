@@ -6,7 +6,6 @@ import com.minecraftcivproject.mcp.server.managers.building.construction.resourc
 import com.minecraftcivproject.mcp.utils.BlockUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import registry.ResourceBinRegistry;
 
 public class ConstructionProject {
 
@@ -24,8 +23,6 @@ public class ConstructionProject {
 
         BlockPos binBlockPos = baseLocation.add(townBuildingBlueprint.getStartRow(),0, townBuildingBlueprint.getStartCol());
         BlockUtils.placeBlock(world, binBlockPos, resourceBin.getResourceBinBlock());
-
-        ResourceBinRegistry.add(this.resourceBin);
     }
 
     public void addResource(String resource, int count){

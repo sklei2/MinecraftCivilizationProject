@@ -7,6 +7,7 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
+import registry.ResourceBinInventoryRegistry;
 
 import java.util.UUID;
 
@@ -17,12 +18,13 @@ public class ResourceBinTileEntity extends TileEntityChest {
     private UUID guid;
 
     public ResourceBinTileEntity(){
-        
+
     }
 
-    public ResourceBinTileEntity(UUID guid){
-        this.guid = guid;
-        this.resourceBinInventory = new ResourceBinInventory(this.guid);
+    public ResourceBinTileEntity(Runnable updatedCallback){
+        this.guid = UUID.randomUUID();
+        this.resourceBinInventory = new ResourceBinInventory(updatedCallback);
+        ResourceBinInventoryRegistry.add(guid.toString(), this.resourceBinInventory);
     }
 
     @Override
@@ -37,6 +39,13 @@ public class ResourceBinTileEntity extends TileEntityChest {
     {
         super.readFromNBT(compound);
         this.guid = UUID.fromString(compound.getString("TileEntityGuid"));
+
+        System.out.println("Reading " + this.guid.toString());
+
+        this.resourceBinInventory = ResourceBinInventoryRegistry.get(this.guid.toString());
+
+        System.out.println(this.resourceBinInventory);
+
     }
 
     @Override
@@ -44,6 +53,9 @@ public class ResourceBinTileEntity extends TileEntityChest {
     {
         super.writeToNBT(compound);
         compound.setString("TileEntityGuid", this.guid.toString());
+
+        System.out.println("Writing " + this.guid.toString());
+
         return compound;
     }
 
@@ -58,9 +70,5 @@ public class ResourceBinTileEntity extends TileEntityChest {
 
     public int getCount(Item item){
         return this.resourceBinInventory.getCount(item);
-    }
-
-    public UUID getGuid(){
-        return guid;
     }
 }
