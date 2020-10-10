@@ -5,22 +5,28 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.UUID;
-
 
 public class ResourceBinBlock extends BlockChest {
 
-    private UUID guid;
-    private ResourceBinTileEntity tileEntityChest;
+    public static final String NAME = "resource_bin";
 
-    public ResourceBinBlock(UUID guid){
+    private ResourceBinTileEntity tileEntityChest;
+    private Runnable updatedCallback;
+
+    //just used for registration
+    public ResourceBinBlock(){
         super(Type.BASIC);
-        this.guid = guid;
+        setRegistryName(NAME);
+    }
+
+    public ResourceBinBlock(Runnable updatedCallback){
+        this();
+        this.updatedCallback = updatedCallback;
+        this.tileEntityChest = new ResourceBinTileEntity(updatedCallback);
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        this.tileEntityChest = new ResourceBinTileEntity(guid);
         return this.tileEntityChest;
     }
 
@@ -43,9 +49,5 @@ public class ResourceBinBlock extends BlockChest {
 
     public int get(String name){
         return get(Item.getByNameOrId(name));
-    }
-
-    public UUID getGuid(){
-        return guid;
     }
 }

@@ -3,19 +3,15 @@ package com.minecraftcivproject.mcp.server.managers.building.construction.resour
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
 import net.minecraft.item.Item;
 
-import java.util.UUID;
-
 public class ResourceBin {
 
     private ResourceRequirements resourceRequirements;
     private ResourceBinBlock resourceBinBlock;
-    private UUID guid;
     private Runnable fullCallback;
 
     public ResourceBin(ResourceRequirements resourceRequirements, Runnable runnable){
-        this.guid = UUID.randomUUID();
         this.resourceRequirements = resourceRequirements;
-        this.resourceBinBlock = new ResourceBinBlock(guid);
+        this.resourceBinBlock = new ResourceBinBlock(this::onUpdate);
         this.fullCallback = runnable;
     }
 
@@ -65,9 +61,5 @@ public class ResourceBin {
         if(isFull()){
             this.fullCallback.run();
         }
-    }
-
-    public String getUniqueIdentifier(){
-        return guid.toString();
     }
 }
