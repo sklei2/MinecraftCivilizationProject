@@ -1,53 +1,70 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction.resource;
 
-import net.minecraft.block.BlockChest;
-import net.minecraft.item.Item;
+import com.minecraftcivproject.mcp.MinecraftCivProject;
+import com.minecraftcivproject.mcp.common.initialization.blocks.BlockTileEntity;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.UUID;
 
-public class ResourceBinBlock extends BlockChest {
 
-    public static final String NAME = "resource_bin";
+public class ResourceBinBlock extends BlockTileEntity<ResourceBinTileEntity> {
 
-    private ResourceBinTileEntity tileEntityChest;
-    private Runnable updatedCallback;
+    private static final String name = "resource_bin";
+    private String id;
 
-    //just used for registration
+
     public ResourceBinBlock(){
-        super(Type.BASIC);
-        setRegistryName(NAME);
+        super(Material.WOOD, false);
+        setRegistryName(MinecraftCivProject.MODID, name);
+        setUnlocalizedName(name);
+        this.id = UUID.randomUUID().toString();
     }
 
-    public ResourceBinBlock(Runnable updatedCallback){
-        this();
-        this.updatedCallback = updatedCallback;
-        this.tileEntityChest = new ResourceBinTileEntity(updatedCallback);
+    public String getId(){
+        return this.id;
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return this.tileEntityChest;
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new ResourceBinTileEntity(id, new ResourceBinInventory(id));
     }
 
-
-    public int add(Item i, int count){
-        return this.tileEntityChest.add(i, count);
+    @Override
+    public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+        if (stack.hasDisplayName()) {
+            final ResourceBinTileEntity tileEntity = getTileEntity(worldIn, pos);
+            if (tileEntity != null) {
+                tileEntity.add(stack.getItem(), stack.getCount());
+            }
+        }
     }
 
-    public int add(String name, int count){
-        return add(Item.getByNameOrId(name), count);
+    @Override
+    public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+        ILockableContainer ilockablecontainer = this.getContainer(worldIn, pos);
+        playerIn.displayGUIChest(ilockablecontainer);
+        return true;
     }
 
-    public int remove(Item i, int count){
-        return this.tileEntityChest.remove(i, count);
-    }
+    @Nullable
+    private ILockableContainer getContainer(World worldIn, BlockPos pos) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
 
-    public int get(Item i){
-        return this.tileEntityChest.getCount(i);
-    }
-
-    public int get(String name){
-        return get(Item.getByNameOrId(name));
+        if (!(tileentity instanceof ResourceBinTileEntity)) {
+            return null;
+        } else {
+            return (ResourceBinTileEntity) tileentity;
+        }
     }
 }

@@ -3,20 +3,22 @@ package com.minecraftcivproject.mcp.server.managers.building.construction.resour
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import registry.ResourceBinInventoryRegistry;
 
 import java.util.*;
 
 public class ResourceBinInventory extends InventoryBasic {
 
-    private final Runnable updatedCallback;
+    private final String id;
 
-    public ResourceBinInventory(Runnable updatedCallback){
+    public ResourceBinInventory(String id){
         super("Test", false, 27);
-        this.updatedCallback = updatedCallback;
+        ResourceBinInventoryRegistry.add(id, this);
+        this.id = id;
     }
 
     public void contentsUpdated(){
-        updatedCallback.run();
+        ResourceBinInventoryRegistry.trigger(id);
     }
 
     @Override

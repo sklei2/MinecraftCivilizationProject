@@ -7,10 +7,13 @@ import com.minecraftcivproject.mcp.common.initialization.blocks.*;
 import com.minecraftcivproject.mcp.server.managers.building.construction.resource.ResourceBinBlock;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -45,6 +48,7 @@ public class BlockRegisterer {
                 new ItemBlock(RESOURCE_BIN_BLOCK)
         };
 
+
         // Creates a list of blocks to get registered on startup
         public static final Block[] BLOCKS = {
                 TRIBE_BLOCK,
@@ -61,6 +65,10 @@ public class BlockRegisterer {
         @SubscribeEvent
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             final IForgeRegistry<Block> registry = event.getRegistry();
+
+            for (Block b : BLOCKS){
+                b.setCreativeTab(CreativeTabs.MISC);
+            }
 
             registry.registerAll(BLOCKS);
 
@@ -91,13 +99,13 @@ public class BlockRegisterer {
             }
         }
 
-       // @SubscribeEvent
-       // public static void registerRenders(ModelRegistryEvent event){
-       //     for(ItemBlock itemBlock : ITEM_BLOCKS){
-       //         Item item = Item.getItemFromBlock(itemBlock.getBlock());
-       //         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-       //     }
-       // }
+        @SubscribeEvent
+        public static void registerRenders(ModelRegistryEvent event){
+            for(ItemBlock itemBlock : ITEM_BLOCKS){
+                Item item = Item.getItemFromBlock(itemBlock.getBlock());
+                ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+            }
+        }
         // This might be trying to do the same this as the event below but messing it up with the CustomModelResourceLocation <- May not be the case, I forgot to add in the Item Model of Lexicon
 
 

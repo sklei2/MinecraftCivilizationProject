@@ -2,17 +2,24 @@ package com.minecraftcivproject.mcp.server.managers.building.construction.resour
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
 import net.minecraft.item.Item;
+import registry.ResourceBinInventoryRegistry;
 
 public class ResourceBin {
 
     private ResourceRequirements resourceRequirements;
     private ResourceBinBlock resourceBinBlock;
     private Runnable fullCallback;
+    private final String id;
 
     public ResourceBin(ResourceRequirements resourceRequirements, Runnable runnable){
         this.resourceRequirements = resourceRequirements;
-        this.resourceBinBlock = new ResourceBinBlock(this::onUpdate);
+        this.resourceBinBlock = new ResourceBinBlock();
         this.fullCallback = runnable;
+
+        // because this can be created both by placement and automatedly
+        this.id = this.resourceBinBlock.getId();
+
+        ResourceBinInventoryRegistry.subscribe(id, this::onUpdate);
     }
 
     public ResourceRequirements getResourceRequirements() {
@@ -22,7 +29,7 @@ public class ResourceBin {
 
     public boolean isFull(){
         for(String resource : resourceRequirements.getRequirements()){
-            int current = resourceBinBlock.get(resource);
+            int current = getInventory().getCount(Item.getByNameOrId(resource));
             int required = resourceRequirements.getRequirement(resource);
 
             if(current < required){
@@ -34,7 +41,7 @@ public class ResourceBin {
     }
 
     public int add(Item i, int count){
-        return this.resourceBinBlock.add(i, count);
+        return getInventory().add(i, count);
     }
 
     public int add(String name, int count){
@@ -42,11 +49,11 @@ public class ResourceBin {
     }
 
     public int remove(Item i, int count){
-        return this.resourceBinBlock.remove(i, count);
+        return getInventory().remove(i, count);
     }
 
     public int get(Item i){
-        return this.resourceBinBlock.get(i);
+        return getInventory().getCount(i);
     }
 
     public int get(String name){
@@ -61,5 +68,9 @@ public class ResourceBin {
         if(isFull()){
             this.fullCallback.run();
         }
+    }
+
+    private ResourceBinInventory getInventory(){
+        return ResourceBinInventoryRegistry.get(id);
     }
 }

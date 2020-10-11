@@ -9,22 +9,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import registry.ResourceBinInventoryRegistry;
 
-import java.util.UUID;
-
 
 public class ResourceBinTileEntity extends TileEntityChest {
 
     private ResourceBinInventory resourceBinInventory;
-    private UUID guid;
+    private String id;
 
     public ResourceBinTileEntity(){
 
     }
 
-    public ResourceBinTileEntity(Runnable updatedCallback){
-        this.guid = UUID.randomUUID();
-        this.resourceBinInventory = new ResourceBinInventory(updatedCallback);
-        ResourceBinInventoryRegistry.add(guid.toString(), this.resourceBinInventory);
+    public ResourceBinTileEntity(String id, ResourceBinInventory resourceBinInventory){
+        this.id = id;
+        this.resourceBinInventory = resourceBinInventory;
+        ResourceBinInventoryRegistry.add(id, this.resourceBinInventory);
     }
 
     @Override
@@ -38,11 +36,11 @@ public class ResourceBinTileEntity extends TileEntityChest {
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.guid = UUID.fromString(compound.getString("TileEntityGuid"));
+        this.id = compound.getString("TileEntityGuid");
 
-        System.out.println("Reading " + this.guid.toString());
+        System.out.println("Reading " + this.id);
 
-        this.resourceBinInventory = ResourceBinInventoryRegistry.get(this.guid.toString());
+        this.resourceBinInventory = ResourceBinInventoryRegistry.get(this.id);
 
         System.out.println(this.resourceBinInventory);
 
@@ -52,9 +50,11 @@ public class ResourceBinTileEntity extends TileEntityChest {
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setString("TileEntityGuid", this.guid.toString());
+        compound.setString("TileEntityGuid", this.id);
 
-        System.out.println("Writing " + this.guid.toString());
+        ResourceBinInventoryRegistry.add(id, this.resourceBinInventory);
+
+        System.out.println("Writing " + id);
 
         return compound;
     }

@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class TileEntityRegisterer {
 
     public static void registerTileEntities(){
-        registerTileEntity(ResourceBinTileEntity.class, "");
+        registerTileEntity(ResourceBinTileEntity.class, "chestTest");
     }
 
     private static void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String name){
