@@ -28,6 +28,13 @@ public class Blueprint {
     private ResourceRequirements resourceRequirements;
 
 
+    public Blueprint(String name, Collection<BlockAssignment> blocks, Collection<ResourceRequirement> resources, Collection<Collection<String>> layers) {
+        this.name = name;
+        this.blocks = blocks;
+        this.resources = resources;
+        this.layers = layers;
+    }
+
     public void apply(World world, BlockPos startingPosition){
 
         int layerLevel = startingPosition.getY(); // we only increment this one as we move up a layer
@@ -65,7 +72,28 @@ public class Blueprint {
         return resourceRequirements;
     }
 
-    private Collection<BlueprintLayer> getBlockLayers(){
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final Blueprint other = (Blueprint) obj;
+
+        return  this.getName().equals(other.getName()) &&
+                this.getResourceRequirements().equals(other.getResourceRequirements()) &&
+                this.getBlockLayers().equals(other.getBlockLayers());
+    }
+
+    public Collection<BlueprintLayer> getBlockLayers(){
         //caching this so it doesn't have to happen every time you place a blueprint
         if(blockLayers != null){
             return blockLayers;

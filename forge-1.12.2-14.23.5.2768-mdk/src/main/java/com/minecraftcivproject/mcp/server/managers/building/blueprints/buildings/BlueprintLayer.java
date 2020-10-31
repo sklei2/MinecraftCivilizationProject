@@ -21,6 +21,11 @@ public class BlueprintLayer {
         createBlockLayer(rawLayer);
     }
 
+
+    /**
+     * Public methods
+     */
+
     public void applyLayer(World world, BlockPos topLeft){
 
         int zOffset = 0;
@@ -47,6 +52,90 @@ public class BlueprintLayer {
 
     public int getCols(){
         return blockLayer.get(0).size();
+    }
+
+    public Map<String, Block> getBlockAssignmentMap() {
+        return this.blockAssignmentMap;
+    }
+
+    public List<List<Block>> getBlockLayer() {
+        return this.blockLayer;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final BlueprintLayer other = (BlueprintLayer) obj;
+
+        return this.isBlockAssignmentMapEqual(other.getBlockAssignmentMap()) && this.isBlockLayerEqual(other.getBlockLayer());
+    }
+
+
+    /**
+     * Private methods
+     */
+
+    /* @method isBlockAssignmentMapEqual
+    // Map is equivalent to a dictionary (lookup table for key-value pairs)
+    dict = {
+        Dirt : Block.Dirt
+        Cobblestone : Block.Cobblestone
+        Sand : Block.Sand
+    }
+    otherDict = {
+       Dirt : Block.Dirt
+       Obsidian : Block.Obsidian
+       Sand : Block.Sand
+    }
+
+    Map.Entry<String, Block> dictEntry = dict.entrySet()
+
+    String entryKey = dictEntry.key
+    Block otherValue = otherDict.get(entryKey)
+
+    entryValue = dictEntry.value
+     */
+    private boolean isBlockAssignmentMapEqual(Map<String, Block> other){
+        for (Map.Entry<String, Block> entry : this.blockAssignmentMap.entrySet()){
+
+            String entryKey = entry.getKey();
+
+            try {
+                Block otherValue = other.get(entryKey);
+                if (!entry.getValue().getLocalizedName().equals(otherValue.getLocalizedName())) {
+                    return false;
+                }
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isBlockLayerEqual(List<List<Block>> other){
+        int i = 0;
+        for (List<Block> rowOfBlocks : this.blockLayer) {
+            int j = 0;
+            for (Block block : rowOfBlocks) {
+                Block otherBlock = other.get(i).get(j);
+                if (!block.getLocalizedName().equals(otherBlock.getLocalizedName())) {
+                    return false;
+                }
+                ++j;
+            }
+            ++i;
+        }
+
+        return true;
     }
 
     private void createBlockLayer(Collection<String> rawLayer){

@@ -17,27 +17,37 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.logging.Logger;
 
 
 public class LoyalVillager extends EntityVillager {
 
     private boolean areAdditionalTasksSet;
-    private Block blockOfInterest;    // This will eventually be what the resource manager is requesting for the current build (only applicable for builder class LVs -> no/low atk, high hp)
+    /*
+    blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
+    builder class LVs -> no/low atk, high hp)
+     */
+    private Block blockOfInterest;
+    private static Logger logger = Logger.getLogger("LoyalVillager");
 
 
+    /**
+     * Main constructor
+     */
     public LoyalVillager(World worldIn) {
         super(worldIn);
-        //this.setSize(1.8F, 6F);     // This doesn't seem to make a different for in-game model atm
+        //this.setSize(1.8F, 6F);  // This doesn't seem to make a difference for in-game model atm...
     }
 
 
     @Override
     protected void initEntityAI() {
+        logger.info("initEntityAI has been called");  // This doesn't to be called...
         this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));   // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
         this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(5, new EntityAIBuild(world, this, Blocks.COBBLESTONE)); // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
+        this.tasks.addTask(5, new EntityAIBuild(world, this, Blocks.COBBLESTONE));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));   // Don't know if this works because of EntityAIAttackMelee
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
@@ -45,12 +55,15 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    private void setAdditionalAItasks(){        // This is where EntityAIBuild should be and where the desired block is read im
+    /*
+    This is where EntityAIBuild should be (in the future) and where the desired block is read in
+     */
+    private void setAdditionalAItasks() {
         if (!this.areAdditionalTasksSet)
         {
             this.areAdditionalTasksSet = true;
 
-            /* if (there is a chest place within the vicinity of the LV (aka the bounding box of BlockPos.getAllInBox)){
+            /* if (there is a chest placed within the vicinity of the LV (aka the bounding box of BlockPos.getAllInBox)){
                     this.setBuildTask;
             }
             */
@@ -59,7 +72,7 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public void setBuildTask(){
+    public void setBuildTask() {
         // this.tasks.addTask(2, new EntityAIBuild(world, this, Blocks.COBBLESTONE));
     }
 
@@ -70,7 +83,7 @@ public class LoyalVillager extends EntityVillager {
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
 
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);    // 2x default
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);    // 2x default >> 40.0D >> 1.0D for testing
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);  // 3x default
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0D);  // 2x default -> this might be causing the server to overload and skip ticks
@@ -83,7 +96,7 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    // Base attack off of Wolf at first (passive -> aggressive on getting attacked)
+    // Based attack off of Wolf at first (passive -> aggressive on getting attacked)
     /**
      * Called when the entity is attacked.
      */

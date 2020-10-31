@@ -12,29 +12,31 @@ import net.minecraft.world.World;
 
 import java.util.logging.Logger;
 
+
 public class EntityAIBuild extends EntityAIBase {
 
     private static Logger logger = Logger.getLogger("EntityAIBuild");
     public World world;
     private EntityLiving entity;
     private Block block;
-    public BlockPos entityPosition;     // BlockPos pos; pos.getX() pos.getY() pos.getZ() returns that x,y,z position of a block
-    public BlockPos pos;        // This is the position of the desired block within the search area
-    public BlockPos newPos;     // This is the new position the entity should move to
+    public BlockPos entityPosition;  // BlockPos pos; pos.getX() pos.getY() pos.getZ() returns that x,y,z position of a block
+    public BlockPos pos;  // This is the position of the desired block within the search area
+    public BlockPos newPos;  // This is the new position the entity should move to
     private boolean continueTask;
     private int xLength = 10;
     private int yLength = 1;
     private int zLength = 10;
     private int breakDelay = 0;
     public EntityAIMineBlock mineBlock;
+    private boolean successOff = true;
 
 
     /**
      * Main constructor
      */
-    public EntityAIBuild(World worldIn, EntityLiving entityIn, Block blockIn){
-        this.world = worldIn;           // Assigns the field of "world" to the object, aka a new EntityAIBuild almost like a class specific global variable (.field)
-        this.entity = entityIn;         // It seems like if a field like this is created, it can be referenced by any method inside of this class without having it as an input
+    public EntityAIBuild(World worldIn, EntityLiving entityIn, Block blockIn) {
+        this.world = worldIn;  // Assigns the field/attribute of "world" to the object, aka a new EntityAIBuild almost like a class specific global variable (.field)
+        this.entity = entityIn;  // It seems like if a field/attribute like this is created, it can be referenced by any method inside of this class without having it as an input
         this.block = blockIn;
     }
 
@@ -63,19 +65,20 @@ public class EntityAIBuild extends EntityAIBase {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute()
-    {
-        logger.info("The entity has started the Build Task!");      // This is used for debugging to see order of method calls, will remove later
-        return true;
+    public boolean shouldExecute() {
+        logger.info("The entity has started the Build Task!");  // This is used for debugging to see order of method calls, will remove later
+        return true;  // This should be conditional on the search!!!
     }
 
 
     /**
-     * Returns whether an in-progress EntityAIBase should continue executing -> DOES THIS CONNECT TO updateTask()??? It looks like it does... which begs the question WHAT IN THE FUCK STOPS THE EntityAIBuild TASK???????
+     * Returns whether an in-progress EntityAIBase should continue executing
+     * DOES THIS CONNECT TO updateTask()??? It looks like it does... which begs the question WHAT IN THE FUCK STOPS THE EntityAIBuild TASK???????
      */
     @Override
-    public boolean shouldContinueExecuting()
-    {
+    public boolean shouldContinueExecuting() {
+        logger.info("shouldContinueExecuting called");
+        logger.info("continueTask is " + continueTask);
         return(continueTask);
     }
 
@@ -100,7 +103,7 @@ public class EntityAIBuild extends EntityAIBase {
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask(){
+    public void updateTask() {
 
         /*SearchArea area = new SearchArea(xLength, yLength, zLength);
         this.pos = area.searchFor(world, block, entityPosition);*/
@@ -137,21 +140,27 @@ public class EntityAIBuild extends EntityAIBase {
 
 
             // *** Attempt 3 ***                                // <--- THIS DOES SOLVE THE ISSUE OF THE TASK COMPLETELY REPEATING ITSELF IF THIS CONDITION IS NOT TRUE
-            if (entityPosition.getX() == newPos.getX() && entityPosition.getY() == newPos.getY() && entityPosition.getZ() == newPos.getZ()){        // NOTE: entityPosition == newPos DID NOT WORK (WHY I WILL NEVER KNOW) BUT THIS SHIT DOES!!!
-                logger.info("The logic worked!!!!!");
-                world.destroyBlock(pos,true);
+            if (entityPosition.getX() == newPos.getX() && entityPosition.getY() == newPos.getY() && entityPosition.getZ() == newPos.getZ()) {        // NOTE: entityPosition == newPos DID NOT WORK (WHY I WILL NEVER KNOW) BUT THIS SHIT DOES!!!
+                if (successOff) {
+                    logger.info("The logic worked!!!!!");
+                    //logger.info(this.toString());  // Doesn't output anything...
+                    successOff = false;
+                }
+                world.destroyBlock(pos,true);  // TODO: This should be replaced by EntityAIMineBlock in the future!
+                this.continueTask = false;  // This doesn't seem it do anything... the LV just keeps calling updateTask...
+                return;
             }
 
 
             // *** Attempt 2 ***
-            //this.entity.tasks.addTask(1, this.mineBlock);      // This causes the game to crash...
+            //this.entity.tasks.addTask(1, this.mineBlock);  // This causes the game to crash...
 
 
             // *** Attempt 1 ***
             // Without this while loop, the entity moves to the correct position (newPos)
             /*while (this.entityPosition != this.newPos) {
                 this.entityPosition = this.getEntityPosition();    // Updates this.entityPosition
-                logger.info((this.entityPosition == this.newPos) + " ---> entityPosition = " + entityPosition + ", newPos = " + newPos);    // For debugging
+                logger.info((this.entityPosition == this.newPos) + " ---> entityPosition = " + entityPosition + ", newPos = " + newPos);  // For debugging
 
                 if (this.entityPosition == this.newPos) {
                     world.destroyBlock(pos,true);
@@ -171,6 +180,7 @@ public class EntityAIBuild extends EntityAIBase {
              */
 
 
+            logger.info("continueTask was set to true!");
             this.continueTask = true;   // This seems to restart just this portion of updateTask()...
 
         }

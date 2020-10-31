@@ -4,7 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class Crystal extends ItemBase {
 
-    public Crystal(){
+    public Crystal() {
         super("crystal",
                 CreativeTabs.MATERIALS,
                 64);

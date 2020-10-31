@@ -10,11 +10,11 @@ import net.minecraft.item.Item;
 public class BlockBase extends Block implements IHasModel {
     public BlockBase(String name, Material mat, CreativeTabs creativeTabs, float hardness, float resistance, String tool, int harvest) {
         this(name, mat, creativeTabs, hardness, resistance);
-        setHarvestLevel(tool, harvest);                             // It seems like TribeBlock uses this constructor. Why have the two below?
+        setHarvestLevel(tool, harvest);                             // It seems like TribeBlock uses this constructor. Why have the two below? --> are theses overloaded constructors?
     }
 
     public BlockBase(String name, Material mat, CreativeTabs creativeTabs, float hardness, float resistance, float light) {
-        this(name, mat, creativeTabs, hardness, resistance);
+        this(name, mat, creativeTabs, hardness, resistance);  // Is this the same as calling super?
         setLightLevel(light);                                       // Why is this constructor in here?? Is this just another constructor that can be used?
     }
 

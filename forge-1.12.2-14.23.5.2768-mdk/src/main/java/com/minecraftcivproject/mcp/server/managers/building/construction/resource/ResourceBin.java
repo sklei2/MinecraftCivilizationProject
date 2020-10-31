@@ -26,7 +26,7 @@ public class ResourceBin extends BlockChest {
     }
 
     public boolean isFull(){
-        for(String resource : resourceRequirements.getRequirements()){
+        for(String resource : resourceRequirements.getAllResourceNames()){
             int current = get(resource);
             int required = resourceRequirements.getRequirement(resource);
 

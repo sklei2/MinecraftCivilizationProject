@@ -9,6 +9,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+
+/**
+ * You can use @SubscribeEvent and let the Event Bus discover methods to call
+ * You can use @Mod.EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD Event Bus for receiving Registry Events)
+ */
+
 @Mod(modid = MinecraftCivProject.MODID, name = MinecraftCivProject.NAME, version = MinecraftCivProject.VERSION)
 public class MinecraftCivProject {
 

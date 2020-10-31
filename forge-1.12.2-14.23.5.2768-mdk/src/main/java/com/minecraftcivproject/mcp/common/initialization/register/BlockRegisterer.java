@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +20,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class BlockRegisterer {
 
 
+    // WHY IN THE FUCK IS THERE A CLASS INSIDE OF A CLASS...... THIS IS WHAT HAPPENS WHEN YOU TRUST SOME RANDOM, UNDOCUMENTED GIT REPO AS YOUR MOD FRAMEWORK......... FUCK CHOONSTER
+    // I LITERALLY GOT MORE SHIT DONE WATCHING A 12 YEAR OLD'S TUTORIAL THAN TRYING TO FIGURE THIS SHIT OUT
     @Mod.EventBusSubscriber(modid = MinecraftCivProject.MODID)
     public static class RegistrationHandler {
 
@@ -46,7 +49,7 @@ public class BlockRegisterer {
                 new ItemBlock(REINFORCED_COBBLESTONE)
         };
 
-        // Creates a list of blocks to get registered on startup
+        // Creates a list of blocks (BLOCKS) to get registered on startup
         public static final Block[] BLOCKS = {
                 TRIBE_BLOCK,
                 MY_BLOCK,
@@ -86,7 +89,14 @@ public class BlockRegisterer {
 
             for (final ItemBlock item : ITEM_BLOCKS) {
                 final Block block = item.getBlock();
+
                 final ResourceLocation registryName = Preconditions.checkNotNull(block.getRegistryName(), "Block %s has null registry name", block);
+                /* How do blocks have the getRegistryName method as an attribute??? ->
+                        public class Block extends Impl<Block>
+                        public static class Impl<T extends IForgeRegistryEntry<T>> implements IForgeRegistryEntry<T>
+                        IForgeRegistryEntry<V>
+                 */
+
                 registry.register(item.setRegistryName(registryName));
             }
         }
@@ -98,7 +108,7 @@ public class BlockRegisterer {
        //         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
        //     }
        // }
-        // This might be trying to do the same this as the event below but messing it up with the CustomModelResourceLocation <- May not be the case, I forgot to add in the Item Model of Lexicon
+        // This might be trying to do the same as the event below but messing it up with the CustomModelResourceLocation <- May not be the case, I forgot to add in the Item Model of Lexicon
 
 
         @SubscribeEvent
@@ -122,4 +132,13 @@ public class BlockRegisterer {
             }
         }
     }
+
+
+
+    // From TechnoVision's Frabic API tutorial -> THERE IS NO REGISTRY CLASS IN NET.MINECRAFT.UTIL.REGISTRY
+//    public static final Block CRYSTAL_ORE = new CrystalOre();
+//
+//    public static void registerItems(){
+//
+//    }
 }

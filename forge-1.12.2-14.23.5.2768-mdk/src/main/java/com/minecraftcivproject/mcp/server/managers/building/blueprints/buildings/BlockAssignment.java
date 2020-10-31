@@ -14,15 +14,16 @@ public class BlockAssignment {
     private String character;
 
 
-    public BlockAssignment(){
-
+    public BlockAssignment(String name, String character){
+        this.name = name;
+        this.character = character;
     }
 
     public String getCharacter() {
-        return character;
+        return this.character;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 }
