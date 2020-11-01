@@ -1,6 +1,7 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
+import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 import com.minecraftcivproject.mcp.server.managers.tribe.Tribe;
 import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;
 import net.minecraft.block.material.Material;
@@ -47,7 +48,11 @@ public class TribeBlock extends BlockBase{
 
         TribeQueuesUi tribeQueuesUi = new TribeQueuesUi();
         QueueListener queueListener = new QueueListener(tribeQueuesUi);
-        TribeManager tribeManager = new TribeManager(townBlueprint, worldIn, pos, queueListener);
+
+        QueueManager queueManager = new QueueManager();
+        queueManager.addObserver(queueListener);
+
+        TribeManager tribeManager = new TribeManager(townBlueprint, worldIn, pos, queueManager);
         Tribe tribe = new Tribe("Sean", tribeManager, new TribeUi("Sean", tribeQueuesUi), worldIn);
 
         TribeRegistry.addTribe(tribe.getTribeName(), tribe);

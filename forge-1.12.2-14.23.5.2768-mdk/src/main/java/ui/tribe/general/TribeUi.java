@@ -26,6 +26,8 @@ public class TribeUi extends DisplayWithList {
                 break;
         }
 
+        super.selectContent(index, selectedValue);
+
         revalidate();
     }
 }

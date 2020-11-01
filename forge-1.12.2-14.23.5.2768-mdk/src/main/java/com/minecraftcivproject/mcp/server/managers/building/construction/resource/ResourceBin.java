@@ -4,7 +4,9 @@ import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings
 import net.minecraft.item.Item;
 import registry.ResourceBinInventoryRegistry;
 
-public class ResourceBin {
+import java.util.Observable;
+
+public class ResourceBin extends Observable {
 
     private ResourceRequirements resourceRequirements;
     private ResourceBinBlock resourceBinBlock;
@@ -68,6 +70,10 @@ public class ResourceBin {
         if(isFull()){
             this.fullCallback.run();
         }
+
+        System.out.println("Resource bin " + id + " has been updated " + countObservers());
+        setChanged();
+        notifyObservers();
     }
 
     private ResourceBinInventory getInventory(){

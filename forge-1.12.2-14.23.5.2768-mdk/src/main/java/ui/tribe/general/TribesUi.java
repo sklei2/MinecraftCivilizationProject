@@ -15,6 +15,9 @@ public class TribesUi extends DisplayWithList {
     protected void selectContent(int index, String selectedValue) {
         super.updateContent(TribeRegistry.getTribeUi(selectedValue));
 
+        super.selectContent(index, selectedValue);
+
+        System.out.println("Revalidate Tribes:selectContent");
         revalidate();
     }
 
@@ -23,6 +26,7 @@ public class TribesUi extends DisplayWithList {
 
         super.updateList(tribes);
 
-        revalidate();
+        System.out.println("Revalidate Tribes:updateTribes");
+        repaint();
     }
 }

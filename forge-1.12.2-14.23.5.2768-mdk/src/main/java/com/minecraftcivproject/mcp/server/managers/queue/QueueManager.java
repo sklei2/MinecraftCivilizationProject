@@ -2,54 +2,39 @@ package com.minecraftcivproject.mcp.server.managers.queue;
 
 import java.util.*;
 
-public class QueueManager extends Observable {
+public class QueueManager extends Observable implements Observer{
 
-    private Map<TribeQueue, Queue<Object>> queues;
-    private Map<TribeQueue, Class> queueTypes;
+    private Map<TribeQueueEnum, TribeQueue<? extends Queueable>> queues;
 
     public QueueManager(){
         queues = new HashMap<>();
-        queueTypes = new HashMap<>();
     }
 
-    public void addQueue(TribeQueue queueName, Class queueType){
+    public void addQueue(TribeQueue<? extends Queueable> tribeQueue){
         System.out.println("added queue");
-        Queue<Object> newQueue = new LinkedList<>();
-        queues.put(queueName, newQueue);
-        queueTypes.put(queueName, queueType);
+
+        queues.put(tribeQueue.getTribeQueueEnum(), tribeQueue);
 
         setChanged();
         notifyObservers();
     }
 
-    public void queue(TribeQueue queueName, Object o){
-        System.out.println("queueing object");
-        queues.get(queueName).add(o);
+    public TribeQueue<?> getQueue(TribeQueueEnum tribeQueueEnum){
+        return queues.get(tribeQueueEnum);
+    }
 
+    public Collection<TribeQueue<? extends Queueable>> getAllQueues(){
+        return queues.values();
+    }
+
+    public Collection<TribeQueueEnum> getAllTypes(){
+        return queues.keySet();
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        System.out.println("queue manager sees update");
         setChanged();
-        notifyObservers(queueName);
-    }
-
-    public <T> T dequeue(TribeQueue queueName){
-        Object o = queues.get(queueName).remove();
-
-        //wow is this fun
-        Class<T> type = queueTypes.get(queueName);
-
-        setChanged();
-        notifyObservers(queueName);
-
-        return type.cast(o);
-    }
-
-    public List<TribeQueue> getQueueTypes(){
-        return new ArrayList<>(queueTypes.keySet());
-    }
-
-    public <T> Queue<T> getQueue (Class<T> c){
-        TribeQueue queueType = queueTypes.keySet().stream().filter(key -> queueTypes.get(key).equals(c)).findFirst().get();
-
-        //spicy
-        return (Queue<T>)queues.get(queueType);
+        notifyObservers();
     }
 }
