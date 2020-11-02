@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
+
 /**
  * This class is to mimic the "slow" breaking of a block, like the player, instead of insta-breaking it
  */
@@ -17,9 +18,10 @@ public class EntityAIMineBlock extends EntityAIBuild {
      * @param worldIn
      * @param entityIn
      * @param blockIn
+     * @param doTheThing
      */
-    public EntityAIMineBlock(World worldIn, EntityLiving entityIn, Block blockIn) {
-        super(worldIn, entityIn, blockIn);
+    public EntityAIMineBlock(World worldIn, LoyalVillager entityIn, Block blockIn, boolean doTheThing) {
+        super(worldIn, entityIn, blockIn, doTheThing);
     }
 
 

@@ -1,43 +1,63 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 
 public class EntityAIBuild extends EntityAIBase {
 
     private static Logger logger = Logger.getLogger("EntityAIBuild");
-    public World world;
-    private EntityLiving entity;
+    public World world;  // This is a pointer b/c it's not a primitive type
+    private LoyalVillager entity;
     private Block block;
+    private boolean go;
     public BlockPos entityPosition;  // BlockPos pos; pos.getX() pos.getY() pos.getZ() returns that x,y,z position of a block
     public BlockPos pos;  // This is the position of the desired block within the search area
     public BlockPos newPos;  // This is the new position the entity should move to
     private boolean continueTask;
     private int xLength = 10;
-    private int yLength = 1;
+    private int yLength = 1;  // For some reason it only works if this is 1...
     private int zLength = 10;
     private int breakDelay = 0;
-    public EntityAIMineBlock mineBlock;
+    public EntityAIMineBlock mineBlock;  // Task to add, can this be added within this class???
     private boolean successOff = true;
+    public InventoryBasic inventory;
+    private IBlockState state;
 
 
     /**
-     * Main constructor
+     * Constructor
      */
-    public EntityAIBuild(World worldIn, EntityLiving entityIn, Block blockIn) {
+//    public EntityAIBuild(World worldIn, LoyalVillager entityIn, Block blockIn, InventoryBasic inventory, boolean doTheThing) {  // THEN THIS IS CALLED NEXT, FOLLOWED BY THE LV CONSTRUCTOR BEING CALLED... THIS MEANS THE INVENTORY IS SET TO NULL BECAUSE THE F'KING LV HASN'T EVEN BEEN CREATED YET!!!
+//        this(worldIn, entityIn, blockIn, doTheThing);
+//        this.inventory = inventory;
+//        logger.info("EntityAIBuild constructor called, entity inventory is set to " + this.inventory + " created from " + inventory);
+//    }
+
+    public EntityAIBuild(World worldIn, LoyalVillager entityIn, Block blockIn, boolean doTheThing) {  // THIS SEEMS TO BE CALLED FIRST
         this.world = worldIn;  // Assigns the field/attribute of "world" to the object, aka a new EntityAIBuild almost like a class specific global variable (.field)
         this.entity = entityIn;  // It seems like if a field/attribute like this is created, it can be referenced by any method inside of this class without having it as an input
         this.block = blockIn;
+        this.go = doTheThing;
+//        logger.info("EntityAIBuild constructor called");
     }
 
 
@@ -49,9 +69,9 @@ public class EntityAIBuild extends EntityAIBase {
     3) Search a X x Y x Z region around the LV
     ----- Covered in startExecuting() -----
     4a) If nothing is found by the LV move 1 block North and try again (or expand the search volume from where its standing)
-    ---- Covered in updateTask() -----
+    ----- Covered in updateTask() -----
     ----- Covered in shouldKeepExecuting() -----
-    4b) If the block is found move towards it until 1 block away/touching it
+    4b) If the block is found, move towards it until 1 block away/touching it
     ----- Covered in updateTask() -----
     5) Break the block and pick up the itemblock it drops
     ----- Covered in updateTask() -----
@@ -65,9 +85,20 @@ public class EntityAIBuild extends EntityAIBase {
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
-        logger.info("The entity has started the Build Task!");  // This is used for debugging to see order of method calls, will remove later
-        return true;  // This should be conditional on the search!!!
+    public boolean shouldExecute() {  // Should be conditional on the search, or should that be shouldContinue executing? I think it's the latter
+//        logger.info("shouldExecute called");  // This is used for debugging to see order of method calls, will remove later
+
+//        logger.info("Inside EntityAIBuild, the entityIn is " + this.entity);
+//        logger.info("EntityIn's inventory is " + this.entity.getInventory());
+
+        if (this.go) {
+            this.inventory = this.entity.getInventory();
+//            logger.info("Inventory has been set to " + this.inventory);
+//            logger.info("Item in slot 1 is " + this.inventory.getStackInSlot(0) + ". Max size of inventory is " + this.inventory.getSizeInventory());
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -78,7 +109,7 @@ public class EntityAIBuild extends EntityAIBase {
     @Override
     public boolean shouldContinueExecuting() {
         logger.info("shouldContinueExecuting called");
-        logger.info("continueTask is " + continueTask);
+//        logger.info("continueTask is " + continueTask);
         return(continueTask);
     }
 
@@ -88,12 +119,10 @@ public class EntityAIBuild extends EntityAIBase {
      */
     public void startExecuting() {
         //this.stopEntityMovement();    // INFO: This is a java method call (the this. isn't necessary, it just emphasizes this method is for the current object instance
-        //logger.info("The entity stopped moving.");
-
+//        logger.info("The entity stopped moving.");
 
         this.entityPosition = this.getEntityPosition();
         logger.info("The entity is at " + entityPosition.getX() + "," + entityPosition.getY() + "," + entityPosition.getZ());
-
 
         SearchArea area = new SearchArea(xLength, yLength, zLength);
         this.pos = area.searchFor(world, block, entityPosition);
@@ -123,7 +152,7 @@ public class EntityAIBuild extends EntityAIBase {
 
         else{
 
-            //logger.info("A block of " + block.getLocalizedName() + " was found!");    // For debugging
+//            logger.info("A block of " + block.getLocalizedName() + " was found!");
 
             //BlockPos originalPosition = this.entityPosition;
 
@@ -132,11 +161,11 @@ public class EntityAIBuild extends EntityAIBase {
             int newPosZ = pos.getZ()-1;
             this.newPos = new BlockPos(newPosX,newPosY,newPosZ);
 
-            //logger.info("Entity's path is set to " + newPosX + "," + newPosY + "," + newPosZ);    // For debugging
+//            logger.info("Entity's path is set to " + newPosX + "," + newPosY + "," + newPosZ);
             this.entity.getNavigator().tryMoveToXYZ((double)newPosX, (double)newPosY, (double)newPosZ, 0.8D);
             //this.entity.getNavigator().tryMoveToXYZ((double)originalPosition.getX(), (double)originalPosition.getY(), (double)originalPosition.getZ(), 0.8D);
             this.entityPosition = this.getEntityPosition();     // Is this needed to update the entityPosition field?  It doesn't seem to be updating...
-            //logger.info("Entity: " + this.entityPosition + " New Pos: " + this.newPos);   // For debugging
+//            logger.info("Entity: " + this.entityPosition + " New Pos: " + this.newPos);
 
 
             // *** Attempt 3 ***                                // <--- THIS DOES SOLVE THE ISSUE OF THE TASK COMPLETELY REPEATING ITSELF IF THIS CONDITION IS NOT TRUE
@@ -148,6 +177,29 @@ public class EntityAIBuild extends EntityAIBase {
                 }
                 world.destroyBlock(pos,true);  // TODO: This should be replaced by EntityAIMineBlock in the future!
                 this.continueTask = false;  // This doesn't seem it do anything... the LV just keeps calling updateTask...
+
+//                //this.block.getItemDropped(state, new Random(), 0);  // These parameters are arbitrary, I hope this doesn't mess anything up... they really aren't used for anything so it shouldn't...
+                AxisAlignedBB axisalignedbb = this.entity.getEntityBoundingBox().grow(1.0D, 0.5D, 1.0D);  // Creates an axis-aligned bounding box around the entity
+                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.entity, axisalignedbb);
+
+                for(int i = 0; i < list.size(); ++i) {
+                    Entity entity = list.get(i);
+                    if (entity instanceof EntityItem) {
+                        logger.info("~*~*~*~*~ " + entity.getName() + " was found at " + entity.getPosition() + "! ~*~*~*~*~");
+//                        //this.entity.onCollideWithPlayer(entity);  // This cannot be done b/c the entity is not an EntityPlayer...
+                        EntityItem entityItem = (EntityItem)entity;  // Must cast entity into an EntityItem even if it's already an EntityItem to be able to call EntityItem methods on it!
+                        ItemStack itemStack = entityItem.getItem();
+                        logger.info("The item stack is " + itemStack.getDisplayName());
+                        Item item = itemStack.getItem();
+
+                        logger.info("The entity's inventory is " + this.inventory);
+                        ItemStack newItemStack = this.inventory.addItem(itemStack);
+                        logger.info("Item in slot 1 is " + this.inventory.getStackInSlot(0) + ". Max size of inventory is " + this.inventory.getSizeInventory());
+                        entityItem.setDead();  // Destroys the item block on the ground
+                    }
+                }
+
+                this.entity.setDead();
                 return;
             }
 
@@ -180,8 +232,9 @@ public class EntityAIBuild extends EntityAIBase {
              */
 
 
-            logger.info("continueTask was set to true!");
+
             this.continueTask = true;   // This seems to restart just this portion of updateTask()...
+//            logger.info("continueTask was set to true!");
 
         }
     }
@@ -255,7 +308,7 @@ public class EntityAIBuild extends EntityAIBase {
 
 
     public BlockPos getEntityPosition() {    // DOES THIS EVEN DO ANYTHING??? I LITERALLY PULLED THIS OUT OF THIN AIR AND THIS METHOD IS NOT DEFINED ANYWHERE ELSE - also, this.entity.posX is saying it's a de-reference of this.entity and could lead to a NullPointer - is this. whatever necessary here?
-        return new BlockPos(this.entity.posX, this.entity.posY, this.entity.posZ);     // posX, posY and posZ are the positions of the entity exist in Entity (where those fields are assigned to NBT memory)
+        return new BlockPos(this.entity.posX, this.entity.posY, this.entity.posZ);  // posX, posY and posZ are the positions of the entity (exists in Entity, where those fields are assigned to NBT memory)
         // Adding the entity height (+ (double)this.entity.height) to posY seems to make the position of the entity at its head block rather than its feet block
     }
 
