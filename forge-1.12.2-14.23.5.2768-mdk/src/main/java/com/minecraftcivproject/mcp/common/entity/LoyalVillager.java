@@ -2,6 +2,7 @@ package com.minecraftcivproject.mcp.common.entity;
 
 
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
+import com.minecraftcivproject.mcp.common.queueable.Order;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -23,25 +24,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 
 public class LoyalVillager extends EntityVillager {
 
+    private static Logger logger = Logger.getLogger("LoyalVillager");
     private final String name;
-    private final InventoryBasic inventory;
+    private final LVInventory inventory;
     private boolean areAdditionalTasksSet;
-    /*
-    blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
-    builder class LVs -> no/low atk, high hp)
-     */
+    //blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
+    //builder class LVs -> no/low atk, high hp)
     private Block blockOfInterest;
     private IBlockState state;
-    private static Logger logger = Logger.getLogger("LoyalVillager");
     // this.world.getClosestPlayerToEntity - this could be useful in the future
+    public boolean buildStuff;
 
 
     /**
@@ -51,10 +49,11 @@ public class LoyalVillager extends EntityVillager {
         super(worldIn);
         this.name = UUID.randomUUID().toString();  // Unique ID of a loyal villager
         this.setProfession(5);  // Sets profession to nitwit lol
-        this.inventory = new InventoryBasic(this.name, true, 64);
+        this.inventory = new LVInventory(this.name, true, 64);
         logger.info("LoyalVillager constructor called, inventory is set to " + this.inventory);
         //this.setSize(1.8F, 6F);  // This doesn't seem to make a difference for in-game model atm...
         this.blockOfInterest = Blocks.COBBLESTONE;
+        this.buildStuff = true;
 
         logger.info("LoyalVillager constructor called, this entity is " + this);
     }
@@ -63,18 +62,23 @@ public class LoyalVillager extends EntityVillager {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        this.findItems(this.blockOfInterest.getItemDropped(state, new Random(), 0));  // This is a very hardcodey call
+        if (!this.isDead) {
+            this.findItems(this.blockOfInterest.getItemDropped(state, new Random(), 0));  // This is a very hardcodey call
+        }
     }
 
 
     @Override
-    protected void initEntityAI() {
-        logger.info("initEntityAI has been called");
+    protected void initEntityAI() {  // THIS IS CALLED BEFORE THE CONSTRUCTOR WTF!!!!
+        logger.info("initEntityAI called");
+        Order order = createOrder();
+        logger.info("Order created: " + order); // This doesn't seem to be called before the EntityAIBuild constructor...... leads to a null pointer
+
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
         this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(5, new EntityAIBuild(world, this, this.blockOfInterest,false));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
+        this.tasks.addTask(5, new EntityAIBuild(world, this, order, true));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));   // Don't know if this works because of EntityAIAttackMelee
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
@@ -101,6 +105,15 @@ public class LoyalVillager extends EntityVillager {
 
     public void setBuildTask() {
         // this.tasks.addTask(2, new EntityAIBuild(world, this, Blocks.COBBLESTONE));
+    }
+
+
+    // This is a temporary class
+    public Order createOrder() {
+        logger.info("createOrder called");
+        Map<Block, Integer> map = new HashMap<>();
+        map.put(Blocks.COBBLESTONE, 2);
+        return new Order(map);
     }
 
 
@@ -155,19 +168,19 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public InventoryBasic getInventory() {
+    public LVInventory getInventory() {
         return this.inventory;
     }
 
 
-    public boolean findItems(Item itemIn) {  // Might want to change this to a different return type later
+    public boolean findItems(Item itemOfInterest) {  // Might want to change this to a different return type later
         int itemCnt = 0;
         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(1.0D, 0.5D, 1.0D);  // Creates an axis-aligned bounding box around the entity
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
 
         for(int i = 0; i < list.size(); ++i) {
             Entity entity = list.get(i);
-            if (entity instanceof EntityItem && isWillingToPickupItem(itemIn)) {
+            if (entity instanceof EntityItem && isWillingToPickupItem(itemOfInterest, (EntityItem)entity)) {
 //                this.entity.onCollideWithPlayer(entity);  // This cannot be done b/c the entity is not an EntityPlayer... what does this even do in the EntityPlayer class...
                 EntityItem entityItem = (EntityItem)entity;  // Must cast entity into an EntityItem even if it's already an EntityItem to be able to call EntityItem methods on it!
                 ItemStack itemStack = entityItem.getItem();
@@ -175,7 +188,7 @@ public class LoyalVillager extends EntityVillager {
 
                 this.inventory.addItem(itemStack);
                 entityItem.setDead();  // Destroys the item block on the ground
-                logger.info(itemStack + " added to " + this.getName() + "'s inventory! Field count = " + this.inventory.getFieldCount());
+                logger.info(itemStack + " added to " + this.getName() + "'s inventory!");
 
                 ++itemCnt;
             }
@@ -189,8 +202,9 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public boolean isWillingToPickupItem(Item item) {
-        return this.blockOfInterest.getItemDropped(state, new Random(), 0) == item;  // For now, the LV is only willing to pickup blocks of interest
+    public boolean isWillingToPickupItem(Item itemOfInterest, EntityItem itemOnGround) {
+        Item item = itemOnGround.getItem().getItem();
+        return itemOfInterest == item;
     }
 
 

@@ -34,7 +34,7 @@ public class SearchArea {
         int endX = startingLocation.getX() + xLength;
         int endY = startingLocation.getY() + yLength;
         int endZ = startingLocation.getZ() + zLength;
-//        logger.info("Search area is x: " + srtX + "-" + endX + " y: " + srtY + "-" + endY + " z: " + srtZ + "-" + endZ);
+        logger.info("Search area is x: " + srtX + "-" + endX + " y: " + srtY + "-" + endY + " z: " + srtZ + "-" + endZ);
 
         for (int x = srtX; x <= endX; x++) {
             for (int y = srtY; y <= endY; y++) {
