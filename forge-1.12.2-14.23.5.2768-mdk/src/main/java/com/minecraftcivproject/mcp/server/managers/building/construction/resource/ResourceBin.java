@@ -30,7 +30,7 @@ public class ResourceBin extends Observable {
 
 
     public boolean isFull(){
-        for(String resource : resourceRequirements.getRequirements()){
+        for(String resource : resourceRequirements.getAllResourceNames()){
             int current = getInventory().getCount(Item.getByNameOrId(resource));
             int required = resourceRequirements.getRequirement(resource);
 

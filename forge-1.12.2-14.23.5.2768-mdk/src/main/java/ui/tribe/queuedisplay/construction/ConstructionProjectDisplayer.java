@@ -23,7 +23,7 @@ public class ConstructionProjectDisplayer extends QueueItemDisplayer<Constructio
         groupLayout.setAutoCreateContainerGaps(true);
 
         JLabel jLabel = new JLabel(constructionProject.getName());
-        List<String> resourceRequirements = constructionProject.getResourceRequirements().getRequirements();
+        List<String> resourceRequirements = constructionProject.getResourceRequirements().getAllResourceNames();
 
         GroupLayout.ParallelGroup resourceRequirementsGroupVertical = groupLayout.createParallelGroup();
         resourceRequirementsGroupVertical.addComponent(jLabel);

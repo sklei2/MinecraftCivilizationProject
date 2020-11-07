@@ -7,14 +7,11 @@ import com.minecraftcivproject.mcp.common.initialization.blocks.*;
 import com.minecraftcivproject.mcp.server.managers.building.construction.resource.ResourceBinBlock;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,8 +46,7 @@ public class BlockRegisterer {
                 new ItemBlock(LEXICON),
                 new ItemBlock(CRYSTAL_ORE),
                 new ItemBlock(STURDY_CONCRETE),
-                new ItemBlock(STRAIGHT_WALL_BLOCK_1),
-                new ItemBlock(RESOURCE_BIN_BLOCK)
+                new ItemBlock(RESOURCE_BIN_BLOCK),
                 new ItemBlock(STRAIGHT_WALL_BLOCK_1),
                 new ItemBlock(MUDROCK_ORE),
                 new ItemBlock(REINFORCED_COBBLESTONE)

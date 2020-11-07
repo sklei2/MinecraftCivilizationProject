@@ -5,7 +5,7 @@
     {"name": "air", "character": " "}
   ],
   "resources":[
-    {"resource": "minecraftcivproject:sturdy_concrete", "required": 538}
+    {"resource": "minecraftcivproject:sturdy_concrete", "numRequired": 538}
   ],
   "layers": [
     [
