@@ -21,11 +21,15 @@ public class Order {
     public Order(Map<Block, Integer> map) {
         this.blockMap = map;
         this.itemMap = this.convertToItemMap(map);
+        this.bank = new HashMap<>();
+        this.initializeBank();
     }
 
     public Order(Map<Item, Integer> map, boolean isItemOrder) {
         this.itemMap = map;
         this.isItemOrder = isItemOrder;
+        this.bank = new HashMap<>();
+        this.initializeBank();
     }
 
 
@@ -76,8 +80,8 @@ public class Order {
         return false;
     }
 
-    public void add(Item key, Integer quantity) {
-        this.bank.put(key, quantity);  // Will overwrite the quantity of the same input key, thus "adding" the resource to the internal bank of the order
+    public void add(Item item, Integer quantity) {
+        this.bank.put(item, quantity);  // Will overwrite the quantity of the same input key, thus "adding" the resource to the internal bank of the order
     }
 
     private Map<Item, Integer> convertToItemMap(Map<Block, Integer> map) {
@@ -89,6 +93,14 @@ public class Order {
             itemMap.put(item, itemQty);
         }
         return itemMap;
+    }
+
+    private void initializeBank() {
+        int size = this.itemMap.size();
+        Set<Item> itemList = this.getItemList();
+        for (int i = 0; i < size; i++) {
+            this.bank.put(itemList.iterator().next(), 0);
+        }
     }
 
 }

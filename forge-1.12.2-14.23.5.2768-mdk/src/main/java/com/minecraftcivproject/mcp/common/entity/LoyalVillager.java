@@ -179,10 +179,11 @@ public class LoyalVillager extends EntityVillager {
         List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
 
         for(int i = 0; i < list.size(); ++i) {
-            Entity entity = list.get(i);
-            if (entity instanceof EntityItem && isWillingToPickupItem(itemOfInterest, (EntityItem)entity)) {
+            Entity entityOnGround = list.get(i);
+            if (entityOnGround instanceof EntityItem && isWillingToPickupItem(itemOfInterest, (EntityItem)entityOnGround)) {
+                logger.info(entityOnGround + " is on the ground");
 //                this.entity.onCollideWithPlayer(entity);  // This cannot be done b/c the entity is not an EntityPlayer... what does this even do in the EntityPlayer class...
-                EntityItem entityItem = (EntityItem)entity;  // Must cast entity into an EntityItem even if it's already an EntityItem to be able to call EntityItem methods on it!
+                EntityItem entityItem = (EntityItem)entityOnGround;  // Must cast entity into an EntityItem even if it's already an EntityItem to be able to call EntityItem methods on it!
                 ItemStack itemStack = entityItem.getItem();
 //                Item item = itemStack.getItem();
 

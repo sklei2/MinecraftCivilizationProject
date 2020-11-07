@@ -130,11 +130,14 @@ public class EntityAIBuild extends EntityAIBase {
 //        logger.info("continueTask is " + continueTask);
 
         if (!this.order.isFilled()) {
-            for (int i = 0; i <= order.getBlockList().size(); i++) {
+            logger.info("The order, " + this.order + ", is not filled yet");
+            for (int i = 0; i < order.getBlockList().size(); i++) {
                 if (checkList.get(i)) {
                     currentBlock = blockItr.next();  // Move on to the next block in the list
+                    logger.info("The current block has changed. It is now " + currentBlock);
                 } else {
                     // This entry in checkList is false, meaning this resource order has been filled
+                    logger.info("The current block's resource order has not been filled yet.");
                     return true;
                 }
             }
@@ -223,9 +226,9 @@ public class EntityAIBuild extends EntityAIBase {
 
                         logger.info("The entity's inventory is " + this.inventory);
                         ItemStack newItemStack = this.inventory.addItem(itemStack);  // Adds item to inventory
-                        logger.info("Item in slot 1 is " + this.inventory.getStackInSlot(0) + ". Max size of inventory is " + this.inventory.getSizeInventory());
-                        this.order.add(item.getItemFromBlock(currentBlock), itemStack.getCount());  // HOW DO YOU TRANSLATE WHAT ITEM CAME FROM WHAT BLOCK???
                         entityItem.setDead();  // Destroys the item block on the ground
+                        logger.info("Item in slot 1 is " + this.inventory.getStackInSlot(0) + ". Max size of inventory is " + this.inventory.getSizeInventory());
+                        this.order.add(item, itemStack.getCount());  // HOW DO YOU TRANSLATE WHAT ITEM CAME FROM WHAT BLOCK??? -> through a giant json...
                     }
                 }
 
