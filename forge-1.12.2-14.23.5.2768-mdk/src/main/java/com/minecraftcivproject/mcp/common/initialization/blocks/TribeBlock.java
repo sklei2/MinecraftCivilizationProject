@@ -1,6 +1,8 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
+import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
+import com.minecraftcivproject.mcp.server.managers.tribe.Tribe;
 import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -9,6 +11,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import registry.TownBlueprintRegistry;
 import registry.TribeRegistry;
+import ui.tribe.general.TribeQueuesUi;
+import ui.tribe.general.TribeUi;
+import ui.tribe.queuedisplay.QueueListener;
 
 import java.util.logging.Logger;
 
@@ -39,7 +44,17 @@ public class TribeBlock extends BlockBase{
 
 
         logger.info("oh hey, I'm a tribe block!");
-        TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("town_center_lvl1");
-        TribeRegistry.addTribe("Sean", new TribeManager("Sean", townBlueprint, pos));
+        TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("test_town");
+
+        TribeQueuesUi tribeQueuesUi = new TribeQueuesUi();
+        QueueListener queueListener = new QueueListener(tribeQueuesUi);
+
+        QueueManager queueManager = new QueueManager();
+        queueManager.addObserver(queueListener);
+
+        TribeManager tribeManager = new TribeManager(townBlueprint, worldIn, pos, queueManager);
+        Tribe tribe = new Tribe("Sean", tribeManager, new TribeUi("Sean", tribeQueuesUi), worldIn);
+
+        TribeRegistry.addTribe(tribe.getTribeName(), tribe);
     }
 }

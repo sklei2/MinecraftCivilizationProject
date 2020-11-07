@@ -1,9 +1,9 @@
 package com.minecraftcivproject.mcp.server.managers.building.blueprints.towns;
 
-import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.Blueprint;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class TownBuildingBlueprint {
     private Blueprint buildingBlueprint;
@@ -32,9 +32,13 @@ public class TownBuildingBlueprint {
         return buildingBlueprint.getResourceRequirements();
     }
 
-    public void apply(BlockPos initialPosition){
+    public void apply(World world, BlockPos initialPosition){
         BlockPos buildingPosition = initialPosition.add(startRow, 0, startCol);
 
-        this.buildingBlueprint.apply(MinecraftCivProject.getWorld(), buildingPosition);
+        this.buildingBlueprint.apply(world, buildingPosition);
+    }
+
+    public String getName(){
+        return this.buildingBlueprint.getName();
     }
 }

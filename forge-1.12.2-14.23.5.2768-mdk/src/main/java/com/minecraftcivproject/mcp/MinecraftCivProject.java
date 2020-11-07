@@ -1,8 +1,6 @@
 package com.minecraftcivproject.mcp;
 
 import com.minecraftcivproject.mcp.proxy.CommonProxy;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -46,10 +44,6 @@ public class MinecraftCivProject {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         PROXY.postInit(event);
-    }
-
-    public static WorldServer getWorld(){
-        return FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
     }
 }
 

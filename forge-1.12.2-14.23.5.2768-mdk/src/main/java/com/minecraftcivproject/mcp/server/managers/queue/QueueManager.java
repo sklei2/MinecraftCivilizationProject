@@ -2,33 +2,39 @@ package com.minecraftcivproject.mcp.server.managers.queue;
 
 import java.util.*;
 
-public class QueueManager {
+public class QueueManager extends Observable implements Observer{
 
-    Map<TribeQueue, Queue<Object>> queues;
-    Map<Queue<Object>, Class> queueTypes;
+    private Map<TribeQueueEnum, TribeQueue<? extends Queueable>> queues;
 
     public QueueManager(){
         queues = new HashMap<>();
-        queueTypes = new HashMap<>();
     }
 
-    public void addQueue(TribeQueue queueName, Class queueType){
-        Queue<Object> newQueue = new LinkedList<>();
-        queues.put(queueName, newQueue);
-        queueTypes.put(newQueue, queueType);
+    public void addQueue(TribeQueue<? extends Queueable> tribeQueue){
+        System.out.println("added queue");
+
+        queues.put(tribeQueue.getTribeQueueEnum(), tribeQueue);
+
+        setChanged();
+        notifyObservers();
     }
 
-    public void queue(TribeQueue queueName, Object o){
-        queues.get(queueName).add(o);
+    public TribeQueue<?> getQueue(TribeQueueEnum tribeQueueEnum){
+        return queues.get(tribeQueueEnum);
     }
 
-    public <T> T dequeue(TribeQueue queueName){
-        Object o = queues.get(queueName);
-
-        //wow is this fun
-        Class<T> type = queueTypes.get(queues);
-
-        return type.cast(o);
+    public Collection<TribeQueue<? extends Queueable>> getAllQueues(){
+        return queues.values();
     }
 
+    public Collection<TribeQueueEnum> getAllTypes(){
+        return queues.keySet();
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        System.out.println("queue manager sees update");
+        setChanged();
+        notifyObservers();
+    }
 }

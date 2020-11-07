@@ -8,7 +8,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import ui.tribe.TribesUi;
+import ui.tribe.UiFrame;
 
 public class ClientProxy extends CommonProxy {
 
@@ -29,7 +29,7 @@ public class ClientProxy extends CommonProxy {
         new BlueprintRegisterer().register();
         new TownBlueprintRegisterer().register();
 
-        new TribesUi().setVisible(true);
+        new UiFrame().setVisible(true);
     }
 
     public void registerItemRenderer(Item item, int meta, String id) {

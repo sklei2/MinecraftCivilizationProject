@@ -1,33 +1,37 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction.resource;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
-import net.minecraft.block.BlockChest;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import registry.ResourceBinInventoryRegistry;
 
+import java.util.Observable;
 
-public class ResourceBin extends BlockChest {
+public class ResourceBin extends Observable {
 
     private ResourceRequirements resourceRequirements;
-    private ResourceBinTileEntity tileEntityChest;
+    private ResourceBinBlock resourceBinBlock;
     private Runnable fullCallback;
+    private final String id;
 
-    public ResourceBin(ResourceRequirements resourceRequirements, Runnable fullCallback){
-        super(Type.BASIC);
-
+    public ResourceBin(ResourceRequirements resourceRequirements, Runnable runnable){
         this.resourceRequirements = resourceRequirements;
+        this.resourceBinBlock = new ResourceBinBlock();
+        this.fullCallback = runnable;
 
-        this.fullCallback = fullCallback;
+        // because this can be created both by placement and automatedly
+        this.id = this.resourceBinBlock.getId();
+
+        ResourceBinInventoryRegistry.subscribe(id, this::onUpdate);
     }
 
     public ResourceRequirements getResourceRequirements() {
         return resourceRequirements;
     }
 
+
     public boolean isFull(){
-        for(String resource : resourceRequirements.getAllResourceNames()){
-            int current = get(resource);
+        for(String resource : resourceRequirements.getRequirements()){
+            int current = getInventory().getCount(Item.getByNameOrId(resource));
             int required = resourceRequirements.getRequirement(resource);
 
             if(current < required){
@@ -38,35 +42,41 @@ public class ResourceBin extends BlockChest {
         return true;
     }
 
-    public void onUpdate(){
-        if(isFull()){
-            fullCallback.run();
-        }
+    public int add(Item i, int count){
+        return getInventory().add(i, count);
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        this.tileEntityChest = new ResourceBinTileEntity(this::onUpdate);
-        return this.tileEntityChest;
+    public int add(String name, int count){
+        return add(Item.getByNameOrId(name), count);
     }
 
-    public void add(Item i, int count){
-        this.tileEntityChest.add(i, count);
-    }
-
-    public void add(String name, int count){
-        add(Item.getByNameOrId(name), count);
-    }
-
-    public void remove(Item i, int count){
-        this.tileEntityChest.remove(i, count);
+    public int remove(Item i, int count){
+        return getInventory().remove(i, count);
     }
 
     public int get(Item i){
-        return this.tileEntityChest.getCount(i);
+        return getInventory().getCount(i);
     }
 
     public int get(String name){
         return get(Item.getByNameOrId(name));
+    }
+
+    public ResourceBinBlock getResourceBinBlock(){
+        return resourceBinBlock;
+    }
+
+    public void onUpdate(){
+        if(isFull()){
+            this.fullCallback.run();
+        }
+
+        System.out.println("Resource bin " + id + " has been updated " + countObservers());
+        setChanged();
+        notifyObservers();
+    }
+
+    private ResourceBinInventory getInventory(){
+        return ResourceBinInventoryRegistry.get(id);
     }
 }
