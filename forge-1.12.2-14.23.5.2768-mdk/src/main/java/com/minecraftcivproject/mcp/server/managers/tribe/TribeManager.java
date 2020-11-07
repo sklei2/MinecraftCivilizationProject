@@ -5,7 +5,6 @@ import com.minecraftcivproject.mcp.server.managers.goal.GoalManager;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ui.tribe.queuedisplay.QueueListener;
 
 public class TribeManager {
 
@@ -14,9 +13,8 @@ public class TribeManager {
     private final TownBlueprint townBlueprint;
     private final BlockPos corner;
 
-    public TribeManager(TownBlueprint townBlueprint, World world, BlockPos corner, QueueListener queueListener){
-        this.queueManager = new QueueManager();
-        this.queueManager.addObserver(queueListener);
+    public TribeManager(TownBlueprint townBlueprint, World world, BlockPos corner, QueueManager queueManager){
+        this.queueManager = queueManager;
         this.goalManager = new GoalManager(this.queueManager, townBlueprint, world, corner);
         this.townBlueprint = townBlueprint;
         this.corner = corner;

@@ -2,13 +2,13 @@
 {
   "modid": "minecraftcivproject",
   "name": "Minecraft Civ Project",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
+  "description": "SovereignCraft",
+  "version": "1.0.0",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "www.ohheywhatsup.com",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["RJD, Sean, MP/G"],
+  "credits": "The Forge and FML guys, Choonster, Technovision, bad Sean, a short big fore-headed son, and me!",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

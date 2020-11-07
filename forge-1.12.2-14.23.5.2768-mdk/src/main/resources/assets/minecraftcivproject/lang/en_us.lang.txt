@@ -1,7 +1,0 @@
-# Items
-item.minecraftcivproject:cement.name = Cement
-item.minecraftcivproject:crystal.name = Crystal
-
-# Blocks
-tile.minecraftcivproject:crystal_ore.name = Crystal Ore
-tile.minecraftcivproject:sterdy_concrete.name = Sturdy Concrete

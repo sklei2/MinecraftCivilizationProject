@@ -1,13 +1,11 @@
 package ui.tribe.queuedisplay;
 
-import com.minecraftcivproject.mcp.server.managers.building.construction.ConstructionProject;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
-import com.minecraftcivproject.mcp.server.managers.queue.TribeQueue;
+import com.minecraftcivproject.mcp.server.managers.queue.TribeQueueEnum;
 import ui.tribe.general.TribeQueuesUi;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Queue;
 
 public class QueueListener implements Observer {
 
@@ -28,23 +26,10 @@ public class QueueListener implements Observer {
             return;
         }
 
-        updateQueue(queueManager, (TribeQueue)(o));
+        tribeQueuesUi.updateQueue((TribeQueueEnum)(o));
     }
 
     private void updateQueueListings(QueueManager queueManager){
-        tribeQueuesUi.updateQueueListing(queueManager.getQueueTypes());
-    }
-
-    private void updateQueue(QueueManager queueManager, TribeQueue tribeQueue){
-        switch (tribeQueue){
-            case CONSTRUCTION:
-                Queue<ConstructionProject> constructionProjectQueue =
-                        queueManager.getQueue(ConstructionProject.class);
-
-                QueueDisplay<ConstructionProject> queueDisplay = new ConstructionQueueDisplay(constructionProjectQueue);
-
-                tribeQueuesUi.updateQueue(tribeQueue, queueDisplay);
-        }
-
+        tribeQueuesUi.updateQueueListing(queueManager);
     }
 }

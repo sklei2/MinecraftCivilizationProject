@@ -8,13 +8,18 @@ public class ResourceRequirement {
     private String resource;
 
     @Expose
-    private int required;
+    private int numRequired;
 
-    public String getResource() {
-        return resource;
+    public ResourceRequirement(String resource, int numRequired) {
+        this.resource = resource;
+        this.numRequired = numRequired;
     }
 
-    public int getRequired() {
-        return required;
+    public String getResource() {
+        return this.resource;
+    }
+
+    public int getNumRequired() {
+        return this.numRequired;
     }
 }

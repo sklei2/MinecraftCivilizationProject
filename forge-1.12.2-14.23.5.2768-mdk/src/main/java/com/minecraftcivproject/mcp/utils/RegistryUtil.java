@@ -36,13 +36,13 @@ public class RegistryUtil {
      *
      * @param block     The block
      * @param blockName The block's name
-     * @param <BLOCK>   The block type
+     * @param <BLOCK>   The block type (generic type)
      * @return The block
      */
     public static <BLOCK extends Block> BLOCK setBlockName(final BLOCK block, final String blockName) {
         block.setRegistryName(MinecraftCivProject.MODID, blockName);
         final ResourceLocation registryName = Preconditions.checkNotNull(block.getRegistryName());
-        //block.setTranslationKey(registryName.toString());
+        //block.setTranslationKey(registryName.toString());  // What is this method and where did it come from????
         return block;
     }
 
@@ -51,11 +51,13 @@ public class RegistryUtil {
      *
      * @param item     The item
      * @param itemName The item's name
+     * @param <ITEM>   The item type (generic type)
+     * @return The item
      */
     public static <ITEM extends Item> ITEM setItemName(final ITEM item, final String itemName) {
         item.setRegistryName(MinecraftCivProject.MODID, itemName);
         final ResourceLocation registryName = Preconditions.checkNotNull(item.getRegistryName());
-        //item.setTranslationKey(registryName.toString());
+        //item.setTranslationKey(registryName.toString());  // What is this method and where did it come from????
         return item;
     }
 

@@ -1,6 +1,7 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
-import com.minecraftcivproject.mcp.common.entities.LoyalVillager;
+import com.minecraftcivproject.mcp.MinecraftCivProject;
+import com.minecraftcivproject.mcp.common.entity.LoyalVillager;
 import com.minecraftcivproject.mcp.utils.SpawningUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

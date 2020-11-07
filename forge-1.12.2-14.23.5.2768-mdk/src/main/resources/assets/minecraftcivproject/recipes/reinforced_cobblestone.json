@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern":
+          [
+            "BBB",
+            "BCB",
+            "BBB"
+          ],
+
+  "key":
+  {
+    "B":
+    {
+      "item": "minecraft:iron_bars"
+    },
+
+    "C":
+    {
+      "item": "minecraft:cobblestone"
+    }
+  },
+
+  "result":
+  {
+    "item": "minecraftcivproject:reinforced_cobblestone",
+    "count": 1
+  }
+}

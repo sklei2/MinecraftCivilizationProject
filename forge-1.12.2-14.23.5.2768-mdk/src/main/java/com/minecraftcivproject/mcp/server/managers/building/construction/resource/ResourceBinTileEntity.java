@@ -7,22 +7,22 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
-
-import java.util.UUID;
+import registry.ResourceBinInventoryRegistry;
 
 
 public class ResourceBinTileEntity extends TileEntityChest {
 
     private ResourceBinInventory resourceBinInventory;
-    private UUID guid;
+    private String id;
 
     public ResourceBinTileEntity(){
-        
+
     }
 
-    public ResourceBinTileEntity(UUID guid){
-        this.guid = guid;
-        this.resourceBinInventory = new ResourceBinInventory(this.guid);
+    public ResourceBinTileEntity(String id, ResourceBinInventory resourceBinInventory){
+        this.id = id;
+        this.resourceBinInventory = resourceBinInventory;
+        ResourceBinInventoryRegistry.add(id, this.resourceBinInventory);
     }
 
     @Override
@@ -36,14 +36,26 @@ public class ResourceBinTileEntity extends TileEntityChest {
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.guid = UUID.fromString(compound.getString("TileEntityGuid"));
+        this.id = compound.getString("TileEntityGuid");
+
+        System.out.println("Reading " + this.id);
+
+        this.resourceBinInventory = ResourceBinInventoryRegistry.get(this.id);
+
+        System.out.println(this.resourceBinInventory);
+
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setString("TileEntityGuid", this.guid.toString());
+        compound.setString("TileEntityGuid", this.id);
+
+        ResourceBinInventoryRegistry.add(id, this.resourceBinInventory);
+
+        System.out.println("Writing " + id);
+
         return compound;
     }
 
@@ -58,9 +70,5 @@ public class ResourceBinTileEntity extends TileEntityChest {
 
     public int getCount(Item item){
         return this.resourceBinInventory.getCount(item);
-    }
-
-    public UUID getGuid(){
-        return guid;
     }
 }

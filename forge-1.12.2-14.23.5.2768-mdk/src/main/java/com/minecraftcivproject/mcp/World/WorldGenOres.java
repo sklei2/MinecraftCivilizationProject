@@ -21,8 +21,9 @@ public class WorldGenOres implements IWorldGenerator {
     }
 
     // Get called above (second)
-    private void generateOverworld(Random random, int chuckX, int chuckZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider){
-        generateOre(BlockRegisterer.RegistrationHandler.CRYSTAL_ORE.getDefaultState(), world, random, chuckX * 16, chuckZ * 16, 0, 12, random.nextInt(2+1)+1, 1);  // What would happen if the chance was less than 1? Every entry in the ChunkGenertorSettings class is an integer (this would also require changing the method input of chances to a float type)
+    private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider){
+        generateOre(BlockRegisterer.RegistrationHandler.CRYSTAL_ORE.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 0, 12, random.nextInt(2+1)+1, 1);  // What would happen if the chance was less than 1? Every entry in the ChunkGenertorSettings class is an integer (this would also require changing the method input of chances to a float type)
+        generateOre(BlockRegisterer.RegistrationHandler.MUDROCK_ORE.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, 30, 60, random.nextInt(8-2+1)+2, 8);
 
         /**  Template
         *  generateOre(BlockRegisterer.RegistrationHandler.SAMPLE_ORE.getDefaultState(), world, random, 16x16 chunk X, 16x16 chunk Z,

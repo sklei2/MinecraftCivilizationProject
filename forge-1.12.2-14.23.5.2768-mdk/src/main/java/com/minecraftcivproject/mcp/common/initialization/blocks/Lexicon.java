@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
+import com.minecraftcivproject.mcp.MinecraftCivProject;
 import net.minecraft.block.BlockWorkbench;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -38,20 +39,20 @@ public class Lexicon extends BlockBase {
     /**
      * Called when the block is right clicked by a player.
      */
-    //@Override
-   // public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    //{
-        //if (worldIn.isRemote)
-        //{
-            //return true;
-        //}
-        //else
-        //{
-            //playerIn.displayGui(new BlockWorkbench.ExtendedInterfaceCraftingTable(worldIn, pos));
-            //playerIn.addStat(StatList.CRAFTING_TABLE_INTERACTION);
-            //return true;
-        //}
-    //}
+
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        if (worldIn.isRemote)
+        {
+            return true;
+        }
+        else
+        {
+            //playerIn.openGui();
+            playerIn.addStat(StatList.CRAFTING_TABLE_INTERACTION);
+            return true;
+        }
+    }
 
     //public static class ExtendedInterfaceCraftingTable implements IInteractionObject
     //{

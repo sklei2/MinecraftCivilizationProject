@@ -6,8 +6,8 @@
     {"name": "air", "character": " "}
   ],
   "resources":[
-    {"resource": "cobblestone", "required": 25},
-    {"resource": "log", "required": 79}
+    {"resource": "cobblestone", "numRequired": 25},
+    {"resource": "log", "numRequired": 79}
   ],
   "layers": [
     [

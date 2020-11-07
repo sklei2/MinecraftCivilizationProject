@@ -1,47 +1,51 @@
 package ui.tribe.general;
 
+import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 import com.minecraftcivproject.mcp.server.managers.queue.TribeQueue;
-import ui.tribe.queuedisplay.QueueDisplay;
+import com.minecraftcivproject.mcp.server.managers.queue.TribeQueueEnum;
 
 import javax.swing.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TribeQueuesUi extends DisplayWithList {
 
-    private Map<String, TribeQueuePanel> tribeQueueMap = new HashMap<>();
+    private Map<String, TribeQueueItemsUi> tribeQueueMap = new HashMap<>();
 
     public TribeQueuesUi(){
         super("Queues");
     }
 
-    public void updateQueueListing(List<TribeQueue> queues){
-        for(TribeQueue tribeQueue : queues){
-            TribeQueuePanel tribeQueuePanel = new TribeQueuePanel();
+    public void updateQueueListing(QueueManager queueManager){
+        for(TribeQueue<?> tribeQueue: queueManager.getAllQueues()){
+            TribeQueueItemsUi<?> tribeQueueItemsUi = new TribeQueueItemsUi<>(tribeQueue);
 
-            tribeQueuePanel.setVisible(true);
-            tribeQueuePanel.add(new JLabel(tribeQueue.name() + " Queue"));
+            tribeQueueItemsUi.setVisible(true);
+            tribeQueueItemsUi.add(new JLabel(tribeQueue.getTribeQueueEnum().name() + " Queue"));
 
-            tribeQueueMap.put(tribeQueue.name(), tribeQueuePanel);
+            tribeQueueMap.put(tribeQueue.getTribeQueueEnum().name(), tribeQueueItemsUi);
         }
 
-        super.updateList(queues.stream().map(Enum::name).collect(Collectors.toList()));
+        super.updateList(queueManager.getAllTypes().stream().map(Enum::name).collect(Collectors.toList()));
 
-        revalidate();
+        System.out.println("Revalidate Queues:updateQueueListing");
+        repaint();
     }
 
-    public void updateQueue(TribeQueue queue, QueueDisplay<?> queueDisplay) {
-        tribeQueueMap.get(queue.name()).display(queueDisplay);
+    public void updateQueue(TribeQueueEnum tribeQueueEnum){
+        tribeQueueMap.get(tribeQueueEnum.name()).repaint();
 
-        revalidate();
+        System.out.println("Revalidate Queues:updateQueue");
     }
 
     @Override
     protected void selectContent(int index, String selectedValue) {
+        tribeQueueMap.get(selectedValue).updateList();
         super.updateContent(tribeQueueMap.get(selectedValue));
+        super.selectContent(index, selectedValue);
 
+        System.out.println("Revalidate Queues:selectContent");
         revalidate();
     }
 }

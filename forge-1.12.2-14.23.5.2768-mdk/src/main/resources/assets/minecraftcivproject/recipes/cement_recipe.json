@@ -3,9 +3,9 @@
 
   "pattern":
           [
-            "GSG",
+            "GMG",
             "SWS",
-            "GSG"
+            "GMG"
           ],
 
   "key":
@@ -23,6 +23,11 @@
     "W":
     {
       "item": "minecraft:water_bucket"
+    },
+
+    "M":
+    {
+      "item": "minecraftcivproject:mudrock_ore"
     }
   },
 

@@ -1,19 +1,20 @@
-package ui.tribe.queuedisplay;
+package ui.tribe.queuedisplay.construction;
 
 import com.minecraftcivproject.mcp.server.managers.building.construction.ConstructionProject;
+import ui.tribe.queuedisplay.QueueItemDisplayer;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Queue;
 
-public class ConstructionQueueDisplay extends QueueDisplay<ConstructionProject> {
+public class ConstructionProjectDisplayer extends QueueItemDisplayer<ConstructionProject> {
 
-    public ConstructionQueueDisplay(Queue<ConstructionProject> queue) {
-        super(queue);
+    @Override
+    public String getName(ConstructionProject constructionProject) {
+        return constructionProject.getName();
     }
 
     @Override
-    public JPanel displayElement(ConstructionProject constructionProject) {
+    public JPanel getDisplay(ConstructionProject constructionProject) {
         JPanel panel = new JPanel();
         GroupLayout groupLayout = new GroupLayout(panel);
         panel.setLayout(groupLayout);
@@ -22,7 +23,7 @@ public class ConstructionQueueDisplay extends QueueDisplay<ConstructionProject> 
         groupLayout.setAutoCreateContainerGaps(true);
 
         JLabel jLabel = new JLabel(constructionProject.getName());
-        List<String> resourceRequirements = constructionProject.getResourceRequirements().getRequirements();
+        List<String> resourceRequirements = constructionProject.getResourceRequirements().getAllResourceNames();
 
         GroupLayout.ParallelGroup resourceRequirementsGroupVertical = groupLayout.createParallelGroup();
         resourceRequirementsGroupVertical.addComponent(jLabel);
@@ -33,7 +34,9 @@ public class ConstructionQueueDisplay extends QueueDisplay<ConstructionProject> 
 
         for(String resourceRequirement : resourceRequirements){
             JLabel resourceLabel = new JLabel(resourceRequirement);
-            JLabel requirementLabel = new JLabel(constructionProject.getResourceRequirements().getRequirement(resourceRequirement) + "");
+            JLabel requirementLabel = new JLabel(
+                    constructionProject.getResourceCount(resourceRequirement) + "/"
+                            + constructionProject.getResourceRequirements().getRequirement(resourceRequirement) + "");
 
             GroupLayout.SequentialGroup resourceRequirementGroupVertical = groupLayout.createSequentialGroup();
             resourceRequirementGroupVertical.addComponent(resourceLabel);
@@ -56,10 +59,5 @@ public class ConstructionQueueDisplay extends QueueDisplay<ConstructionProject> 
         );
 
         return panel;
-    }
-
-    @Override
-    protected String displayElementName(ConstructionProject constructionProject) {
-        return constructionProject.getName();
     }
 }

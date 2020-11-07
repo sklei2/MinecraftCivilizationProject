@@ -15,6 +15,9 @@ public abstract class DisplayWithList extends JPanel {
     private final JPanel listPanel;
     private JPanel content;
 
+    private int index = 0;
+    private String selectedValue = "";
+
     public DisplayWithList(String listName){
         this(listName, new ArrayList<>());
     }
@@ -51,12 +54,13 @@ public abstract class DisplayWithList extends JPanel {
         clearContent();
     }
 
-    protected abstract void selectContent(int index, String selectedValue);
+    protected void selectContent(int index, String selectedValue){
+        this.index = index;
+        this.selectedValue = selectedValue;
+    }
 
     protected void updateList(Collection<String> listValues){
         setList(listValues);
-
-        revalidate();
     }
 
     protected void updateContent(JPanel jPanel){
@@ -65,8 +69,6 @@ public abstract class DisplayWithList extends JPanel {
         content = jPanel;
         add(content, BorderLayout.CENTER);
         content.setVisible(true);
-
-        revalidate();
     }
 
     protected void clearContent(){
@@ -74,11 +76,19 @@ public abstract class DisplayWithList extends JPanel {
         content.setVisible(true);
 
         add(content, BorderLayout.CENTER);
+    }
 
-        revalidate();
+    protected int getIndex(){
+        return this.index;
+    }
+
+    protected String getSelectedValue(){
+        return this.selectedValue;
     }
 
     private void setList(Collection<String> options){
+        listModel.removeAllElements();
+
         for(String option : options){
             listModel.addElement(option);
         }
