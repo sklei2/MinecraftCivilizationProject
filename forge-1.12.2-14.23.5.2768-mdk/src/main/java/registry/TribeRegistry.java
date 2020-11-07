@@ -1,28 +1,36 @@
 package registry;
 
+import com.minecraftcivproject.mcp.server.managers.tribe.Tribe;
 import com.minecraftcivproject.mcp.server.managers.tribe.TribeManager;
-import ui.tribe.TribeUi;
+import net.minecraft.world.World;
+import ui.tribe.general.TribeUi;
 
 import java.util.*;
 
 public class TribeRegistry {
-    private static Map<String, TribeManager> tribes = new HashMap<>();
-    private static Map<String, TribeUi> tribeUis = new HashMap<>();
+    private static Map<String, Tribe> tribes = new HashMap<>();
     private static List<Runnable> observers = new ArrayList<>();
 
-    public static void addTribe(String tribeName, TribeManager tribeManager){
-        tribes.put(tribeName, tribeManager);
-        tribeUis.put(tribeName, new TribeUi(tribeManager));
+    public static void addTribe(String tribeName, Tribe tribe){
+        tribes.put(tribeName, tribe);
 
         notifyObservers();
     }
 
-    public static TribeManager getTribe(String tribeName){
+    public static Tribe getTribe(String tribeName){
         return tribes.get(tribeName);
     }
 
     public static TribeUi getTribeUi(String tribeName){
-        return tribeUis.get(tribeName);
+        return tribes.get(tribeName).getTribeUi();
+    }
+
+    public static TribeManager getTribeManager(String tribeName){
+        return tribes.get(tribeName).getTribeManager();
+    }
+
+    public static World getWorld(String tribeName){
+        return tribes.get(tribeName).getWorld();
     }
 
     public static Collection<String> getAllTribes(){

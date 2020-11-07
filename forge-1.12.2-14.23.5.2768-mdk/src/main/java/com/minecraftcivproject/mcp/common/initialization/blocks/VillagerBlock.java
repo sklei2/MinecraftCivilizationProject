@@ -38,10 +38,9 @@ public class VillagerBlock extends BlockBase{
         logger.info("A Loyal Villager has spawned!");
         //TribeRegistry.addTribe("Sean", new TribeManager());
 
-        World world = MinecraftCivProject.getWorld();
-        LoyalVillager villager = new LoyalVillager(world);
+        LoyalVillager villager = new LoyalVillager(worldIn);
         //EntityVillager villager = new EntityVillager(world);       // For testing purposes only
 
-        SpawningUtils.spawn(villager, pos);
+        SpawningUtils.spawn(villager, worldIn, pos);
     }
 }

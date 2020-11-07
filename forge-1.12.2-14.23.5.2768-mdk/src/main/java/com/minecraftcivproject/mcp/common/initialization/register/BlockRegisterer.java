@@ -4,12 +4,13 @@ package com.minecraftcivproject.mcp.common.initialization.register;
 import com.google.common.base.Preconditions;
 import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.common.initialization.blocks.*;
+import com.minecraftcivproject.mcp.server.managers.building.construction.resource.ResourceBinBlock;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +34,7 @@ public class BlockRegisterer {
         public static final Block CRYSTAL_ORE = new CrystalOre();
         public static final Block STURDY_CONCRETE = new SturdyConcrete();
         public static final Block STRAIGHT_WALL_BLOCK_1 = new StraightWallBlock1();
+        public static final Block RESOURCE_BIN_BLOCK = new ResourceBinBlock();
         public static final Block MUDROCK_ORE = new MudrockOre();
         public static final Block REINFORCED_COBBLESTONE = new ReinforcedCobblestone();
 
@@ -44,6 +46,7 @@ public class BlockRegisterer {
                 new ItemBlock(LEXICON),
                 new ItemBlock(CRYSTAL_ORE),
                 new ItemBlock(STURDY_CONCRETE),
+                new ItemBlock(RESOURCE_BIN_BLOCK),
                 new ItemBlock(STRAIGHT_WALL_BLOCK_1),
                 new ItemBlock(MUDROCK_ORE),
                 new ItemBlock(REINFORCED_COBBLESTONE)
@@ -57,9 +60,10 @@ public class BlockRegisterer {
                 LEXICON,
                 CRYSTAL_ORE,
                 STURDY_CONCRETE,
-                STRAIGHT_WALL_BLOCK_1,
                 MUDROCK_ORE,
-                REINFORCED_COBBLESTONE
+                REINFORCED_COBBLESTONE,
+                STRAIGHT_WALL_BLOCK_1,
+                RESOURCE_BIN_BLOCK
         };
 
 
@@ -67,7 +71,14 @@ public class BlockRegisterer {
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             final IForgeRegistry<Block> registry = event.getRegistry();
 
+            for (Block b : BLOCKS){
+                b.setCreativeTab(CreativeTabs.MISC);
+            }
+
             registry.registerAll(BLOCKS);
+
+            //following what the example mod does
+            TileEntityRegisterer.registerTileEntities();
         }
 
 
@@ -80,9 +91,10 @@ public class BlockRegisterer {
                     new ItemBlock(LEXICON),
                     new ItemBlock(CRYSTAL_ORE),
                     new ItemBlock(STURDY_CONCRETE),
-                    new ItemBlock(STRAIGHT_WALL_BLOCK_1),
                     new ItemBlock(MUDROCK_ORE),
-                    new ItemBlock(REINFORCED_COBBLESTONE)
+                    new ItemBlock(REINFORCED_COBBLESTONE),
+                    new ItemBlock(STRAIGHT_WALL_BLOCK_1),
+                    new ItemBlock(RESOURCE_BIN_BLOCK)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -120,9 +132,10 @@ public class BlockRegisterer {
                     LEXICON,
                     CRYSTAL_ORE,
                     STURDY_CONCRETE,
-                    STRAIGHT_WALL_BLOCK_1,
                     MUDROCK_ORE,
-                    REINFORCED_COBBLESTONE
+                    REINFORCED_COBBLESTONE,
+                    STRAIGHT_WALL_BLOCK_1,
+                    RESOURCE_BIN_BLOCK
             };
 
             for(Block block : blocks) {
