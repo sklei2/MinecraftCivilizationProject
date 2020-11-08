@@ -1,40 +1,26 @@
 package com.minecraftcivproject.mcp.server.managers.queue;
 
+import com.minecraftcivproject.mcp.server.managers.building.construction.ConstructionProject;
+import com.minecraftcivproject.mcp.server.managers.resource.ItemRequest;
+import ui.tribe.queuedisplay.construction.ConstructionProjectDisplayer;
+
 import java.util.*;
 
-public class QueueManager extends Observable implements Observer{
+public class QueueManager {
 
-    private Map<TribeQueueEnum, TribeQueue<? extends Queueable>> queues;
+    private final TribeQueue<ConstructionProject> constructionProjectQueue;
+    private final TribeQueue<ItemRequest> itemRequestQueue;
 
     public QueueManager(){
-        queues = new HashMap<>();
+        this.constructionProjectQueue = new TribeQueue<>(new LinkedList<>(), TribeQueueEnum.CONSTRUCTION, new ConstructionProjectDisplayer());
+        this.itemRequestQueue = new TribeQueue<>(new LinkedList<>(), TribeQueueEnum.ITEM_REQUEST, null);
     }
 
-    public void addQueue(TribeQueue<? extends Queueable> tribeQueue){
-        System.out.println("added queue");
-
-        queues.put(tribeQueue.getTribeQueueEnum(), tribeQueue);
-
-        setChanged();
-        notifyObservers();
+    public TribeQueue<ConstructionProject> getConstructionProjectQueue() {
+        return constructionProjectQueue;
     }
 
-    public TribeQueue<?> getQueue(TribeQueueEnum tribeQueueEnum){
-        return queues.get(tribeQueueEnum);
-    }
-
-    public Collection<TribeQueue<? extends Queueable>> getAllQueues(){
-        return queues.values();
-    }
-
-    public Collection<TribeQueueEnum> getAllTypes(){
-        return queues.keySet();
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        System.out.println("queue manager sees update");
-        setChanged();
-        notifyObservers();
+    public TribeQueue<ItemRequest> getItemRequestQueue() {
+        return itemRequestQueue;
     }
 }

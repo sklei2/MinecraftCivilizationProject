@@ -3,9 +3,11 @@ package ui.tribe.general;
 
 import com.minecraftcivproject.mcp.server.managers.queue.TribeQueue;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.stream.Collectors;
 
-public class TribeQueueItemsUi<T> extends DisplayWithList {
+public class TribeQueueItemsUi<T> extends DisplayWithList implements Observer {
 
     private final TribeQueue<T> tribeQueue;
 
@@ -13,10 +15,8 @@ public class TribeQueueItemsUi<T> extends DisplayWithList {
         super("Items");
 
         this.tribeQueue = tribeQueue;
-    }
-
-    public void updateList(){
-        super.updateList(tribeQueue.getAllItems().stream().map(i -> tribeQueue.getQueueItemDisplayer().getName(i)).collect(Collectors.toList()));
+        this.tribeQueue.addObserver(this);
+        this.updateList();
     }
 
     @Override
@@ -28,4 +28,14 @@ public class TribeQueueItemsUi<T> extends DisplayWithList {
         System.out.println("Revalidate Items:selectContent");
         revalidate();
     }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        this.updateList();
+    }
+
+    private void updateList(){
+        super.updateList(tribeQueue.getAllItems().stream().map(i -> tribeQueue.getQueueItemDisplayer().getName(i)).collect(Collectors.toList()));
+    }
+
 }

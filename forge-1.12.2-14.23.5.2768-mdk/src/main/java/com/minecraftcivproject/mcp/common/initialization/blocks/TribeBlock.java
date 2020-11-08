@@ -13,7 +13,6 @@ import registry.TownBlueprintRegistry;
 import registry.TribeRegistry;
 import ui.tribe.general.TribeQueuesUi;
 import ui.tribe.general.TribeUi;
-import ui.tribe.queuedisplay.QueueListener;
 
 import java.util.logging.Logger;
 
@@ -46,11 +45,9 @@ public class TribeBlock extends BlockBase{
         logger.info("oh hey, I'm a tribe block!");
         TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("test_town");
 
-        TribeQueuesUi tribeQueuesUi = new TribeQueuesUi();
-        QueueListener queueListener = new QueueListener(tribeQueuesUi);
-
         QueueManager queueManager = new QueueManager();
-        queueManager.addObserver(queueListener);
+
+        TribeQueuesUi tribeQueuesUi = new TribeQueuesUi(queueManager);
 
         TribeManager tribeManager = new TribeManager(townBlueprint, worldIn, pos, queueManager);
         Tribe tribe = new Tribe("Sean", tribeManager, new TribeUi("Sean", tribeQueuesUi), worldIn);

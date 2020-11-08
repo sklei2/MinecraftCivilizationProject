@@ -3,6 +3,8 @@ package com.minecraftcivproject.mcp.common.entity;
 
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
 import com.minecraftcivproject.mcp.common.queueable.Order;
+import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
+import com.minecraftcivproject.mcp.server.managers.resource.ItemRequest;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -13,18 +15,15 @@ import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 
@@ -62,9 +61,9 @@ public class LoyalVillager extends EntityVillager {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (!this.isDead) {
-            this.findItems(this.blockOfInterest.getItemDropped(state, new Random(), 0));  // This is a very hardcodey call
-        }
+//        if (!this.isDead) {
+//            this.pickupItem(this.blockOfInterest.getItemDropped(state, new Random(), 0));  // This is a very hardcodey call
+//        }
     }
 
 
@@ -111,9 +110,12 @@ public class LoyalVillager extends EntityVillager {
     // This is a temporary class
     public Order createOrder() {
         logger.info("createOrder called");
-        Map<Block, Integer> map = new HashMap<>();
-        map.put(Blocks.COBBLESTONE, 2);
-        return new Order(map);
+//        Map<Block, Integer> map = new HashMap<>();
+//        map.put(Blocks.COBBLESTONE, 2);
+        ItemGroup cobblestone = new ItemGroup();
+        cobblestone.add(Item.getItemFromBlock(Blocks.COBBLESTONE), 2);
+
+        return new Order(new ItemRequest(cobblestone));
     }
 
 
@@ -170,36 +172,6 @@ public class LoyalVillager extends EntityVillager {
 
     public LVInventory getInventory() {
         return this.inventory;
-    }
-
-
-    public boolean findItems(Item itemOfInterest) {  // Might want to change this to a different return type later
-        int itemCnt = 0;
-        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(1.0D, 0.5D, 1.0D);  // Creates an axis-aligned bounding box around the entity
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
-
-        for(int i = 0; i < list.size(); ++i) {
-            Entity entityOnGround = list.get(i);
-            if (entityOnGround instanceof EntityItem && isWillingToPickupItem(itemOfInterest, (EntityItem)entityOnGround)) {
-                logger.info(entityOnGround + " is on the ground");
-//                this.entity.onCollideWithPlayer(entity);  // This cannot be done b/c the entity is not an EntityPlayer... what does this even do in the EntityPlayer class...
-                EntityItem entityItem = (EntityItem)entityOnGround;  // Must cast entity into an EntityItem even if it's already an EntityItem to be able to call EntityItem methods on it!
-                ItemStack itemStack = entityItem.getItem();
-//                Item item = itemStack.getItem();
-
-                this.inventory.addItem(itemStack);
-                entityItem.setDead();  // Destroys the item block on the ground
-                logger.info(itemStack + " added to " + this.getName() + "'s inventory!");
-
-                ++itemCnt;
-            }
-        }
-
-        if (itemCnt > 0) {
-            return true;
-        }
-
-        return false;
     }
 
 
