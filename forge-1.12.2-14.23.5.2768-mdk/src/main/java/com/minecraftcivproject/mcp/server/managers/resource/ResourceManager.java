@@ -1,8 +1,9 @@
 package com.minecraftcivproject.mcp.server.managers.resource;
 
+import com.minecraftcivproject.mcp.server.managers.TickableManager;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 
-public class ResourceManager {
+public class ResourceManager implements TickableManager {
     // Equivalent to a ConstructionProject (is a queue type)
 
     private final QueueManager queueManager;
@@ -12,4 +13,8 @@ public class ResourceManager {
     }
 
 
+    @Override
+    public void onTick() {
+
+    }
 }

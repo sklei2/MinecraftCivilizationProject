@@ -1,9 +1,10 @@
 package com.minecraftcivproject.mcp.server.managers.villager;
 
 import com.minecraftcivproject.mcp.common.entity.LoyalVillager;
+import com.minecraftcivproject.mcp.server.managers.TickableManager;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 
-public class VillagerManager {
+public class VillagerManager implements TickableManager {
 
     private final VillagerPoolManager villagerPoolManager;
     private final VillagerTaskManager villagerTaskManager;
@@ -21,5 +22,10 @@ public class VillagerManager {
 
     public void addNewVillager(LoyalVillager loyalVillager){
         villagerPoolManager.addVillager(loyalVillager);
+    }
+
+    @Override
+    public void onTick() {
+
     }
 }

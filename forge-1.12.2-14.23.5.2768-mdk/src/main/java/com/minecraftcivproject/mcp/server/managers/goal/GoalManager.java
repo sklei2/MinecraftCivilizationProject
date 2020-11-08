@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.server.managers.goal;
 
+import com.minecraftcivproject.mcp.server.managers.TickableManager;
 import com.minecraftcivproject.mcp.server.managers.building.BuildingManager;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
@@ -8,7 +9,7 @@ import com.minecraftcivproject.mcp.server.managers.villager.VillagerManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class GoalManager {
+public class GoalManager implements TickableManager {
 
     private final BuildingManager buildingManager;
     private final ResourceManager resourceManager;
@@ -28,5 +29,12 @@ public class GoalManager {
 
     public void buildTown(){
 
+    }
+
+    @Override
+    public void onTick() {
+        buildingManager.onTick();
+        resourceManager.onTick();
+        villagerManager.onTick();
     }
 }

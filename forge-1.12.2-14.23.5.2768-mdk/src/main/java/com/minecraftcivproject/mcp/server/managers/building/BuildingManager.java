@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.server.managers.building;
 
+import com.minecraftcivproject.mcp.server.managers.TickableManager;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.BlueprintManager;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
 import com.minecraftcivproject.mcp.server.managers.building.construction.ConstructionManager;
@@ -7,7 +8,7 @@ import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BuildingManager {
+public class BuildingManager implements TickableManager {
 
     private final BlueprintManager blueprintManager;
     private final ConstructionManager constructionManager;
@@ -27,4 +28,9 @@ public class BuildingManager {
         this.constructionManager.queueAll(this.blueprintManager.getBuildingsToConstruct());
     }
 
+    @Override
+    public void onTick() {
+        constructionManager.onTick();
+        operableBuildingManager.onTick();
+    }
 }
