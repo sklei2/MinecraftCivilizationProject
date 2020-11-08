@@ -13,8 +13,12 @@ public class SearchArea {
     private int xLength;
     private int yLength;
     private int zLength;
+    public BlockPos pos;
+    private boolean boundFound;
+    public BlockPos startingLocation;
 
-    public SearchArea(int xLength, int yLength, int zLength){
+
+    public SearchArea(int xLength, int yLength, int zLength) {
         this.xLength = xLength;  // Assigns the field of "xLength" to the object, aka a new SearchArea
         this.yLength = yLength;
         this.zLength = zLength;
@@ -27,7 +31,8 @@ public class SearchArea {
      */
     // TODO: Spiral outwards starting from a center point of startingLocation
     // BlockPos.getAllInBox seems to do something similar, but is way more complicated and returns a collection of BlockPos objects (not way to know how big it is)
-    public BlockPos searchFor(World world, Block block, BlockPos startingLocation){
+    public void search(World world, Block block, BlockPos startingLocation){
+        this.startingLocation = startingLocation;
         int srtX = startingLocation.getX();
         int srtY = startingLocation.getY();
         int srtZ = startingLocation.getZ();
@@ -50,19 +55,34 @@ public class SearchArea {
 //                    }
 
 
-                    BlockPos pos = new BlockPos(x, y, z);
+                    BlockPos searchPos = new BlockPos(x, y, z);
                     // Used for debugging - prints every block the entity finds
 //                    logger.info("Found " + world.getBlockState(pos).getBlock().getLocalizedName() + " at " + x + "," + y + "," + z);
 
-                    if (world.getBlockState(pos).getBlock().equals(block)) {
-//                        logger.info(block.getLocalizedName() + " was found at " + x + "," + y + "," + z + "!!!");
-                        return pos;
+                    if (world.getBlockState(searchPos).getBlock().equals(block)) {
+                        logger.info(block.getLocalizedName() + " was found at " + x + "," + y + "," + z + "!!!");
+                        this.pos = searchPos;
+                        return;
                     }
 
                 }
             }
         }
-        return startingLocation;
+        this.pos = startingLocation;
+    }
+
+    public void setSearchWindow(int xLength, int yLength, int zLength) {
+        this.xLength = xLength;
+        this.yLength = yLength;
+        this.zLength = zLength;
+    }
+
+    public boolean wasBlockFound() {
+        return !(this.pos == this.startingLocation);
+    }
+
+    public BlockPos getBlockPos() {
+        return this.pos;
     }
 
 }

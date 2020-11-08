@@ -1,8 +1,6 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 import com.minecraftcivproject.mcp.common.queueable.Order;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
@@ -31,7 +29,7 @@ public class EntityAIMineBlock extends EntityAIBuild {
      */
     @Override
     public boolean shouldExecute() {
-        return (this.entityPosition != this.newPos);
+        return (this.entityPos != this.newPos);
     }
 
 

@@ -50,12 +50,13 @@ public class LoyalVillager extends EntityVillager {
         this.name = UUID.randomUUID().toString();  // Unique ID of a loyal villager
         this.setProfession(5);  // Sets profession to nitwit lol
         this.inventory = new LVInventory(this.name, true, 64);
-        logger.info("LoyalVillager constructor called, inventory is set to " + this.inventory);
+//        logger.info("LoyalVillager constructor called, inventory is set to " + this.inventory);
+
         //this.setSize(1.8F, 6F);  // This doesn't seem to make a difference for in-game model atm...
         this.blockOfInterest = Blocks.COBBLESTONE;
         this.buildStuff = true;
 
-        logger.info("LoyalVillager constructor called, this entity is " + this);
+//        logger.info("LoyalVillager constructor called, this entity is " + this);
     }
 
 
@@ -72,7 +73,7 @@ public class LoyalVillager extends EntityVillager {
     protected void initEntityAI() {  // THIS IS CALLED BEFORE THE CONSTRUCTOR WTF!!!!
         logger.info("initEntityAI called");
         Order order = createOrder();
-        logger.info("Order created: " + order); // This doesn't seem to be called before the EntityAIBuild constructor...... leads to a null pointer
+//        logger.info("Order created: " + order);
 
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
@@ -110,7 +111,7 @@ public class LoyalVillager extends EntityVillager {
 
     // This is a temporary class
     public Order createOrder() {
-        logger.info("createOrder called");
+//        logger.info("createOrder called");
         Map<Block, Integer> map = new HashMap<>();
         map.put(Blocks.COBBLESTONE, 2);
         return new Order(map);
@@ -181,7 +182,7 @@ public class LoyalVillager extends EntityVillager {
         for(int i = 0; i < list.size(); ++i) {
             Entity entityOnGround = list.get(i);
             if (entityOnGround instanceof EntityItem && isWillingToPickupItem(itemOfInterest, (EntityItem)entityOnGround)) {
-                logger.info(entityOnGround + " is on the ground");
+                logger.info("~*~*~*~*~ " + entityOnGround + " is on the ground ~*~*~*~*~");
 //                this.entity.onCollideWithPlayer(entity);  // This cannot be done b/c the entity is not an EntityPlayer... what does this even do in the EntityPlayer class...
                 EntityItem entityItem = (EntityItem)entityOnGround;  // Must cast entity into an EntityItem even if it's already an EntityItem to be able to call EntityItem methods on it!
                 ItemStack itemStack = entityItem.getItem();
@@ -189,7 +190,7 @@ public class LoyalVillager extends EntityVillager {
 
                 this.inventory.addItem(itemStack);
                 entityItem.setDead();  // Destroys the item block on the ground
-                logger.info(itemStack + " added to " + this.getName() + "'s inventory!");
+                logger.info("$-$-$-$-$-$-$ " + itemStack + " added to " + this.getName() + "'s inventory! $-$-$-$-$-$-$");
 
                 ++itemCnt;
             }

@@ -21,7 +21,7 @@ public class Order {
     public Order(Map<Block, Integer> map) {
         this.blockMap = map;
         this.itemMap = this.convertToItemMap(map);
-        this.bank = new HashMap<>();
+        this.bank = new HashMap<>();  // This needs to be initialized to a new HashMap or it will be saved as a null pointer
         this.initializeBank();
     }
 
