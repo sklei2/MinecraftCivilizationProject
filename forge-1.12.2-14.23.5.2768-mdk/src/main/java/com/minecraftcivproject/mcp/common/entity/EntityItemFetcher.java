@@ -34,8 +34,6 @@ public class EntityItemFetcher {
         this.itemsToSearchFor = itemsToSearchFor;
         this.itemSearcher = new ItemSearcher(world);
         this.itemsFound = new ItemGroup();
-
-
     }
 
     public boolean isFetching(){

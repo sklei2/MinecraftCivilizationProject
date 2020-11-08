@@ -1,6 +1,9 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 
+import com.minecraftcivproject.mcp.common.entity.task.AiDynamicTasks;
+import com.minecraftcivproject.mcp.common.entity.task.AiPriorityTask;
+import com.minecraftcivproject.mcp.common.entity.task.ContinuousTask;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
 import com.minecraftcivproject.mcp.common.queueable.Order;
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
@@ -23,6 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -73,34 +78,20 @@ public class LoyalVillager extends EntityVillager {
         Order order = createOrder();
         logger.info("Order created: " + order); // This doesn't seem to be called before the EntityAIBuild constructor...... leads to a null pointer
 
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
-        this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(5, new EntityAIBuild(world, this, order, true));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));   // Don't know if this works because of EntityAIAttackMelee
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
-        this.setAdditionalAItasks();
+        List<AiPriorityTask> priorityTasks = new ArrayList<>();
+
+        priorityTasks.add(new ContinuousTask(1, new EntityAISwimming(this)));
+        priorityTasks.add(new ContinuousTask(2, new EntityAIAttackMelee(this, 0.6D, true)));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
+        priorityTasks.add(new ContinuousTask(3, new EntityAIOpenDoor(this, true)));
+        priorityTasks.add(new ContinuousTask(4, new EntityAIWanderAvoidWater(this, 0.6D)));
+        priorityTasks.add(new EntityAIBuild(5, world, this, order, true));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
+        priorityTasks.add(new ContinuousTask(1, new EntityAIHurtByTarget(this, false, new Class[0])));   // Don't know if this works because of EntityAIAttackMelee
+        priorityTasks.add(new ContinuousTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true)));
+        priorityTasks.add(new ContinuousTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true)));
+
+
+        this.tasks.addTask(1, new AiDynamicTasks(priorityTasks));
     }
-
-
-    /*
-    This is where EntityAIBuild should be (in the future) and where the desired block is read in
-     */
-    private void setAdditionalAItasks() {
-        if (!this.areAdditionalTasksSet)
-        {
-            this.areAdditionalTasksSet = true;
-
-            /* if (there is a chest placed within the vicinity of the LV (aka the bounding box of BlockPos.getAllInBox)){
-                    this.setBuildTask;
-            }
-            */
-
-        }
-    }
-
 
     public void setBuildTask() {
         // this.tasks.addTask(2, new EntityAIBuild(world, this, Blocks.COBBLESTONE));

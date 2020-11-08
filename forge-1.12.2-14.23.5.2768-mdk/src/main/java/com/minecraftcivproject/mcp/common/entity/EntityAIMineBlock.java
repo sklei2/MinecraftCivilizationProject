@@ -1,8 +1,6 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 import com.minecraftcivproject.mcp.common.queueable.Order;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
@@ -21,8 +19,8 @@ public class EntityAIMineBlock extends EntityAIBuild {
      * @param order
      * @param doTheThing
      */
-    public EntityAIMineBlock(World worldIn, LoyalVillager entityIn, Order order, boolean doTheThing) {
-        super(worldIn, entityIn, order, doTheThing);
+    public EntityAIMineBlock(int priority, World worldIn, LoyalVillager entityIn, Order order, boolean doTheThing) {
+        super(priority, worldIn, entityIn, order, doTheThing);
     }
 
 
