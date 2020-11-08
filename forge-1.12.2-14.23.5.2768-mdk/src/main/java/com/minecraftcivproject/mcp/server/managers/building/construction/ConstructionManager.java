@@ -2,13 +2,10 @@ package com.minecraftcivproject.mcp.server.managers.building.construction;
 
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBuildingBlueprint;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
-import com.minecraftcivproject.mcp.server.managers.queue.TribeQueue;
-import com.minecraftcivproject.mcp.server.managers.queue.TribeQueueEnum;
+import com.minecraftcivproject.mcp.server.managers.resource.ItemRequest;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ui.tribe.queuedisplay.construction.ConstructionProjectDisplayer;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -17,21 +14,20 @@ public class ConstructionManager extends Observable implements Observer{
 
     private final World world;
     private final BlockPos corner;
-    private final TribeQueue<ConstructionProject> constructionProjectQueue;
+    private final QueueManager queueManager;
 
     public ConstructionManager(QueueManager queueManager, World world, BlockPos blockPos){
         this.world = world;
-        this.constructionProjectQueue = new TribeQueue<>(new LinkedList<>(), TribeQueueEnum.CONSTRUCTION, new ConstructionProjectDisplayer());
-        queueManager.addQueue(this.constructionProjectQueue);
         corner = blockPos;
-        this.addObserver(queueManager);
+        this.queueManager = queueManager;
     }
 
     public void queue(TownBuildingBlueprint townBuildingBlueprint){
         ConstructionProject constructionProject = new ConstructionProject(townBuildingBlueprint, world, corner);
         constructionProject.addObserver(this);
 
-        constructionProjectQueue.queue(constructionProject);
+        queueManager.getConstructionProjectQueue().queue(constructionProject);
+        queueManager.getItemRequestQueue().queue(new ItemRequest(constructionProject.getResourceRequirements()));
     }
 
     public void queueAll(List<TownBuildingBlueprint> buildings){
