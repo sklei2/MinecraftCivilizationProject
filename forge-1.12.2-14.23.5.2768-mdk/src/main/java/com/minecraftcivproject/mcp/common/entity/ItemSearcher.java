@@ -32,6 +32,11 @@ public class ItemSearcher {
             ItemSearchResult itemSearchResult = find(startingLocation, searchSize, item);
             BlockPos nearestForThisItem = itemSearchResult.getBlockPos();
 
+            // no result found
+            if(nearestForThisItem == null){
+                continue;
+            }
+
             // keep track of the nearest item of interest and the distance
             if (nearest == null || distanceBetween(startingLocation, nearestForThisItem) < nearestDistance){
                 nearest = nearestForThisItem;

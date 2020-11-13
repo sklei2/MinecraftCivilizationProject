@@ -2,6 +2,7 @@ package com.minecraftcivproject.mcp.common.entity;
 
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
 import com.minecraftcivproject.mcp.utils.InventoryUtils;
+import com.minecraftcivproject.mcp.utils.TaskUtils;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
@@ -49,20 +50,27 @@ public class EntityItemFetcher {
 
         // need a new objective
         if(!isFetching()){
-            fetchNext();
+            TaskUtils.runAboutOnceOutOfXTimes(this::fetchNext, 100);
             return;
         }
 
         // keep doin what you're doin
         if(distanceBetween(this.entity.getPosition(), this.destination) < 2){
-
             world.destroyBlock(destination,true);
-            InventoryUtils.pickupItem(world, entity, inventory, itemSearchingFor);
 
-            itemsFound.add(itemSearchingFor, 1);
+            int itemsPickedUp = InventoryUtils.pickupItem(world, entity, inventory, itemSearchingFor);
+
+            if(itemsPickedUp > 0){
+                itemsFound.add(itemSearchingFor, itemsPickedUp);
+            }else {
+                System.out.println("Awww I didn't find anything");
+            }
+
 
             destination = null;
             itemSearchingFor = null;
+        }else{
+            this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
         }
     }
 
@@ -72,10 +80,16 @@ public class EntityItemFetcher {
         destination = itemSearchResult.getBlockPos();
         itemSearchingFor = itemSearchResult.getItem();
 
+        // didn't find the next item to search for (in the future we will want to start moving to look for it)
+        if(destination == null){
+            return;
+        }
+
         this.entity.getNavigator().tryMoveToXYZ(destination.getX(), destination.getY(), destination.getZ(), 0.8D);
     }
 
     public boolean hasFetchedAll(){
-        return itemsToSearchFor.minus(itemsFound).isEmpty();
+        ItemGroup remaining =  itemsToSearchFor.minus(itemsFound);
+        return remaining.isEmpty();
     }
 }

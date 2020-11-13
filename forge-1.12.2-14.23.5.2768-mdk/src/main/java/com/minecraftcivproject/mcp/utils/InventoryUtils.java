@@ -12,9 +12,9 @@ import java.util.List;
 
 public class InventoryUtils {
 
-    public static boolean pickupItem(World world, Entity entity, InventoryBasic inventory, Item itemOfInterest) {  // Might want to change this to a different return type later
+    public static int pickupItem(World world, Entity entity, InventoryBasic inventory, Item itemOfInterest) {  // Might want to change this to a different return type later
         int itemCnt = 0;
-        AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(1.0D, 0.5D, 1.0D);  // Creates an axis-aligned bounding box around the entity
+        AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(2.0D, 1.0D, 2.0D);  // Creates an axis-aligned bounding box around the entity
         List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity, axisalignedbb);
 
         for(int i = 0; i < list.size(); ++i) {
@@ -30,10 +30,6 @@ public class InventoryUtils {
             }
         }
 
-        if (itemCnt > 0) {
-            return true;
-        }
-
-        return false;
+        return itemCnt;
     }
 }

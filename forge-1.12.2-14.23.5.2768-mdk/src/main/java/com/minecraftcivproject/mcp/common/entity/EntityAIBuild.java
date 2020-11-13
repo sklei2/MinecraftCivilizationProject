@@ -54,8 +54,6 @@ public class EntityAIBuild extends OneTimeTask {
      */
     public void updateTask() {
 
-        logger.info("update task called");
-
         if (entityItemFetcher.hasFetchedAll()) {
             order.fill(order.getRemainingRequiredItems());
             setDone();

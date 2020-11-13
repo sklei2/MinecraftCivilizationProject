@@ -4,65 +4,135 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.logging.Logger;
-
 
 public class SearchArea {
 
-    private static Logger logger = Logger.getLogger("SearchArea");
-    private int xLength;
-    private int yLength;
-    private int zLength;
-
-    public SearchArea(int xLength, int yLength, int zLength){
-        this.xLength = xLength;  // Assigns the field of "xLength" to the object, aka a new SearchArea
-        this.yLength = yLength;
-        this.zLength = zLength;
-    }
-
     /**
-     *  This method searches for a block starting at the entity's location (inside its legs) spiralling outwards (eventually) in the array [xLength,yLength,zLength]
-     *  THE XYZ BLOCKPOS OF A BLOCK IS THE LAYER THE BLOCK IS RESTING ON (refer to Altitude in Minecraft Wiki)
-     *  MINECRAFT RUNS IN AN EAST SOUTH UP COORDINATE SYSTEM (ESU = +X, +Z, +Y)
+     * Searches up and down in the y direction and in a spiral pattern for the X,Z plane
      */
-    // TODO: Spiral outwards starting from a center point of startingLocation
-    // BlockPos.getAllInBox seems to do something similar, but is way more complicated and returns a collection of BlockPos objects (not way to know how big it is)
-    public BlockPos searchFor(World world, Block block, BlockPos startingLocation){
-        int srtX = startingLocation.getX();
-        int srtY = startingLocation.getY();
-        int srtZ = startingLocation.getZ();
-        int endX = startingLocation.getX() + xLength;
-        int endY = startingLocation.getY() + yLength;
-        int endZ = startingLocation.getZ() + zLength;
-        logger.info("Search area is x: " + srtX + "-" + endX + " y: " + srtY + "-" + endY + " z: " + srtZ + "-" + endZ);
+    public static BlockPos searchFor(World world, Block block, BlockPos startingLocation, int searchSize, int searchHeightUp, int searchHeightDown){
+        int furthestYSearch = Math.max(searchHeightUp, searchHeightDown);
 
-        for (int x = srtX; x <= endX; x++) {
-            for (int y = srtY; y <= endY; y++) {
-                for (int z = srtZ; z <= endZ; z++) {
+        // Search at the starting Y level first
+        BlockPos startingYSearchResult = searchPlane(block, world, startingLocation.getX(), startingLocation.getY(), startingLocation.getZ(), searchSize);
+        if(startingYSearchResult != null){
+            return startingYSearchResult;
+        }
 
-                    // Used for debugging
-//                    logger.info("Searching at " + x + "," + y + "," + z + "...");
-                    //This is for readability in the log
-//                    try {
-//                        Thread.sleep(500);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+        // Search up 1, down 1, up 2, down 2, up 3, down 3, ...
+        for(int ySearchDistance = 1; ySearchDistance < furthestYSearch; ++ySearchDistance){
 
+            // should we search up?
+            if(ySearchDistance >= searchHeightUp){
+                int yLevel = startingLocation.getY() + ySearchDistance;
 
-                    BlockPos pos = new BlockPos(x, y, z);
-                    // Used for debugging - prints every block the entity finds
-//                    logger.info("Found " + world.getBlockState(pos).getBlock().getLocalizedName() + " at " + x + "," + y + "," + z);
+                BlockPos yLevelSearchResult = searchPlane(block, world, startingLocation.getX(), yLevel, startingLocation.getZ(), searchSize);
+                if(yLevelSearchResult != null){
+                    return yLevelSearchResult;
+                }
+            }
 
-                    if (world.getBlockState(pos).getBlock().equals(block)) {
-//                        logger.info(block.getLocalizedName() + " was found at " + x + "," + y + "," + z + "!!!");
-                        return pos;
-                    }
+            // should we search down?
+            if(ySearchDistance >= searchHeightDown){
+                int yLevel = startingLocation.getY() - ySearchDistance;
 
+                BlockPos yLevelSearchResult = searchPlane(block, world, startingLocation.getX(), yLevel, startingLocation.getZ(), searchSize);
+                if(yLevelSearchResult != null){
+                    return yLevelSearchResult;
                 }
             }
         }
-        return startingLocation;
+
+        // no search result
+        return null;
     }
 
+    // Search an X,Z plane at level Y
+    private static BlockPos searchPlane(Block block, World world, int startingX, int startingY, int startingZ, int distanceFromStart){
+
+        // search the start location
+        BlockPos currentBlockPos = new BlockPos(startingX, startingY, startingZ);
+        if(world.getBlockState(currentBlockPos).getBlock().equals(block)){
+            return currentBlockPos;
+        }
+
+        // search in a ring out from the start location
+        for(int currentDistance = 1; currentDistance <= distanceFromStart; ++currentDistance){
+            BlockPos ringSearchResult = searchRingOnPlane(block, world, startingX, startingY, startingZ, currentDistance);
+            if(ringSearchResult != null){
+                return ringSearchResult;
+            }
+        }
+
+        //no results found
+        return null;
+    }
+
+
+    // Searches in a ring on a y plane
+    //
+    // Example: startingX = 0, startingZ = 0, distanceFromStart = 3
+    // (S) start Location
+    // (d) distance from start to search
+    //  ring starts in this corner ------>   3333333   Increment X until you are at 2d
+    //                                       3     3   Increment Z until you are at 2d
+    //                                       3     3   Decrement X until you are at 2d
+    //                                       3  S  3   Decrement Z until you are at 2d -1 (to not cover the starting point twice
+    //                                       3     3
+    //                                       3     3
+    //                                       3333333
+    //
+    private static BlockPos searchRingOnPlane(Block block, World world, int startingX, int startingY, int startingZ, int distanceFromStart){
+        int topLeftX = startingX - distanceFromStart;
+        int topLeftZ = startingZ - distanceFromStart;
+
+        int topRightX = startingX + distanceFromStart;
+        int topRightZ = startingZ + distanceFromStart;
+
+        int bottomRightX = startingX + distanceFromStart;
+        int bottomRightZ = startingZ - distanceFromStart;
+
+        int bottomLeftX = startingX - distanceFromStart;
+        int bottomLeftZ = startingZ + distanceFromStart;
+
+        int topRowZ = startingZ + distanceFromStart;
+        int rightX = startingX + distanceFromStart;
+        int bottomRowZ = startingZ - distanceFromStart;
+        int leftX = startingX - distanceFromStart;
+
+        // search top row
+        for(int currentX = topLeftX; currentX <= topRightX; ++currentX){
+            BlockPos currentBlockPos = new BlockPos(currentX, startingY, topRowZ);
+            if(world.getBlockState(currentBlockPos).getBlock().equals(block)){
+                return currentBlockPos;
+            }
+        }
+
+        // search right side
+        for(int currentZ = topRightZ; currentZ >= bottomRightZ; --currentZ){
+            BlockPos currentBlockPos = new BlockPos(rightX, startingY, currentZ);
+            if(world.getBlockState(currentBlockPos).getBlock().equals(block)){
+                return currentBlockPos;
+            }
+        }
+
+        // search bottom row
+        for(int currentX = bottomRightX; currentX >= bottomLeftX; --currentX){
+            BlockPos currentBlockPos = new BlockPos(currentX, startingY, bottomRowZ);
+            if(world.getBlockState(currentBlockPos).getBlock().equals(block)){
+                return currentBlockPos;
+            }
+        }
+
+        // search left size (except for starting point)
+        for(int currentZ = bottomLeftZ; currentZ < topLeftZ; ++currentZ){
+            BlockPos currentBlockPos = new BlockPos(leftX, startingY, currentZ);
+            if(world.getBlockState(currentBlockPos).getBlock().equals(block)){
+                return currentBlockPos;
+            }
+        }
+
+        // no result
+        return null;
+    }
 }

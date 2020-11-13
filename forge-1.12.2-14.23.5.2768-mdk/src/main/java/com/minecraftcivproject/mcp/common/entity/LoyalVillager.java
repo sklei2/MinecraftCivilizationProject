@@ -104,7 +104,7 @@ public class LoyalVillager extends EntityVillager {
 //        Map<Block, Integer> map = new HashMap<>();
 //        map.put(Blocks.COBBLESTONE, 2);
         ItemGroup cobblestone = new ItemGroup();
-        cobblestone.add(Item.getItemFromBlock(Blocks.COBBLESTONE), 2);
+        cobblestone.add(Item.getItemFromBlock(Blocks.COBBLESTONE), 50);
 
         return new Order(new ItemRequest(cobblestone));
     }
