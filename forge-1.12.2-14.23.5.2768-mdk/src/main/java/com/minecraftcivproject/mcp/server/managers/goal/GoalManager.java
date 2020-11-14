@@ -17,7 +17,7 @@ public class GoalManager implements TickableManager {
     private final QueueManager queueManager;
 
     public GoalManager(QueueManager queueManager, TownBlueprint townBlueprint, World world, BlockPos blockPos){
-        this(new BuildingManager(queueManager, townBlueprint, world, blockPos), new ResourceManager(queueManager), new VillagerManager(queueManager), queueManager);
+        this(new BuildingManager(queueManager, townBlueprint, world, blockPos), new ResourceManager(queueManager), new VillagerManager(queueManager, world, blockPos), queueManager);
     }
 
     public GoalManager(BuildingManager buildingManager, ResourceManager resourceManager, VillagerManager villagerManager, QueueManager queueManager){

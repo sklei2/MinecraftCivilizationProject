@@ -13,5 +13,6 @@ public class BuildTask extends MultiStepTask {
         ItemGroup remainingItems = order.getRemainingRequiredItems();
 
         addSubtask(new FetchItemTask(world, entity, entity.getInventory(), remainingItems));
+        addSubtask(new MoveToBlockTask(entity, order.getDropoffLocation()));
     }
 }

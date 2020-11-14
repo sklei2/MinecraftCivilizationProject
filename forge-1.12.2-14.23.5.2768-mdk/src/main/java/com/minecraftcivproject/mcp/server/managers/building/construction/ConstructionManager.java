@@ -28,7 +28,7 @@ public class ConstructionManager extends Observable implements Observer, Tickabl
         constructionProject.addObserver(this);
 
         queueManager.getConstructionProjectQueue().queue(constructionProject);
-        queueManager.getItemRequestQueue().queue(new ItemRequest(constructionProject.getResourceRequirements()));
+        queueManager.getItemRequestQueue().queue(new ItemRequest(constructionProject.getDropoffLocation(), constructionProject.getResourceRequirements()));
     }
 
     public void queueAll(List<TownBuildingBlueprint> buildings){

@@ -18,17 +18,17 @@ public class FetchItemTask extends MultiStepTask {
     private final World world;
     private final EntityLiving entity;
     private final ItemSearcher itemSearcher;
-    private final ItemGroup itemsToSearchFor;
+    private final ItemGroup itemsToFetch;
     private ItemGroup itemsFound;
 
     private final InventoryBasic inventory;
 
 
-    public FetchItemTask(World world, EntityLiving entity, InventoryBasic inventory, ItemGroup itemsToSearchFor){
+    public FetchItemTask(World world, EntityLiving entity, InventoryBasic inventory, ItemGroup itemsToFetch){
         this.world = world;
         this.entity = entity;
         this.inventory = inventory;
-        this.itemsToSearchFor = itemsToSearchFor;
+        this.itemsToFetch = itemsToFetch;
         this.itemSearcher = new ItemSearcher(world);
         this.itemsFound = new ItemGroup();
     }
@@ -47,6 +47,8 @@ public class FetchItemTask extends MultiStepTask {
         if(completedTask instanceof MineBlockTask){
             MineBlockTask mineBlockTask = (MineBlockTask) completedTask;
             itemsFound = itemsFound.plus(mineBlockTask.getResult());
+            System.out.println("CurrentItems: " + itemsFound);
+            System.out.println("Wanted Items: " + itemsToFetch);
         }
     }
 
@@ -61,7 +63,9 @@ public class FetchItemTask extends MultiStepTask {
     }
 
     private void beginToFetchNext(){
-        ItemSearchResult itemSearchResult = itemSearcher.search(entity.getPosition(), 25, itemsToSearchFor.getAllItems());
+        ItemGroup itemsToSearchFor = itemsToFetch.minus(itemsFound);
+
+        ItemSearchResult itemSearchResult = itemSearcher.search(entity.getPosition(), 25, itemsToSearchFor.getAllNonZeroItems());
 
         // if we find a block
         if(itemSearchResult.getBlockPos() != null){
@@ -71,7 +75,7 @@ public class FetchItemTask extends MultiStepTask {
     }
 
     private boolean hasFetchedAll(){
-        ItemGroup remaining =  itemsToSearchFor.minus(itemsFound);
+        ItemGroup remaining =  itemsToFetch.minus(itemsFound);
         return remaining.isEmpty();
     }
 }

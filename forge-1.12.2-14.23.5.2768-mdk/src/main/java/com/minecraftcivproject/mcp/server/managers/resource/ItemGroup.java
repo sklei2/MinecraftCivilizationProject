@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ItemGroup {
     private final Map<Item, Integer> itemGroup = new HashMap<>();
@@ -33,6 +34,10 @@ public class ItemGroup {
 
     public Collection<Item> getAllItems(){
         return itemGroup.keySet();
+    }
+
+    public Collection<Item> getAllNonZeroItems(){
+        return itemGroup.keySet().stream().filter(item -> getNumberOfItem(item) > 0).collect(Collectors.toSet());
     }
 
     public int getNumberOfItem(Item item){
@@ -82,5 +87,17 @@ public class ItemGroup {
         }
 
         return combined;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("ItemGroup: {");
+
+        for(Item item : getAllItems()){
+            stringBuilder.append(item.getUnlocalizedName() + ": " + this.getNumberOfItem(item) + ", ");
+        }
+
+        return stringBuilder.toString();
     }
 }

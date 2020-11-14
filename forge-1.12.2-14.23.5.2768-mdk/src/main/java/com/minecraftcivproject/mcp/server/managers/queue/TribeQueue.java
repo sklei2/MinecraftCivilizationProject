@@ -37,6 +37,10 @@ public class TribeQueue<T> extends Observable {
         return item;
     }
 
+    public boolean hasNext(){
+        return queue.size() > 0;
+    }
+
     public TribeQueueEnum getTribeQueueEnum() {
         return tribeQueueEnum;
     }

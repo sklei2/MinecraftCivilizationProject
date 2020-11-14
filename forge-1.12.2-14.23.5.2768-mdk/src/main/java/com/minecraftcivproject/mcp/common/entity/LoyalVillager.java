@@ -1,28 +1,22 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 
-import com.minecraftcivproject.mcp.common.entity.task.BuildTask;
 import com.minecraftcivproject.mcp.common.entity.task.core.ConcurrentTask;
 import com.minecraftcivproject.mcp.common.entity.task.core.ContinuousTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
-import com.minecraftcivproject.mcp.common.queueable.Order;
-import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
-import com.minecraftcivproject.mcp.server.managers.resource.ItemRequest;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -43,6 +37,8 @@ public class LoyalVillager extends EntityVillager {
     // this.world.getClosestPlayerToEntity - this could be useful in the future
     public boolean buildStuff;
 
+    private ConcurrentTask topLevelTask;
+
 
     /**
      * Main constructor
@@ -56,6 +52,8 @@ public class LoyalVillager extends EntityVillager {
         this.buildStuff = true;
 
         logger.info("LoyalVillager constructor called, this entity is " + this);
+
+        inventory = new LVInventory(this.name, true, 64);
     }
 
 
@@ -67,39 +65,27 @@ public class LoyalVillager extends EntityVillager {
 //        }
     }
 
+    public void assignTask(Task task){
+        this.topLevelTask.addTask(task);
+    }
+
 
     @Override
     protected void initEntityAI() {  // THIS IS CALLED BEFORE THE CONSTRUCTOR WTF!!!!
-        logger.info("initEntityAI called");
-        Order order = createOrder();
-        logger.info("Order created: " + order); // This doesn't seem to be called before the BuildTask constructor...... leads to a null pointer
 
-        this.inventory = new LVInventory(this.name, true, 64); // because this can be called before the constructor we have to be initialized here
+        logger.info("LoyalVillager tasks initialized " + this);
 
-        this.tasks.addTask(1,
-                new ConcurrentTask()
-                    .addTask(new ContinuousTask(new EntityAISwimming(this)))
-                    .addTask(new ContinuousTask(new EntityAIAttackMelee(this, 0.6D, true)))
-                    .addTask(new ContinuousTask(new EntityAIOpenDoor(this, true)))
-                    .addTask(new ContinuousTask(new EntityAIWanderAvoidWater(this, 0.6D)))
-                    .addTask(new BuildTask(world, this, order))
-                    .addTask(new ContinuousTask(new EntityAIHurtByTarget(this, false, new Class[0])))
-                    .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityPlayer.class, true)))
-                    .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true)))
-        );
+        this.topLevelTask = new ConcurrentTask()
+                .addTask(new ContinuousTask(new EntityAISwimming(this)))
+                .addTask(new ContinuousTask(new EntityAIAttackMelee(this, 0.6D, true)))
+                .addTask(new ContinuousTask(new EntityAIOpenDoor(this, true)))
+                .addTask(new ContinuousTask(new EntityAIWanderAvoidWater(this, 0.6D)))
+                .addTask(new ContinuousTask(new EntityAIHurtByTarget(this, false, new Class[0])))
+                .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityPlayer .class, true)))
+                .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityIronGolem .class, true)));
+
+        this.tasks.addTask(1, topLevelTask);
     }
-
-    // This is a temporary class
-    public Order createOrder() {
-        logger.info("createOrder called");
-//        Map<Block, Integer> map = new HashMap<>();
-//        map.put(Blocks.COBBLESTONE, 2);
-        ItemGroup cobblestone = new ItemGroup();
-        cobblestone.add(Item.getItemFromBlock(Blocks.COBBLESTONE), 50);
-
-        return new Order(new ItemRequest(cobblestone));
-    }
-
 
     @Override
     protected void applyEntityAttributes() {
@@ -113,12 +99,6 @@ public class LoyalVillager extends EntityVillager {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0D);  // 2x default -> this might be causing the server to overload and skip ticks
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D); // A bit more (default = 0.5D)
     }
-
-
-    public void putItemInChest(Block block, BlockPos chestPos){
-        //getRequestedItem(ItemBlock(block))
-    }
-
 
     // Based attack off of Wolf at first (passive -> aggressive on getting attacked)
     /**
@@ -157,12 +137,6 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public boolean isWillingToPickupItem(Item itemOfInterest, EntityItem itemOnGround) {
-        Item item = itemOnGround.getItem().getItem();
-        return itemOfInterest == item;
-    }
-
-
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
@@ -178,7 +152,6 @@ public class LoyalVillager extends EntityVillager {
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        //this.setCombatTask();
     }
 
 

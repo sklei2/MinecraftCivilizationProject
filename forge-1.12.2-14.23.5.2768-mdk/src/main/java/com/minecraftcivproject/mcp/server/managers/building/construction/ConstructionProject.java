@@ -13,10 +13,11 @@ import java.util.Observer;
 
 public class ConstructionProject extends Observable implements Observer, Queueable {
 
-    private TownBuildingBlueprint townBuildingBlueprint;
-    private ResourceBin resourceBin;
-    private World world;
-    private BlockPos baseLocation;
+    private final TownBuildingBlueprint townBuildingBlueprint;
+    private final ResourceBin resourceBin;
+    private final World world;
+    private final BlockPos baseLocation;
+    private final BlockPos constructionProjectLocation;
 
     public ConstructionProject(TownBuildingBlueprint blueprint, World world, BlockPos baseLocation){
         this.world = world;
@@ -26,8 +27,8 @@ public class ConstructionProject extends Observable implements Observer, Queueab
         this.resourceBin = new ResourceBin(blueprint.getResourceRequirements(), this::completeProject);
         this.resourceBin.addObserver(this);
 
-        BlockPos binBlockPos = baseLocation.add(townBuildingBlueprint.getStartRow(),0, townBuildingBlueprint.getStartCol());
-        BlockUtils.placeBlock(world, binBlockPos, resourceBin.getResourceBinBlock());
+        constructionProjectLocation = baseLocation.add(townBuildingBlueprint.getStartRow(),0, townBuildingBlueprint.getStartCol());
+        BlockUtils.placeBlock(world, constructionProjectLocation, resourceBin.getResourceBinBlock());
     }
 
     public void addResource(String resource, int count){
@@ -48,6 +49,10 @@ public class ConstructionProject extends Observable implements Observer, Queueab
 
     public ResourceRequirements getResourceRequirements(){
         return this.resourceBin.getResourceRequirements();
+    }
+
+    public BlockPos getDropoffLocation(){
+        return constructionProjectLocation;
     }
 
     private void completeProject(){
