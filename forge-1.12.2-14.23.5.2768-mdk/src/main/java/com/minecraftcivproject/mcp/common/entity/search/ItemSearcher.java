@@ -1,4 +1,4 @@
-package com.minecraftcivproject.mcp.common.entity;
+package com.minecraftcivproject.mcp.common.entity.search;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

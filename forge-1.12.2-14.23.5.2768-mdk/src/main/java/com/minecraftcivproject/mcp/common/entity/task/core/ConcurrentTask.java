@@ -1,32 +1,28 @@
-package com.minecraftcivproject.mcp.common.entity.task;
-
-import net.minecraft.entity.ai.EntityAIBase;
+package com.minecraftcivproject.mcp.common.entity.task.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AiDynamicTasks extends EntityAIBase {
+/**
+ * Runs multiple tasks at the same time (ie. within the same tick)
+ */
+public class ConcurrentTask extends Task {
 
-    private List<AiPriorityTask> tasks = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<>();
+    private boolean started = false;
 
-    public AiDynamicTasks(Collection<AiPriorityTask> tasks){
-        this.tasks.addAll(tasks);
-        Collections.sort(this.tasks);
-    }
-
-    public void addTask(AiPriorityTask task){
+    public ConcurrentTask addTask(Task task){
         this.tasks.add(task);
-        Collections.sort(this.tasks);
+        return this;
     }
 
-    public void removeTask(AiPriorityTask task){
+    public void removeTask(Task task){
         this.tasks.remove(task);
     }
 
-    public List<AiPriorityTask> getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
 
@@ -50,25 +46,42 @@ public class AiDynamicTasks extends EntityAIBase {
     @Override
     public void startExecuting()
     {
-        // nothing special to do
+        started = true;
     }
 
     @Override
     public void resetTask()
     {
+        started = false;
         tasks.forEach(task -> resetTask());
     }
 
     @Override
     public void updateTask()
     {
-        Collection<AiPriorityTask> tasksToRemove = tasks.stream().filter(AiPriorityTask::isDone).collect(Collectors.toList());
+        Collection<Task> tasksToRemove = tasks.stream().filter(Task::isDone).collect(Collectors.toList());
         this.tasks.removeAll(tasksToRemove);
 
         tasks.forEach(this::executeSubTask);
     }
 
-    private void executeSubTask(AiPriorityTask task){
+    @Override
+    public boolean isDone() {
+        for(Task task : tasks){
+            if(task.isDone()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean hasStarted() {
+        return started;
+    }
+
+    private void executeSubTask(Task task){
         if(!task.hasStarted()){
             startSubTask(task);
         } else {
@@ -76,7 +89,7 @@ public class AiDynamicTasks extends EntityAIBase {
         }
     }
 
-    private void startSubTask(AiPriorityTask task){
+    private void startSubTask(Task task){
         if(!task.shouldExecute()){
             return;
         }
@@ -84,7 +97,7 @@ public class AiDynamicTasks extends EntityAIBase {
         task.startExecuting();
     }
 
-    private void updateSubTask(AiPriorityTask task){
+    private void updateSubTask(Task task){
         if(!task.shouldContinueExecuting()){
             return;
         }

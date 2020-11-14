@@ -1,9 +1,9 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 
-import com.minecraftcivproject.mcp.common.entity.task.AiDynamicTasks;
-import com.minecraftcivproject.mcp.common.entity.task.AiPriorityTask;
-import com.minecraftcivproject.mcp.common.entity.task.ContinuousTask;
+import com.minecraftcivproject.mcp.common.entity.task.BuildTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.ConcurrentTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.ContinuousTask;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
 import com.minecraftcivproject.mcp.common.queueable.Order;
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
@@ -26,8 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -36,7 +34,7 @@ public class LoyalVillager extends EntityVillager {
 
     private static Logger logger = Logger.getLogger("LoyalVillager");
     private final String name;
-    private final LVInventory inventory;
+    private LVInventory inventory;
     private boolean areAdditionalTasksSet;
     //blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
     //builder class LVs -> no/low atk, high hp)
@@ -53,8 +51,6 @@ public class LoyalVillager extends EntityVillager {
         super(worldIn);
         this.name = UUID.randomUUID().toString();  // Unique ID of a loyal villager
         this.setProfession(5);  // Sets profession to nitwit lol
-        this.inventory = new LVInventory(this.name, true, 64);
-        logger.info("LoyalVillager constructor called, inventory is set to " + this.inventory);
         //this.setSize(1.8F, 6F);  // This doesn't seem to make a difference for in-game model atm...
         this.blockOfInterest = Blocks.COBBLESTONE;
         this.buildStuff = true;
@@ -76,27 +72,22 @@ public class LoyalVillager extends EntityVillager {
     protected void initEntityAI() {  // THIS IS CALLED BEFORE THE CONSTRUCTOR WTF!!!!
         logger.info("initEntityAI called");
         Order order = createOrder();
-        logger.info("Order created: " + order); // This doesn't seem to be called before the EntityAIBuild constructor...... leads to a null pointer
+        logger.info("Order created: " + order); // This doesn't seem to be called before the BuildTask constructor...... leads to a null pointer
 
-        List<AiPriorityTask> priorityTasks = new ArrayList<>();
+        this.inventory = new LVInventory(this.name, true, 64); // because this can be called before the constructor we have to be initialized here
 
-        priorityTasks.add(new ContinuousTask(1, new EntityAISwimming(this)));
-        priorityTasks.add(new ContinuousTask(2, new EntityAIAttackMelee(this, 0.6D, true)));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
-        priorityTasks.add(new ContinuousTask(3, new EntityAIOpenDoor(this, true)));
-        priorityTasks.add(new ContinuousTask(4, new EntityAIWanderAvoidWater(this, 0.6D)));
-        priorityTasks.add(new EntityAIBuild(5, world, this, order, true));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
-        priorityTasks.add(new ContinuousTask(1, new EntityAIHurtByTarget(this, false, new Class[0])));   // Don't know if this works because of EntityAIAttackMelee
-        priorityTasks.add(new ContinuousTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true)));
-        priorityTasks.add(new ContinuousTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true)));
-
-
-        this.tasks.addTask(1, new AiDynamicTasks(priorityTasks));
+        this.tasks.addTask(1,
+                new ConcurrentTask()
+                    .addTask(new ContinuousTask(new EntityAISwimming(this)))
+                    .addTask(new ContinuousTask(new EntityAIAttackMelee(this, 0.6D, true)))
+                    .addTask(new ContinuousTask(new EntityAIOpenDoor(this, true)))
+                    .addTask(new ContinuousTask(new EntityAIWanderAvoidWater(this, 0.6D)))
+                    .addTask(new BuildTask(world, this, order))
+                    .addTask(new ContinuousTask(new EntityAIHurtByTarget(this, false, new Class[0])))
+                    .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityPlayer.class, true)))
+                    .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true)))
+        );
     }
-
-    public void setBuildTask() {
-        // this.tasks.addTask(2, new EntityAIBuild(world, this, Blocks.COBBLESTONE));
-    }
-
 
     // This is a temporary class
     public Order createOrder() {

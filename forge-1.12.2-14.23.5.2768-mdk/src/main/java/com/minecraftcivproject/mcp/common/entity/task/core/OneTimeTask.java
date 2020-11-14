@@ -1,13 +1,9 @@
-package com.minecraftcivproject.mcp.common.entity.task;
+package com.minecraftcivproject.mcp.common.entity.task.core;
 
-public class OneTimeTask extends AiPriorityTask {
+public class OneTimeTask extends Task {
 
     private boolean isDone = false;
     private boolean hasStarted = false;
-
-    public OneTimeTask(int priority) {
-        super(priority);
-    }
 
     @Override
     public boolean isDone() {

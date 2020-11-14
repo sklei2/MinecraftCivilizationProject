@@ -1,17 +1,16 @@
-package com.minecraftcivproject.mcp.common.entity.task;
+package com.minecraftcivproject.mcp.common.entity.task.core;
 
 import net.minecraft.entity.ai.EntityAIBase;
 
 /**
  * Wraps the existing garbage minecraft tasks that run continuously
  */
-public class ContinuousTask extends AiPriorityTask{
+public class ContinuousTask extends Task {
 
     private final EntityAIBase wrappedTask;
     private boolean hasStarted = false;
 
-    public ContinuousTask(int priority, EntityAIBase entityAIBase){
-        super(priority);
+    public ContinuousTask(EntityAIBase entityAIBase){
         this.wrappedTask = entityAIBase;
     }
 

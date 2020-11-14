@@ -72,4 +72,15 @@ public class ItemGroup {
 
         return differenceItemGroup;
     }
+
+    public ItemGroup plus(ItemGroup other){
+        ItemGroup combined = copy();
+
+        for(Item otherItem : other.getAllItems()){
+            int otherItemQuantity = other.getNumberOfItem(otherItem);
+            combined.add(otherItem, otherItemQuantity);
+        }
+
+        return combined;
+    }
 }
