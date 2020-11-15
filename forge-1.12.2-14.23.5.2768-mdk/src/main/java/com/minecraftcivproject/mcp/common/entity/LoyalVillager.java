@@ -78,7 +78,7 @@ public class LoyalVillager extends EntityVillager {
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
         this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(5, new EntityAIBuild(world, this, order, true));  // ERROR: WHEN THIS IS ACTIVATED THE LV CANNOT BE HIT/ACTIVATED (might have to configure resetTask() correctly)
+        this.tasks.addTask(5, new EntityAIBuild(world, this, order, true));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));   // Don't know if this works because of EntityAIAttackMelee
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));

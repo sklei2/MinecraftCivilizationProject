@@ -29,7 +29,7 @@ public class EntityAIMineBlock extends EntityAIBuild {
      */
     @Override
     public boolean shouldExecute() {
-        return (this.entityPos != this.newPos);
+        return false;
     }
 
 

@@ -23,9 +23,9 @@ public class EntityAIBuild extends EntityAIBase {
     private EntityItemFetcher entityItemFetcher;
 
 
-    public EntityAIBuild(World worldIn, LoyalVillager entityIn, Order orderIn, boolean doTheThing) {  // THIS SEEMS TO BE CALLED FIRST
+    public EntityAIBuild(World worldIn, LoyalVillager entityIn, Order orderIn, boolean doTheThing) {
         this.world = worldIn;  // Assigns the field/attribute of "world" to the object, aka a new EntityAIBuild almost like a class specific global variable (.field)
-        this.entity = entityIn;  // It seems like if a field/attribute like this is created, it can be referenced by any method inside of this class without having it as an input
+        this.entity = entityIn;
         this.order = orderIn;
     }
 
@@ -34,7 +34,6 @@ public class EntityAIBuild extends EntityAIBase {
      */
     @Override
     public boolean shouldExecute() {
-
         logger.info("should execute called");
 
             this.inventory = this.entity.getInventory();
@@ -59,7 +58,7 @@ public class EntityAIBuild extends EntityAIBase {
     public void startExecuting() {
         logger.info("start executing called");
 
-        ItemGroup remainingItems = order.getRemainingRequiredItems();
+        ItemGroup remainingItems = order.getRemainingRequiredItems();  // This check should take into account the inventory contents prior to the search
 
         // nothing to do
         if (remainingItems.isEmpty()) {
@@ -75,16 +74,13 @@ public class EntityAIBuild extends EntityAIBase {
      * Keep ticking a continuous task that has already been started
      */
     public void updateTask() {
-//        logger.info("updateTask called");
-
-        logger.info("update task called");
+        logger.info("updateTask called");
 
         this.entityItemFetcher.continueFetching();
     }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
-     * DOES THIS CONNECT TO updateTask()??? It looks like it does... which begs the question WHAT IN THE FUCK STOPS THE EntityAIBuild TASK???????
      */
     @Override
     public boolean shouldContinueExecuting() {

@@ -14,6 +14,8 @@ public class BlockSearcher {
 
     public BlockPos search(BlockPos startingPosition, int searchSize, Block block){
         // TODO: there's probably too much logic in the search area class
-        return new SearchArea(searchSize, searchSize, searchSize).searchFor(world, block, startingPosition);
+        SearchArea area = new SearchArea(searchSize, searchSize, searchSize);
+        area.search(world, block, startingPosition);
+        return area.getBlockPos();
     }
 }
