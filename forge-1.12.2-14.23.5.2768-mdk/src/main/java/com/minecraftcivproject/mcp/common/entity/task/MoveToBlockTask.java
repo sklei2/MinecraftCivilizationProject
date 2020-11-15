@@ -17,11 +17,6 @@ public class MoveToBlockTask extends OneTimeTask {
     }
 
     @Override
-    public void startExecuting(){
-        this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
-    }
-
-    @Override
     public void updateTask(){
         if(distanceBetween(this.entity.getPosition(), this.destination) < 2){
             setDone();

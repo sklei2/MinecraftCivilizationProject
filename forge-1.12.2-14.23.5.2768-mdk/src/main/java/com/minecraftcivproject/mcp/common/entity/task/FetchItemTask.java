@@ -34,12 +34,8 @@ public class FetchItemTask extends MultiStepTask {
     }
 
     @Override
-    public void startExecuting(){
-        if(!hasFetchedAll()){
-            beginToFetchNext();
-        }
-
-        super.startExecuting();
+    protected void onNoRemainingSubtasks() {
+        TaskUtils.runAboutOnceOutOfXTimes(this::beginToFetchNext, 20);
     }
 
     @Override
@@ -50,11 +46,6 @@ public class FetchItemTask extends MultiStepTask {
             System.out.println("CurrentItems: " + itemsFound);
             System.out.println("Wanted Items: " + itemsToFetch);
         }
-    }
-
-    @Override
-    protected void onAllSubtasksCompleted() {
-        TaskUtils.runAboutOnceOutOfXTimes(this::beginToFetchNext, 20);
     }
 
     @Override

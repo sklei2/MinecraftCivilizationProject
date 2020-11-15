@@ -41,7 +41,7 @@ public class MultiStepTask extends OneTimeTask {
 
                 System.out.println("Execute next task: " + taskInProgress + ", number of tasks remaining: " + tasks.size());
             } else {
-                onAllSubtasksCompleted();
+                onNoRemainingSubtasks();
             }
         } else {
             taskInProgress.updateTask();
@@ -61,7 +61,7 @@ public class MultiStepTask extends OneTimeTask {
 
     }
 
-    protected void onAllSubtasksCompleted(){
+    protected void onNoRemainingSubtasks(){
 
     }
 

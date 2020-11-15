@@ -25,11 +25,6 @@ public class MineBlockTask extends OneTimeTask {
     }
 
     @Override
-    public void startExecuting(){
-
-    }
-
-    @Override
     public void updateTask(){
         Item item = Item.getItemFromBlock(world.getBlockState(blockPosToMine).getBlock());
         world.destroyBlock(blockPosToMine,true);
