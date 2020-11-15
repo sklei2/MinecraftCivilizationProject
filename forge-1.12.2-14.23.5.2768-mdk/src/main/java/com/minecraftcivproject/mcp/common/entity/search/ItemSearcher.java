@@ -1,7 +1,6 @@
-package com.minecraftcivproject.mcp.common.entity;
+package com.minecraftcivproject.mcp.common.entity.search;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,6 +31,11 @@ public class ItemSearcher {
             ItemSearchResult itemSearchResult = find(startingLocation, searchSize, item);
             BlockPos nearestForThisItem = itemSearchResult.getBlockPos();
 
+            // no result found
+            if(nearestForThisItem == null){
+                continue;
+            }
+
             // keep track of the nearest item of interest and the distance
             if (nearest == null || distanceBetween(startingLocation, nearestForThisItem) < nearestDistance){
                 nearest = nearestForThisItem;
@@ -44,13 +48,7 @@ public class ItemSearcher {
     }
 
     private ItemSearchResult find(BlockPos startingLocation, int searchSize, Item item){
-
-        Block blockToSearchFor = null;
-
-        // gotta hardcode these for now
-        if(item.equals(Item.getItemFromBlock(Blocks.COBBLESTONE))){
-            blockToSearchFor = Blocks.COBBLESTONE;
-        }
+        Block blockToSearchFor = Block.getBlockFromItem(item);
 
         BlockPos blockPos = new BlockSearcher(world).search(startingLocation, searchSize, blockToSearchFor);
         return new ItemSearchResult(item, blockPos);

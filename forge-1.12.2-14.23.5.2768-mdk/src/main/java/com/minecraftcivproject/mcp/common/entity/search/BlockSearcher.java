@@ -1,4 +1,4 @@
-package com.minecraftcivproject.mcp.common.entity;
+package com.minecraftcivproject.mcp.common.entity.search;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -14,8 +14,6 @@ public class BlockSearcher {
 
     public BlockPos search(BlockPos startingPosition, int searchSize, Block block){
         // TODO: there's probably too much logic in the search area class
-        SearchArea area = new SearchArea(searchSize, searchSize, searchSize);
-        area.search(world, block, startingPosition);
-        return area.getBlockPos();
+        return SearchArea.searchFor(world, block, startingPosition, searchSize, 3, 3);
     }
 }

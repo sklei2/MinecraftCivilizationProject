@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
+import com.minecraftcivproject.mcp.TickWatcher;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.towns.TownBlueprint;
 import com.minecraftcivproject.mcp.server.managers.queue.QueueManager;
 import com.minecraftcivproject.mcp.server.managers.tribe.Tribe;
@@ -51,6 +52,8 @@ public class TribeBlock extends BlockBase{
 
         TribeManager tribeManager = new TribeManager(townBlueprint, worldIn, pos, queueManager);
         Tribe tribe = new Tribe("Sean", tribeManager, new TribeUi("Sean", tribeQueuesUi), worldIn);
+
+        new TickWatcher(tribeManager::onTick);
 
         TribeRegistry.addTribe(tribe.getTribeName(), tribe);
     }

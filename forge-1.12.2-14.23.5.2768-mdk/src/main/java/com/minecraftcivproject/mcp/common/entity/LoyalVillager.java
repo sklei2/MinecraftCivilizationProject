@@ -1,25 +1,22 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 
+import com.minecraftcivproject.mcp.common.entity.task.core.ConcurrentTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.ContinuousTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
-import com.minecraftcivproject.mcp.common.queueable.Order;
-import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
-import com.minecraftcivproject.mcp.server.managers.resource.ItemRequest;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -31,7 +28,7 @@ public class LoyalVillager extends EntityVillager {
 
     private static Logger logger = Logger.getLogger("LoyalVillager");
     private final String name;
-    private final LVInventory inventory;
+    private LVInventory inventory;
     private boolean areAdditionalTasksSet;
     //blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
     //builder class LVs -> no/low atk, high hp)
@@ -39,6 +36,8 @@ public class LoyalVillager extends EntityVillager {
     private IBlockState state;
     // this.world.getClosestPlayerToEntity - this could be useful in the future
     public boolean buildStuff;
+
+    private ConcurrentTask topLevelTask;
 
 
     /**
@@ -48,14 +47,13 @@ public class LoyalVillager extends EntityVillager {
         super(worldIn);
         this.name = UUID.randomUUID().toString();  // Unique ID of a loyal villager
         this.setProfession(5);  // Sets profession to nitwit lol
-        this.inventory = new LVInventory(this.name, true, 64);
-//        logger.info("LoyalVillager constructor called, inventory is set to " + this.inventory);
-
         //this.setSize(1.8F, 6F);  // This doesn't seem to make a difference for in-game model atm...
         this.blockOfInterest = Blocks.COBBLESTONE;
         this.buildStuff = true;
 
-//        logger.info("LoyalVillager constructor called, this entity is " + this);
+        logger.info("LoyalVillager constructor called, this entity is " + this);
+
+        inventory = new LVInventory(this.name, true, 64);
     }
 
 
@@ -67,58 +65,27 @@ public class LoyalVillager extends EntityVillager {
 //        }
     }
 
+    public void assignTask(Task task){
+        this.topLevelTask.addTask(task);
+    }
+
 
     @Override
     protected void initEntityAI() {  // THIS IS CALLED BEFORE THE CONSTRUCTOR WTF!!!!
-        logger.info("initEntityAI called");
-        Order order = createOrder();
-//        logger.info("Order created: " + order);
 
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 0.6D, true));  // Attack task -> the attack reach (this.getAttackReachSqr) is way too far
-        this.tasks.addTask(3, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(5, new EntityAIBuild(world, this, order, true));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));   // Don't know if this works because of EntityAIAttackMelee
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
-        this.setAdditionalAItasks();
+        logger.info("LoyalVillager tasks initialized " + this);
+
+        this.topLevelTask = new ConcurrentTask()
+                .addTask(new ContinuousTask(new EntityAISwimming(this)))
+                .addTask(new ContinuousTask(new EntityAIAttackMelee(this, 0.6D, true)))
+                .addTask(new ContinuousTask(new EntityAIOpenDoor(this, true)))
+                .addTask(new ContinuousTask(new EntityAIWanderAvoidWater(this, 0.6D)))
+                .addTask(new ContinuousTask(new EntityAIHurtByTarget(this, false, new Class[0])))
+                .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityPlayer .class, true)))
+                .addTask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityIronGolem .class, true)));
+
+        this.tasks.addTask(1, topLevelTask);
     }
-
-
-    /*
-    This is where EntityAIBuild should be (in the future) and where the desired block is read in
-     */
-    private void setAdditionalAItasks() {
-        if (!this.areAdditionalTasksSet)
-        {
-            this.areAdditionalTasksSet = true;
-
-            /* if (there is a chest placed within the vicinity of the LV (aka the bounding box of BlockPos.getAllInBox)){
-                    this.setBuildTask;
-            }
-            */
-
-        }
-    }
-
-
-    public void setBuildTask() {
-        // this.tasks.addTask(2, new EntityAIBuild(world, this, Blocks.COBBLESTONE));
-    }
-
-
-    // This is a temporary class
-    public Order createOrder() {
-        logger.info("createOrder called");
-//        Map<Block, Integer> map = new HashMap<>();
-//        map.put(Blocks.COBBLESTONE, 2);
-        ItemGroup cobblestone = new ItemGroup();
-        cobblestone.add(Item.getItemFromBlock(Blocks.COBBLESTONE), 2);
-
-        return new Order(new ItemRequest(cobblestone));
-    }
-
 
     @Override
     protected void applyEntityAttributes() {
@@ -132,12 +99,6 @@ public class LoyalVillager extends EntityVillager {
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4.0D);  // 2x default -> this might be causing the server to overload and skip ticks
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D); // A bit more (default = 0.5D)
     }
-
-
-    public void putItemInChest(Block block, BlockPos chestPos){
-        //getRequestedItem(ItemBlock(block))
-    }
-
 
     // Based attack off of Wolf at first (passive -> aggressive on getting attacked)
     /**
@@ -176,12 +137,6 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public boolean isWillingToPickupItem(Item itemOfInterest, EntityItem itemOnGround) {
-        Item item = itemOnGround.getItem().getItem();
-        return itemOfInterest == item;
-    }
-
-
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
@@ -197,7 +152,6 @@ public class LoyalVillager extends EntityVillager {
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        //this.setCombatTask();
     }
 
 

@@ -5,6 +5,7 @@ import com.minecraftcivproject.mcp.server.managers.queue.Queueable;
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
 import com.minecraftcivproject.mcp.server.managers.resource.ItemRequest;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Collection;
 
@@ -69,6 +70,10 @@ public class Order implements Queueable {
         }
 
         return difference;
+    }
+
+    public BlockPos getDropoffLocation(){
+        return this.itemRequest.getDropoffLocation();
     }
 
 
