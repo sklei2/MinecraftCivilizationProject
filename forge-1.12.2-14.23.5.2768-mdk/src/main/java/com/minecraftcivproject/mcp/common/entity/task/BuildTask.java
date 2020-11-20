@@ -12,7 +12,10 @@ public class BuildTask extends MultiStepTask {
     public BuildTask(World world, LoyalVillager entity, Order order) {
         ItemGroup remainingItems = order.getRemainingRequiredItems();
 
+        System.out.println(remainingItems);
+
         addSubtask(new FetchItemTask(world, entity, entity.getInventory(), remainingItems));
         addSubtask(new MoveToBlockTask(entity, order.getDropoffLocation()));
+        addSubtask(new ChestTransferTask(world, entity, entity.getInventory(), remainingItems, order.getDropoffLocation()));
     }
 }

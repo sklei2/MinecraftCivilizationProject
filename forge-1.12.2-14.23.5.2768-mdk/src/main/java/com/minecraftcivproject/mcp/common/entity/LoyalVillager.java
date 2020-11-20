@@ -5,6 +5,7 @@ import com.minecraftcivproject.mcp.common.entity.task.core.ConcurrentTask;
 import com.minecraftcivproject.mcp.common.entity.task.core.ContinuousTask;
 import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
+import com.minecraftcivproject.mcp.utils.Inventory;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -28,7 +29,7 @@ public class LoyalVillager extends EntityVillager {
 
     private static Logger logger = Logger.getLogger("LoyalVillager");
     private final String name;
-    private LVInventory inventory;
+    private Inventory inventory;
     private boolean areAdditionalTasksSet;
     //blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
     //builder class LVs -> no/low atk, high hp)
@@ -53,7 +54,7 @@ public class LoyalVillager extends EntityVillager {
 
         logger.info("LoyalVillager constructor called, this entity is " + this);
 
-        inventory = new LVInventory(this.name, true, 64);
+        inventory = new Inventory(this.name, true, 64);
     }
 
 
@@ -132,7 +133,7 @@ public class LoyalVillager extends EntityVillager {
     }
 
 
-    public LVInventory getInventory() {
+    public Inventory getInventory() {
         return this.inventory;
     }
 
