@@ -27,6 +27,7 @@ public class BlockRegisterer {
     public static class RegistrationHandler {
 
         // Block Repository
+        public static final Block BLUEPRINT_BLOCK = new BlueprintBlock();
         public static final Block TRIBE_BLOCK = new TribeBlock();
         public static final Block MY_BLOCK = new MyBlock();
         public static final Block VILLAGER_BLOCK = new VillagerBlock();
@@ -40,6 +41,7 @@ public class BlockRegisterer {
 
         // Creates Item Blocks (different than an Item)
         public static final ItemBlock[] ITEM_BLOCKS = {
+                new ItemBlock(BLUEPRINT_BLOCK),
                 new ItemBlock(TRIBE_BLOCK),
                 new ItemBlock(MY_BLOCK),
                 new ItemBlock(VILLAGER_BLOCK),
@@ -54,6 +56,7 @@ public class BlockRegisterer {
 
         // Creates a list of blocks (BLOCKS) to get registered on startup
         public static final Block[] BLOCKS = {
+                BLUEPRINT_BLOCK,
                 TRIBE_BLOCK,
                 MY_BLOCK,
                 VILLAGER_BLOCK,
@@ -85,6 +88,7 @@ public class BlockRegisterer {
         @SubscribeEvent
         public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
             final ItemBlock[] items = {
+                    new ItemBlock(BLUEPRINT_BLOCK),
                     new ItemBlock(TRIBE_BLOCK),
                     new ItemBlock(MY_BLOCK),
                     new ItemBlock(VILLAGER_BLOCK),
@@ -126,6 +130,7 @@ public class BlockRegisterer {
         @SubscribeEvent
         public static void registerModels(final ModelRegistryEvent event){
             final Block[] blocks = {
+                    BLUEPRINT_BLOCK,
                     TRIBE_BLOCK,
                     MY_BLOCK,
                     VILLAGER_BLOCK,

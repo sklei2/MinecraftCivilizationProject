@@ -64,7 +64,7 @@ public class SearchArea {
             }
         }
 
-        //no results found
+        // no results found
         return null;
     }
 

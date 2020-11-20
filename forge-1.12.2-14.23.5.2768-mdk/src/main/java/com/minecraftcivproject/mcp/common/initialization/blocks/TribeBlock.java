@@ -45,13 +45,15 @@ public class TribeBlock extends BlockBase{
 
         logger.info("oh hey, I'm a tribe block!");
         TownBlueprint townBlueprint = TownBlueprintRegistry.getTownBlueprint("test_town");
+//        townBlueprint.apply(worldIn, pos);
 
         QueueManager queueManager = new QueueManager();
 
         TribeQueuesUi tribeQueuesUi = new TribeQueuesUi(queueManager);
 
         TribeManager tribeManager = new TribeManager(townBlueprint, worldIn, pos, queueManager);
-        Tribe tribe = new Tribe("Sean", tribeManager, new TribeUi("Sean", tribeQueuesUi), worldIn);
+        String tribeName = "Sean's Pawns";
+        Tribe tribe = new Tribe(tribeName, tribeManager, new TribeUi(tribeName, tribeQueuesUi), worldIn);
 
         new TickWatcher(tribeManager::onTick);
 

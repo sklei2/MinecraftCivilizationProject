@@ -9,6 +9,7 @@ item.lv_token.name=LV Token
 
 # Blocks
 # tile. vs block. doesn't seem to matter...
+tile.blueprint_block.name=Blueprint Block
 tile.crystal_ore.name=Crystal Ore
 tile.lexicon.name=Lexicon
 tile.mudrock_ore.name=Mudrock Ore
