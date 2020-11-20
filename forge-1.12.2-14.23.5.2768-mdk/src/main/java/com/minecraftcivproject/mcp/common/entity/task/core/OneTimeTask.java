@@ -16,7 +16,7 @@ public class OneTimeTask extends Task {
     }
 
     public void setDone() {
-        System.out.println("MARKING TASK DONE");
+        System.out.println("~~~~~~~~~~~~MARKING TASK DONE~~~~~~~~~~~~");
         this.isDone = true;
     }
 

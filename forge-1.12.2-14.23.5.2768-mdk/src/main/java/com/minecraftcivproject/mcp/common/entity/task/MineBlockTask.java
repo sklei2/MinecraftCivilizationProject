@@ -28,10 +28,10 @@ public class MineBlockTask extends OneTimeTask {
     public void updateTask(){
         Item item = Item.getItemFromBlock(world.getBlockState(blockPosToMine).getBlock());
         world.destroyBlock(blockPosToMine,true);
-        InventoryUtils.pickupItem(world, entityLiving, inventory, item);
+        int numItemsSnagged = InventoryUtils.pickupItem(world, entityLiving, inventory, item);
 
         result = new ItemGroup();
-        result.add(item, 1);
+        result.add(item, numItemsSnagged);
 
         setDone();
     }

@@ -1,5 +1,7 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction.resource;
 
+import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
+import com.minecraftcivproject.mcp.utils.Inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -59,6 +61,18 @@ public class ResourceBinTileEntity extends TileEntityChest {
         return compound;
     }
 
+    public ItemGroup add(ItemGroup itemGroup){
+        ItemGroup itemsThatCouldNotBeAdded = new ItemGroup();
+
+        for(Item item : itemGroup.getAllItems()){
+            int leftover = add(item, itemGroup.getNumberOfItem(item));
+            if(leftover > 0){
+                itemsThatCouldNotBeAdded.add(item, leftover);
+            }
+        }
+
+        return itemsThatCouldNotBeAdded;
+    }
 
     public int add(Item item, int count){
        return this.resourceBinInventory.add(item, count);
@@ -70,5 +84,9 @@ public class ResourceBinTileEntity extends TileEntityChest {
 
     public int getCount(Item item){
         return this.resourceBinInventory.getCount(item);
+    }
+
+    public Inventory getInventory(){
+        return this.resourceBinInventory;
     }
 }

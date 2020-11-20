@@ -26,7 +26,7 @@ public class InventoryUtils {
                 inventory.addItem(itemStack);
                 entityItem.setDead();  // Destroys the item block on the ground
 
-                ++itemCnt;
+                itemCnt += itemStack.getCount();
             }
         }
 
