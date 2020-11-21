@@ -41,7 +41,7 @@ public class ContinuousTask extends Task {
     }
 
     @Override
-    public void startExecuting()
+    public void start()
     {
         this.hasStarted = true;
         wrappedTask.startExecuting();
@@ -54,7 +54,7 @@ public class ContinuousTask extends Task {
     }
 
     @Override
-    public void updateTask()
+    public void onTick()
     {
         wrappedTask.updateTask();
     }

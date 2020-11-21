@@ -6,24 +6,19 @@ import java.util.Queue;
 /**
  * A task that executes sub tasks in sequential order
  */
-public class MultiStepTask extends OneTimeTask {
+public class TaskQueue extends Task {
 
     private final Queue<Task> tasks = new LinkedList<>();
     private Task subtaskInProgress = null;
 
-    public MultiStepTask addSubtask(Task task){
+    public TaskQueue then(Task task){
         tasks.add(task);
 
         return this;
     }
 
     @Override
-    public void startExecuting(){
-        super.startExecuting();
-    }
-
-    @Override
-    public void updateTask() {
+    public void onTick() {
 
         // handle finishing a task
         System.out.println("Sub-task in progress is: " + subtaskInProgress);
