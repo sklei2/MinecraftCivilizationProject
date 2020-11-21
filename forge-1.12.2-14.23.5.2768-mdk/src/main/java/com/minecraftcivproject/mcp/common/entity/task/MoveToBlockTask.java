@@ -72,4 +72,9 @@ public class MoveToBlockTask extends Task {
         // move to try and unstuck ourselves
         addSubtask(new MoveToBlockTask(entity, unstuckPos));
     }
+
+    @Override
+    public boolean isDone() {
+        return distanceBetween(this.entity.getPosition(), this.destination) < 2;
+    }
 }

@@ -5,6 +5,10 @@ import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import registry.BlueprintRegistry;
@@ -30,16 +34,21 @@ public class MyBlock extends BlockBase{
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
 
-        logger.info("oh hey, a tree farm!");
-        //TribeRegistry.addTribe("Sean", new TribeManager());
+//        logger.info("oh hey, a tree farm!");
+//        //TribeRegistry.addTribe("Sean", new TribeManager());
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Blueprint forgeBlueprint = BlueprintRegistry.getBlueprint("tree_farm_lvl1");
+//        forgeBlueprint.apply(worldIn, pos);
+    }
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Blueprint forgeBlueprint = BlueprintRegistry.getBlueprint("tree_farm_lvl1");
-        forgeBlueprint.apply(worldIn, pos);
+    @Override
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer player) {
+        worldIn.playSound(player, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.RECORDS, 3.0F, 50);
     }
 }

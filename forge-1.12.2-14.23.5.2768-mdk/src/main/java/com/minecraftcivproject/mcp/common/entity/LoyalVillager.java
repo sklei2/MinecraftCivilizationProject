@@ -131,6 +131,12 @@ public class LoyalVillager extends EntityVillager {
         return LootTableRegisterer.LOYAL_VILLAGER;
     }
 
+    @Override
+    public void onDeath(DamageSource dmgSrc) {
+        super.onDeath(dmgSrc);
+        //this.inventory.dropAllOnGround;
+    }
+
 
     public Inventory getInventory() {
         return this.inventory;
@@ -171,5 +177,3 @@ We could do something here (in this class) like BlockBase and make this the wrap
 I think this is the way to go in the future but for now the SPECIFIC (i.e. setSize, setProfession, etc) constructor info
 is populated here.
  */
-
-// Note: "this" is a built in Java term that applies whatever is attached to it (through a dot) to that specific, instantaneous object that's created.
