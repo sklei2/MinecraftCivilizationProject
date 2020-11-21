@@ -1,8 +1,8 @@
 package com.minecraftcivproject.mcp.common.entity;
 
 
-import com.minecraftcivproject.mcp.common.entity.task.core.ContinuousTask;
 import com.minecraftcivproject.mcp.common.entity.task.core.Task;
+import com.minecraftcivproject.mcp.common.entity.task.core.manager.TaskAdapter;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
 import com.minecraftcivproject.mcp.utils.Inventory;
 import net.minecraft.block.Block;
@@ -37,7 +37,7 @@ public class LoyalVillager extends EntityVillager {
     // this.world.getClosestPlayerToEntity - this could be useful in the future
     public boolean buildStuff;
 
-    private Task topLevelTask;
+    private TaskAdapter topLevelTask;
 
 
     /**
@@ -66,7 +66,7 @@ public class LoyalVillager extends EntityVillager {
     }
 
     public void assignTask(Task task){
-        this.topLevelTask.addSubtask(task);
+        this.topLevelTask.addTask(task);
     }
 
 
@@ -75,14 +75,14 @@ public class LoyalVillager extends EntityVillager {
 
         logger.info("LoyalVillager tasks initialized " + this);
 
-        this.topLevelTask = new Task()
-                .addSubtask(new ContinuousTask(new EntityAISwimming(this)))
-                .addSubtask(new ContinuousTask(new EntityAIAttackMelee(this, 0.6D, true)))
-                .addSubtask(new ContinuousTask(new EntityAIOpenDoor(this, true)))
-                .addSubtask(new ContinuousTask(new EntityAIWanderAvoidWater(this, 0.6D)))
-                .addSubtask(new ContinuousTask(new EntityAIHurtByTarget(this, false, new Class[0])))
-                .addSubtask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityPlayer .class, true)))
-                .addSubtask(new ContinuousTask(new EntityAINearestAttackableTarget(this, EntityIronGolem .class, true)));
+        this.topLevelTask = new TaskAdapter()
+                .addTask(new EntityAISwimming(this))
+                .addTask(new EntityAIAttackMelee(this, 0.6D, true))
+                .addTask(new EntityAIOpenDoor(this, true))
+                .addTask(new EntityAIWanderAvoidWater(this, 0.6D))
+                .addTask(new EntityAIHurtByTarget(this, false, new Class[0]))
+                .addTask(new EntityAINearestAttackableTarget(this, EntityPlayer .class, true))
+                .addTask(new EntityAINearestAttackableTarget(this, EntityIronGolem .class, true));
 
         this.tasks.addTask(1, topLevelTask);
     }

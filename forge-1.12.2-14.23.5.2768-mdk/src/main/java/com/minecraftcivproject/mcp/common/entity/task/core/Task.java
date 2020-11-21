@@ -1,84 +1,39 @@
 package com.minecraftcivproject.mcp.common.entity.task.core;
 
-import net.minecraft.entity.ai.EntityAIBase;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import com.minecraftcivproject.mcp.common.entity.task.core.manager.TaskManager;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class Task extends EntityAIBase {
+public abstract class Task {
 
-    private List<Task> tasks = new ArrayList<>();
+    private TaskManager subtaskManager = new TaskManager();
 
     private boolean started = false;
     private boolean isDone = false;
 
-    @Override
-    public boolean shouldExecute(){
-        return true;
-    }
 
-    @Override
-    public boolean shouldContinueExecuting()
-    {
-        return !isDone();
-    }
-
-    @Override
-    public boolean isInterruptible()
-    {
-        return true;
-    }
-
-    @Override
-    public void startExecuting()
-    {
+    public void start(){
         started = true;
-        start();
+        onStart();
     }
 
-    @Override
-    public void resetTask()
+    public void update()
     {
-        started = false;
-        tasks = new ArrayList<>();
-    }
-
-    @Override
-    public void updateTask()
-    {
-        int originalNumberOfTasks = tasks.size();
-
-        Collection<Task> tasksToRemove = tasks.stream().filter(Task::isDone).collect(Collectors.toList());
-        this.tasks.removeAll(tasksToRemove);
-
-        tasks.forEach(this::executeSubTask);
-
-        int remainingTasks = tasks.size();
-
-
-        if(originalNumberOfTasks > 0 && remainingTasks == 0){
-            onAllSubtasksComplete();
-        }
-
+        subtaskManager.onTick();
         onTick();
     }
 
-    protected void start(){
+    protected void onStart(){
 
     }
 
-    protected void onTick(){
-
+    protected void onTick()
+    {
+        subtaskManager.onTick();
     }
 
-    protected void onAllSubtasksComplete(){
-
-    }
 
     public Task addSubtask(Task task){
-        this.tasks.add(task);
+        this.subtaskManager.addTask(task);
         return this;
     }
 
@@ -101,38 +56,14 @@ public class Task extends EntityAIBase {
 
 
     public void removeTask(Task task){
-        this.tasks.remove(task);
+        this.subtaskManager.removeTask(task);
     }
 
     public List<Task> getTasks() {
-        return tasks;
+        return subtaskManager.getTasks();
     }
 
     public boolean isRunningSubtasks(){
-        return tasks.size() > 0;
-    }
-
-    private void executeSubTask(Task task){
-        if(!task.hasStarted()){
-            startSubTask(task);
-        } else {
-            updateSubTask(task);
-        }
-    }
-
-    private void startSubTask(Task task){
-        if(!task.shouldExecute()){
-            return;
-        }
-
-        task.startExecuting();
-    }
-
-    private void updateSubTask(Task task){
-        if(!task.shouldContinueExecuting()){
-            return;
-        }
-
-        task.updateTask();
+        return subtaskManager.getTasks().size() > 0;
     }
 }

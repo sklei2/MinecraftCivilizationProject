@@ -64,11 +64,6 @@ public class MoveToBlockTask extends Task {
         return distanceBetween(this.entity.getPosition(), this.destination) < 2;
     }
 
-    @Override
-    protected void onAllSubtasksComplete(){
-        this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
-    }
-
     private void handleBeingStuck(){
         int x = this.entity.getPosition().getX();
         int z = this.entity.getPosition().getZ();

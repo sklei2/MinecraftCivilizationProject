@@ -33,14 +33,14 @@ public class TaskQueue extends Task {
             if(tasks.size() > 0){
                 // set the next task
                 subtaskInProgress = tasks.remove();
-                subtaskInProgress.startExecuting();
+                subtaskInProgress.start();
 
                 System.out.println("Execute next task: " + subtaskInProgress + ", number of tasks remaining: " + tasks.size());
             } else {
                 onNoRemainingSubtasks();
             }
         } else {
-            subtaskInProgress.updateTask();
+            subtaskInProgress.update();
         }
     }
 

@@ -36,7 +36,7 @@ public class FetchItemTask extends Task {
     }
 
     @Override
-    protected void start() {
+    protected void onStart() {
         beginToFetchNext();
     }
 
