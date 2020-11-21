@@ -68,4 +68,9 @@ public class MoveToBlockTask extends MultiStepTask {
     public void onNoRemainingSubtasks() {
         this.startExecuting();  // Resets task destination
     }
+
+    @Override
+    public boolean isDone() {
+        return distanceBetween(this.entity.getPosition(), this.destination) < 2;
+    }
 }

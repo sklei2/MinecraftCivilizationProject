@@ -26,6 +26,8 @@ public class MultiStepTask extends OneTimeTask {
     public void updateTask() {
 
         // handle finishing a task
+        System.out.println("This multi-step task is: " + this);
+        System.out.println("The task list size for " + this + " is: " + tasks.size());
         System.out.println("Sub-task in progress is: " + subtaskInProgress);
         if (isThereACompletedTask()) {
             onSubtaskCompleted(subtaskInProgress);
@@ -38,6 +40,7 @@ public class MultiStepTask extends OneTimeTask {
             if(tasks.size() > 0){
                 // set the next task
                 subtaskInProgress = tasks.remove();
+                System.out.println("Sub-task newly in progress is: " + subtaskInProgress);
                 subtaskInProgress.startExecuting();
 
                 System.out.println("Execute next task: " + subtaskInProgress + ", number of tasks remaining: " + tasks.size());
@@ -45,6 +48,7 @@ public class MultiStepTask extends OneTimeTask {
                 onNoRemainingSubtasks();
             }
         } else {
+            System.out.println("Sub-task updateTask called");
             subtaskInProgress.updateTask();
         }
     }
