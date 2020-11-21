@@ -12,31 +12,38 @@ public class SearchArea {
      */
     public static BlockPos searchFor(World world, Block block, BlockPos startingLocation, int searchSize, int searchHeightUp, int searchHeightDown){
         int furthestYSearch = Math.max(searchHeightUp, searchHeightDown);
+        //System.out.println("furthestYSearch = " + furthestYSearch);
+
+        int srtX = startingLocation.getX();
+        int srtY = startingLocation.getY();
+        int srtZ = startingLocation.getZ();
 
         // Search at the starting Y level first
-        BlockPos startingYSearchResult = searchPlane(block, world, startingLocation.getX(), startingLocation.getY(), startingLocation.getZ(), searchSize);
-        if(startingYSearchResult != null){
-            return startingYSearchResult;
+        BlockPos srtYSearchResult = searchPlane(block, world, srtX, srtY, srtZ, searchSize);
+        if(srtYSearchResult != null){
+            return srtYSearchResult;
         }
 
         // Search up 1, down 1, up 2, down 2, up 3, down 3, ...
-        for(int ySearchDistance = 1; ySearchDistance < furthestYSearch; ++ySearchDistance){
+        for(int ySearchDistance = 1; ySearchDistance <= furthestYSearch; ++ySearchDistance){
+
+            //System.out.println("ySearchDistance = " + ySearchDistance);
 
             // should we search up?
-            if(ySearchDistance >= searchHeightUp){
-                int yLevel = startingLocation.getY() + ySearchDistance;
+            if(ySearchDistance < searchHeightUp){
+                int yLevel = srtY + ySearchDistance;
 
-                BlockPos yLevelSearchResult = searchPlane(block, world, startingLocation.getX(), yLevel, startingLocation.getZ(), searchSize);
+                BlockPos yLevelSearchResult = searchPlane(block, world, srtX, yLevel, srtZ, searchSize);
                 if(yLevelSearchResult != null){
                     return yLevelSearchResult;
                 }
             }
 
             // should we search down?
-            if(ySearchDistance >= searchHeightDown){
-                int yLevel = startingLocation.getY() - ySearchDistance;
+            if(ySearchDistance < searchHeightDown){
+                int yLevel = srtY - ySearchDistance;
 
-                BlockPos yLevelSearchResult = searchPlane(block, world, startingLocation.getX(), yLevel, startingLocation.getZ(), searchSize);
+                BlockPos yLevelSearchResult = searchPlane(block, world, srtX, yLevel, srtZ, searchSize);
                 if(yLevelSearchResult != null){
                     return yLevelSearchResult;
                 }

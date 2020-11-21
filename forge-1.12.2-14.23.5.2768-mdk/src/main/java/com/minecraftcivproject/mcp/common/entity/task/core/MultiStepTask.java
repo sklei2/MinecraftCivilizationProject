@@ -9,7 +9,7 @@ import java.util.Queue;
 public class MultiStepTask extends OneTimeTask {
 
     private final Queue<Task> tasks = new LinkedList<>();
-    private Task taskInProgress = null;
+    private Task subtaskInProgress = null;
 
     public MultiStepTask addSubtask(Task task){
         tasks.add(task);
@@ -26,35 +26,40 @@ public class MultiStepTask extends OneTimeTask {
     public void updateTask() {
 
         // handle finishing a task
-        if(isThereACompletedTask()){
-            onSubtaskCompleted(taskInProgress);
-            System.out.println("Sub-task is done: " + taskInProgress);
-            taskInProgress = null;
+        System.out.println("This multi-step task is: " + this);
+        System.out.println("The task list size for " + this + " is: " + tasks.size());
+        System.out.println("Sub-task in progress is: " + subtaskInProgress);
+        if (isThereACompletedTask()) {
+            onSubtaskCompleted(subtaskInProgress);
+            System.out.println("Sub-task is done: " + subtaskInProgress);
+            subtaskInProgress = null;
         }
 
         // if there's no running task
-        if(taskInProgress == null){
+        if (subtaskInProgress == null) {
             if(tasks.size() > 0){
                 // set the next task
-                taskInProgress = tasks.remove();
-                taskInProgress.startExecuting();
+                subtaskInProgress = tasks.remove();
+                System.out.println("Sub-task newly in progress is: " + subtaskInProgress);
+                subtaskInProgress.startExecuting();
 
-                System.out.println("Execute next task: " + taskInProgress.getClass() + ", number of tasks remaining: " + tasks.size());
+                System.out.println("Execute next task: " + subtaskInProgress + ", number of tasks remaining: " + tasks.size());
             } else {
                 onNoRemainingSubtasks();
             }
         } else {
-            taskInProgress.updateTask();
+            System.out.println("Sub-task updateTask called");
+            subtaskInProgress.updateTask();
         }
     }
 
     @Override
     public boolean isDone() {
-        return taskInProgress == null && tasks.isEmpty();
+        return subtaskInProgress == null && tasks.isEmpty();
     }
 
-    public Task getTaskInProgress(){
-        return taskInProgress;
+    public Task getSubtaskInProgress(){
+        return subtaskInProgress;
     }
 
     protected void onSubtaskCompleted(Task completedTask){
@@ -66,6 +71,6 @@ public class MultiStepTask extends OneTimeTask {
     }
 
     private boolean isThereACompletedTask(){
-        return taskInProgress != null && taskInProgress.isDone();
+        return subtaskInProgress != null && subtaskInProgress.isDone();
     }
 }

@@ -132,6 +132,12 @@ public class LoyalVillager extends EntityVillager {
         return LootTableRegisterer.LOYAL_VILLAGER;
     }
 
+    @Override
+    public void onDeath(DamageSource dmgSrc) {
+        super.onDeath(dmgSrc);
+        //this.inventory.dropAllOnGround;
+    }
+
 
     public Inventory getInventory() {
         return this.inventory;
