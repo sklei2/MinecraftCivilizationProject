@@ -47,5 +47,4 @@ public class BlueprintBlock extends BlockBase {
             }
         }
     }
-
 }
