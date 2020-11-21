@@ -8,7 +8,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import ui.tribe.UiFrame;
+import ui.UiFrame;
 
 public class ClientProxy extends CommonProxy {
 
