@@ -1,6 +1,6 @@
 package com.minecraftcivproject.mcp.common.entity.task;
 
-import com.minecraftcivproject.mcp.common.entity.task.core.OneTimeTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import com.minecraftcivproject.mcp.server.managers.building.construction.resource.ResourceBinTileEntity;
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
 import com.minecraftcivproject.mcp.utils.Inventory;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import static com.minecraftcivproject.mcp.utils.PositionUtils.distanceBetween;
 import static java.lang.Thread.sleep;
 
-public class ChestTransferTask extends OneTimeTask {
+public class ChestTransferTask extends Task {
 
     private final World world;
     private final EntityLiving entity;
@@ -31,7 +31,7 @@ public class ChestTransferTask extends OneTimeTask {
     }
 
     @Override
-    public void updateTask() {
+    public void onTick() {
         try {
             sleep(2000);
         } catch (InterruptedException e) {

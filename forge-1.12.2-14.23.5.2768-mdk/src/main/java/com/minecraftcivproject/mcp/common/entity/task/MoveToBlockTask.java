@@ -1,6 +1,6 @@
 package com.minecraftcivproject.mcp.common.entity.task;
 
-import com.minecraftcivproject.mcp.common.entity.task.core.MultiStepTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 
@@ -8,7 +8,7 @@ import java.util.Random;
 
 import static com.minecraftcivproject.mcp.utils.PositionUtils.distanceBetween;
 
-public class MoveToBlockTask extends MultiStepTask {
+public class MoveToBlockTask extends Task {
 
     private final EntityLiving entity;
     private final BlockPos destination;
@@ -16,8 +16,6 @@ public class MoveToBlockTask extends MultiStepTask {
     private int tickCnt;
     private int stuckCnt;  // Number of times we were stuck
     private Random r = new Random();
-    private boolean isTryingToGetUnstuck;  // Defaulted to false
-    private MoveToBlockTask unstuckTask;
 
     public MoveToBlockTask(EntityLiving entity, BlockPos destination) {
         this.entity = entity;
@@ -26,47 +24,53 @@ public class MoveToBlockTask extends MultiStepTask {
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         System.out.println("MoveToBlockTask startExecuting was called");
         this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
     }
 
     @Override
-    public void updateTask() {
-        System.out.println("MoveToBlockTask super.updateTask was called");
-        super.updateTask();
+    public void onTick() {
 
-        if (this.unstuckTask != null && !this.unstuckTask.isDone()) {
+        if (isRunningSubtasks()) {
             System.out.println("MoveToBlockTask updateTask was cut short...");
             return;
         }
 
-        if (this.lastPos == this.entity.getPosition()) {
+        System.out.println("Last pos: " + this.lastPos);
+        System.out.println("Current pos: " + this.entity.getPosition());
+        if (this.lastPos.equals(this.entity.getPosition())) {
             ++tickCnt;
+        } else {
+            tickCnt = 0;
         }
+
+        this.lastPos = this.entity.getPosition();
 
         System.out.println("Tick count: " + this.tickCnt);
         if (tickCnt > 100) {
-            int x = this.entity.getPosition().getX();
-            int z = this.entity.getPosition().getZ();
-            BlockPos unstuckPos = new BlockPos(x + r.nextInt(2), destination.getY(), z + r.nextInt(2));
-            this.unstuckTask = new MoveToBlockTask(entity, unstuckPos);
-            addSubtask(this.unstuckTask);
+            handleBeingStuck();
+            return;
         }
 
         System.out.println("The Entity is at: " + this.entity.getPosition());
         System.out.println("The destination is: [" + destination.getX() + "," + destination.getY() + "," + destination.getZ());
-        if (distanceBetween(this.entity.getPosition(), this.destination) < 2) {
-            tickCnt = 0;
-            setDone();
-        }
 
-        this.lastPos = this.entity.getPosition();
+        this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
     }
 
     @Override
-    public void onNoRemainingSubtasks() {
-        this.startExecuting();  // Resets task destination
+    public boolean isDone(){
+        return distanceBetween(this.entity.getPosition(), this.destination) < 2;
+    }
+
+    private void handleBeingStuck(){
+        int x = this.entity.getPosition().getX();
+        int z = this.entity.getPosition().getZ();
+        BlockPos unstuckPos = new BlockPos(x + r.nextInt(2), destination.getY(), z + r.nextInt(2));
+
+        // move to try and unstuck ourselves
+        addSubtask(new MoveToBlockTask(entity, unstuckPos));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.minecraftcivproject.mcp.common.entity.task;
 
-import com.minecraftcivproject.mcp.common.entity.task.core.OneTimeTask;
+import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
 import com.minecraftcivproject.mcp.utils.InventoryUtils;
 import net.minecraft.entity.EntityLiving;
@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class MineBlockTask extends OneTimeTask {
+public class MineBlockTask extends Task {
 
     private final World world;
     private final InventoryBasic inventory;
@@ -25,7 +25,7 @@ public class MineBlockTask extends OneTimeTask {
     }
 
     @Override
-    public void updateTask(){
+    public void onTick(){
         Item item = Item.getItemFromBlock(world.getBlockState(blockPosToMine).getBlock());
         world.destroyBlock(blockPosToMine,true);
         int numItemsSnagged = InventoryUtils.pickupItem(world, entityLiving, inventory, item);
