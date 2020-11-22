@@ -8,6 +8,8 @@ public class MainContentPane extends JPanel {
     private final JPanel tribes;
     private final JPanel blueprints;
 
+    private JPanel activePanel = new JPanel();
+
     private final String currentContent = "";
 
     public MainContentPane(JPanel tribes, JPanel blueprints){
@@ -15,6 +17,7 @@ public class MainContentPane extends JPanel {
         this.blueprints = blueprints;
 
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setLayout(new BorderLayout());
     }
 
     public void setContent(String content){
@@ -25,19 +28,25 @@ public class MainContentPane extends JPanel {
 
         removeAll();
 
+        activePanel.setVisible(false);
+
         switch (content){
             case "Tribes":
-                add(tribes);
+                activePanel = tribes;
                 break;
 
             case "Blueprints":
-                add(blueprints);
+                activePanel = blueprints;
                 break;
 
             default:
                 System.out.println("UMMM this isn't a window: " + content);
         }
 
-        validate();
+        activePanel.setVisible(true);
+        add(activePanel, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
     }
 }
