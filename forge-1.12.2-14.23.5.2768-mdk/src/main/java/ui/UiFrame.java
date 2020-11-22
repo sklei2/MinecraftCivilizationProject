@@ -16,7 +16,7 @@ public class UiFrame extends JFrame {
 
         setLayout(new BorderLayout());
 
-        mainContentPane = new MainContentPane(new TribesUi(), new JPanel());
+        mainContentPane = new MainContentPane(new TribesUi(), new BlueprintPanel());
         navigationBar = new NavigationBar(mainContentPane);
 
         navigationBar.setSize(200, 900);
