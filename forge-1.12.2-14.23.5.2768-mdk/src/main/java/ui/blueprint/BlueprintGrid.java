@@ -1,4 +1,4 @@
-package ui;
+package ui.blueprint;
 
 import javax.swing.*;
 import java.awt.*;

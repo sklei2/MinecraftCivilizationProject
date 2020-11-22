@@ -1,4 +1,4 @@
-package ui;
+package ui.blueprint;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

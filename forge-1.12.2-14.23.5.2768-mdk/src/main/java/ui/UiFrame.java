@@ -1,5 +1,6 @@
 package ui;
 
+import ui.blueprint.BlueprintPanel;
 import ui.tribe.general.TribesUi;
 
 import javax.swing.*;
