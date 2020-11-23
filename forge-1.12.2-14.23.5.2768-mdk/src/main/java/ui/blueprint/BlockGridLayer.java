@@ -1,7 +1,6 @@
 package ui.blueprint;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 
 public class BlockGridLayer {
 
@@ -13,7 +12,7 @@ public class BlockGridLayer {
         this.blockGrid = new Block[gridSize][gridSize];
     }
 
-    public void fill(int x, int y) {
+    public void fill(int x, int y, Block block) {
         if (x < 0 || y < 0) {
             return;
         }
@@ -22,10 +21,10 @@ public class BlockGridLayer {
             return;
         }
 
-        blockGrid[x][y] = Blocks.COBBLESTONE;
+        blockGrid[x][y] = block;
     }
 
-    public void fillRange(int startX, int startY, int endX, int endY) {
+    public void fillRange(int startX, int startY, int endX, int endY, Block block) {
         if (startX < 0 || startY < 0) {
             return;
         }
@@ -60,13 +59,13 @@ public class BlockGridLayer {
 
         for (int x = startFillX; x <= endFillX; ++x) {
             for (int y = startFillY; y <= endFillY; ++y) {
-                fill(x, y);
+                fill(x, y, block);
             }
         }
     }
 
-    public boolean get(int x, int y) {
-        return blockGrid[x][y] != null;
+    public Block get(int x, int y) {
+        return blockGrid[x][y];
     }
 
     public void clear() {
