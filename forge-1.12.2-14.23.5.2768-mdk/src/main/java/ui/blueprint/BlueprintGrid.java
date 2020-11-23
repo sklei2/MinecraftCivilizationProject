@@ -1,5 +1,7 @@
 package ui.blueprint;
 
+import net.minecraft.block.Block;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -8,7 +10,7 @@ import java.awt.event.MouseMotionListener;
 
 public class BlueprintGrid extends JPanel {
 
-    private static final int SQUARE_SIZE = 30;
+    private static final int SQUARE_SIZE = 32;
 
     private final int gridSize;
 
@@ -19,10 +21,14 @@ public class BlueprintGrid extends JPanel {
     private final BlockGridLayer blockGridLayer;
     private final BlockGridLayer selectionGridLayer;
 
+    private final TabSelectionPanel tabSelectionPanel;
 
-    public BlueprintGrid(int gridSize) {
+
+    public BlueprintGrid(int gridSize, TabSelectionPanel tabSelectionPanel) {
         setSize(1000, 1000);
         setVisible(true);
+
+        this.tabSelectionPanel = tabSelectionPanel;
 
         this.gridSize = gridSize;
 
@@ -89,17 +95,29 @@ public class BlueprintGrid extends JPanel {
 
                 g.drawRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
 
-                if(blockGridLayer.get(getGridLocation(x), getGridLocation(y))) {
-                    g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
+                Block block = blockGridLayer.get(getGridLocation(x), getGridLocation(y));
+                Block selectedBlock = selectionGridLayer.get(getGridLocation(x), getGridLocation(y));
+
+                if(block != null) {
+                    drawImage(x, y, g, block, false);
                 }
 
-                if(selectionGridLayer.get(getGridLocation(x), getGridLocation(y))){
-                    g.setColor(Color.BLUE);
-                    g.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE);
-                    g.setColor(Color.BLACK);
+                if(selectedBlock != null){
+                    drawImage(x, y, g, selectedBlock, true);
                 }
             }
         }
+    }
+
+    private void drawImage(int x, int y, Graphics g, Block block, boolean fade){
+        if (fade){
+            ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+        }
+
+        Image newImage = BlockToImage.getImageForBlock(block).getScaledInstance(SQUARE_SIZE, SQUARE_SIZE, Image.SCALE_DEFAULT);
+        g.drawImage(newImage, x, y, null);
+
+        ((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
     }
 
     private int getGridLocation(int pixelLocation){
@@ -108,7 +126,7 @@ public class BlueprintGrid extends JPanel {
     }
 
     private void select(int x, int y){
-        blockGridLayer.fill(x, y);
+        blockGridLayer.fill(x, y, tabSelectionPanel.getSelectedBlock());
 
         repaint();
     }
@@ -116,7 +134,6 @@ public class BlueprintGrid extends JPanel {
     private void dragSelect(int xStart, int yStart, int xEnd, int yEnd){
         selectionGridLayer.clear();
 
-        System.out.println("drag select " + xStart + "," + yStart + " -> " + xEnd + "," + yEnd);
 
         int xStartGrid = getGridLocation(xStart);
         int yStartGrid = getGridLocation(yStart);
@@ -124,21 +141,23 @@ public class BlueprintGrid extends JPanel {
         int xEndGrid = getGridLocation(xEnd);
         int yEndGrid = getGridLocation(yEnd);
 
-        selectionGridLayer.fillRange(xStartGrid, yStartGrid, xEndGrid, yEndGrid);
+        selectionGridLayer.fillRange(xStartGrid, yStartGrid, xEndGrid, yEndGrid, tabSelectionPanel.getSelectedBlock());
+
+        System.out.println("drag select " + xStart + "," + yStart + " -> " + xEnd + "," + yEnd + " " + tabSelectionPanel.getSelectedBlock());
 
         repaint();
     }
 
     private void finalizeDragSelect(int xStart, int yStart, int xEnd, int yEnd){
-        System.out.println("finalize drag select " + xStart + "," + yStart + " -> " + xEnd + "," + yEnd);
-
         int xStartGrid = getGridLocation(xStart);
         int yStartGrid = getGridLocation(yStart);
 
         int xEndGrid = getGridLocation(xEnd);
         int yEndGrid = getGridLocation(yEnd);
 
-        blockGridLayer.fillRange(xStartGrid, yStartGrid, xEndGrid, yEndGrid);
+        blockGridLayer.fillRange(xStartGrid, yStartGrid, xEndGrid, yEndGrid, tabSelectionPanel.getSelectedBlock());
+
+        System.out.println("finalize drag select " + xStart + "," + yStart + " -> " + xEnd + "," + yEnd + " " + tabSelectionPanel.getSelectedBlock());
 
         selectionGridLayer.clear();
 

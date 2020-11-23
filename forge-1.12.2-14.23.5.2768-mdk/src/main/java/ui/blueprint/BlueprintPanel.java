@@ -7,8 +7,11 @@ public class BlueprintPanel extends JPanel {
 
     public BlueprintPanel(){
         setLayout(new BorderLayout());
-        add(new BlueprintGrid(20), BorderLayout.CENTER);
-        add(new TabSelectionPanel(), BorderLayout.EAST);
+
+        TabSelectionPanel tabSelectionPanel = new TabSelectionPanel();
+
+        add(new BlueprintGrid(20, tabSelectionPanel), BorderLayout.CENTER);
+        add(tabSelectionPanel, BorderLayout.EAST);
     }
 
 }

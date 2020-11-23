@@ -1,9 +1,6 @@
 package ui.blueprint;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.swing.*;
@@ -14,12 +11,17 @@ import java.util.stream.Collectors;
 public class TabSelectionPanel extends JPanel {
 
     private JComponent contentPanel;
+    private Block selectedBlock;
 
     public TabSelectionPanel() {
         setSize(200, 900);
         setLayout(new BorderLayout());
 
         displayTabButtonPanel();
+    }
+
+    public Block getSelectedBlock(){
+        return selectedBlock;
     }
 
     private void displayBlocksForTab(String tab){
@@ -82,10 +84,24 @@ public class TabSelectionPanel extends JPanel {
     private JButton getBlockButton(Block block){
         JButton jButton = new JButton(block.getLocalizedName());
 
-        TileEntityItemStackRenderer itemStackRenderer = new TileEntityItemStackRenderer();
-        itemStackRenderer.renderByItem(new ItemStack(Blocks.COBBLESTONE));
+        Image image = BlockToImage.getImageForBlock(block);
+
+        if(image != null){
+            jButton.setIcon(new ImageIcon(image));
+        }
+
+        jButton.setActionCommand(block.getRegistryName().getResourcePath());
+        jButton.addActionListener(actionEvent -> {
+            Block b = Block.getBlockFromName(actionEvent.getActionCommand());
+            selectBlock(b);
+        });
 
         return jButton;
+    }
+
+    private void selectBlock(Block b){
+        System.out.println("SELECT block: " + b.getUnlocalizedName());
+        selectedBlock = b;
     }
 
     private void displayTabButtonPanel(){
