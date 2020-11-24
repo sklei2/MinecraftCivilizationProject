@@ -38,6 +38,7 @@ public class BlockRegisterer {
         public static final Block RESOURCE_BIN_BLOCK = new ResourceBinBlock();
         public static final Block MUDROCK_ORE = new MudrockOre();
         public static final Block REINFORCED_COBBLESTONE = new ReinforcedCobblestone();
+        public static final Block SNAPSHOT_BLOCK = new SnapshotBlock();
 
         // Creates Item Blocks (different than an Item)
         public static final ItemBlock[] ITEM_BLOCKS = {
@@ -51,7 +52,8 @@ public class BlockRegisterer {
                 new ItemBlock(RESOURCE_BIN_BLOCK),
                 new ItemBlock(STRAIGHT_WALL_BLOCK_1),
                 new ItemBlock(MUDROCK_ORE),
-                new ItemBlock(REINFORCED_COBBLESTONE)
+                new ItemBlock(REINFORCED_COBBLESTONE),
+                new ItemBlock(SNAPSHOT_BLOCK)
         };
 
         // Creates a list of blocks (BLOCKS) to get registered on startup
@@ -66,7 +68,8 @@ public class BlockRegisterer {
                 MUDROCK_ORE,
                 REINFORCED_COBBLESTONE,
                 STRAIGHT_WALL_BLOCK_1,
-                RESOURCE_BIN_BLOCK
+                RESOURCE_BIN_BLOCK,
+                SNAPSHOT_BLOCK
         };
 
 
@@ -98,7 +101,8 @@ public class BlockRegisterer {
                     new ItemBlock(MUDROCK_ORE),
                     new ItemBlock(REINFORCED_COBBLESTONE),
                     new ItemBlock(STRAIGHT_WALL_BLOCK_1),
-                    new ItemBlock(RESOURCE_BIN_BLOCK)
+                    new ItemBlock(RESOURCE_BIN_BLOCK),
+                    new ItemBlock(SNAPSHOT_BLOCK)
             };
 
             final IForgeRegistry<Item> registry = event.getRegistry();
@@ -140,7 +144,8 @@ public class BlockRegisterer {
                     MUDROCK_ORE,
                     REINFORCED_COBBLESTONE,
                     STRAIGHT_WALL_BLOCK_1,
-                    RESOURCE_BIN_BLOCK
+                    RESOURCE_BIN_BLOCK,
+                    SNAPSHOT_BLOCK
             };
 
             for(Block block : blocks) {
