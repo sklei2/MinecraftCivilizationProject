@@ -6,7 +6,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -34,6 +37,8 @@ public class MyBlock extends BlockBase{
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockAdded(worldIn, pos, state);
 
+        worldIn.setBlockState(pos.add(1, 1, 1), Blocks.HAY_BLOCK.getDefaultState());
+
 //        logger.info("oh hey, a tree farm!");
 //        //TribeRegistry.addTribe("Sean", new TribeManager());
 //
@@ -49,6 +54,13 @@ public class MyBlock extends BlockBase{
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer player) {
-        worldIn.playSound(player, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.RECORDS, 3.0F, 50);
+        //worldIn.playSound(player, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.RECORDS, 3.0F, 50);
+        worldIn.setBlockState(pos.add(1, 0, 1), Blocks.HAY_BLOCK.getDefaultState());
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float f1, float f2, float f3) {
+        worldIn.setBlockState(pos.add(1, 0, 1), Blocks.HAY_BLOCK.getDefaultState());
+        return true;
     }
 }

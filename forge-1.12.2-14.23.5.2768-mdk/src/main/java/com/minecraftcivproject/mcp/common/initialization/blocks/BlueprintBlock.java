@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
+import com.minecraftcivproject.mcp.utils.Delay;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,13 +13,13 @@ import java.util.logging.Logger;
 public class BlueprintBlock extends BlockBase {
 
 
-    private static Logger logger = Logger.getLogger("TribeBlock");
+    private static Logger logger = Logger.getLogger("BlueprintBlock");
     private final int xExtent;
     private final int zExtent;
 
 
     public BlueprintBlock(){
-        super("bluebrint_block",
+        super("blueprint_block",
                 Material.IRON,
                 CreativeTabs.BUILDING_BLOCKS,
                 5F,
@@ -35,11 +36,7 @@ public class BlueprintBlock extends BlockBase {
         super.onBlockAdded(worldIn, pos, state);
 
         // A delay is needed for this to actually spawn blocks...
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Delay.addDelay(1000);
 
         for(int x = 0; x <= xExtent; x++) {
             for(int z = 0; z <= zExtent; z++) {
