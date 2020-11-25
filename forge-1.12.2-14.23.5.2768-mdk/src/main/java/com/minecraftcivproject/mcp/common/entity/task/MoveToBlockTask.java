@@ -31,8 +31,8 @@ public class MoveToBlockTask extends Task {
         this.stuckCnt = stuckCnt;
         System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " stuck count: " + this.stuckCnt);
         this.lastPos = this.entity.getPosition();
-        this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
-        //this.entity.getNavigator().getPath().
+        //this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);  // This does well with y positions that can't be reached!
+        this.entity.getNavigator().tryMoveToXYZ((double)destination.getX(), (double)destination.getY(), (double)destination.getZ(), 0.8D);  // This doesn't do well with y positions that can't be reached...
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MoveToBlockTask extends Task {
             System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " onTick is executing");
         }
 
-        if (stuckCnt >= 1) { // Should be 10
+        if (stuckCnt >= 5) {
             // Check for hole condition
             if (inHole()) {
                 digYourselfOut();
@@ -85,16 +85,17 @@ public class MoveToBlockTask extends Task {
         int dY = destination.getY();
         int dZ = destination.getZ();
 
-        System.out.println("Entity is at: " + this.entity.getPosition());
-        System.out.println("Destination: " + this.destination);
+        System.out.println("Entity is at: " + this.entity.getPosition() + "             Destination: " + this.destination);
 
-        // Is this still needed?? The destination move command is called in the constructor... it seems that this needs to be called continuously.....
-        this.entity.getMoveHelper().setMoveTo(dX, dY, dZ, 1);
+        // It seems that this needs to be called continuously.....
+        this.entity.getNavigator().tryMoveToXYZ((double)dX, (double)dY, (double)dZ, 0.8D);  // Called to jump properly (This doesn't do well with y positions that can't be reached... but this gets us out of holes!)
+        this.entity.getMoveHelper().setMoveTo(dX, dY, dZ, 1);  // Called to get us out of the rut cause by the path navigator (This does well with y positions that can't be reached, but we jump like every 1000 ticks...)
     }
 
     @Override
     public boolean isDone() {
-        if (distanceBetween(this.entity.getPosition(), this.destination) < 2) {
+        //System.out.println("Distance b/w position and destination = " + distanceBetween(this.entity.getPosition(), this.destination));
+        if (distanceBetween(this.entity.getPosition(), this.destination) <= 2) {
             System.out.println("~~~~~~~~~~ MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " is Done! ~~~~~~~~~~");
             stuckTicks = 0;  // Resets stuck ticks
             return true;
@@ -129,9 +130,6 @@ public class MoveToBlockTask extends Task {
 
         // Find which direction we are facing
         System.out.println("My Yaw is " + this.entity.rotationYaw);
-//        Vec2f vec = getXZFromQuadrant(getQuadrantFacing(this.entity));
-//        int signX = (int)vec.x;
-//        int signZ = (int)vec.y;
         int dir = getDirectionFacing(this.entity);
 
         int x1 = 0;
@@ -141,33 +139,37 @@ public class MoveToBlockTask extends Task {
         int x3 = 0;
         int z3 = 0;
         if (dir == 1) {
+            System.out.println("I'm facing South");
+            x1 = 0;
+            z1 = 1;
+            x2 = 1;
+            z2 = z1;
+            x3 = -1;
+            z3 = z1;
+        } else if (dir == 2) {
+            System.out.println("I'm facing West");
             x1 = -1;
             z1 = 0;
             x2 = x1;
             z2 = 1;
             x3 = x1;
             z3 = -1;
-        } else if (dir == 2) {
-            x1 = 0;
-            z1 = 1;
-            x2 = 1;
-            z2 = z1;
-            x3 = -1;
-            z3 = z1;
         } else if (dir == 3) {
+            System.out.println("I'm facing North");
             x1 = 0;
-            z1 = 1;
+            z1 = -1;
             x2 = 1;
             z2 = z1;
             x3 = -1;
             z3 = z1;
         } else if (dir == 4) {
-            x1 = 0;
-            z1 = 1;
-            x2 = 1;
-            z2 = z1;
-            x3 = -1;
-            z3 = z1;
+            System.out.println("I'm facing East");
+            x1 = 1;
+            z1 = 0;
+            x2 = x1;
+            z2 = 1;
+            x3 = x1;
+            z3 = -1;
         }
 
         world.destroyBlock(this.entity.getPosition().add(blocksAway*x1,levelsAboveFeet,blocksAway*z1),true);
