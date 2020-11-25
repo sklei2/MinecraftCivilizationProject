@@ -74,7 +74,7 @@ public class FetchItemTask extends Task {
 
             addSubtask(
                     new TaskQueue()
-                            .then(new MoveToBlockTask(entity, itemSearchResult.getBlockPos()))
+                            .then(new MoveToBlockTask(world, entity, itemSearchResult.getBlockPos(), 0))
                             .then(mineBlockTask)
             );
         }
