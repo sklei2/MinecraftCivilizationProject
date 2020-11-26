@@ -20,22 +20,22 @@ public class TaskQueue extends Task {
     @Override
     public void onTick() {
 
-        // handle finishing a task
-        System.out.println("Sub-task in progress is: " + subtaskInProgress);
+        // Handle finishing a task
+        //System.out.println("Sub-task in progress is: " + subtaskInProgress);
         if (isThereACompletedTask()) {
             onSubtaskCompleted(subtaskInProgress);
-            System.out.println("Sub-task is done: " + subtaskInProgress);
+            //System.out.println("Sub-task is done: " + subtaskInProgress);
             subtaskInProgress = null;
         }
 
-        // if there's no running task
+        // If there's no running task
         if (subtaskInProgress == null) {
             if(tasks.size() > 0){
-                // set the next task
+                // Set the next task
                 subtaskInProgress = tasks.remove();
                 subtaskInProgress.start();
 
-                System.out.println("Execute next task: " + subtaskInProgress + ", number of tasks remaining: " + tasks.size());
+                //System.out.println("Execute next task: " + subtaskInProgress + ", number of tasks remaining: " + tasks.size());
             } else {
                 onNoRemainingSubtasks();
             }

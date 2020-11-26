@@ -18,7 +18,7 @@ public class BuildTask extends Task {
         addSubtask(
                 new TaskQueue()
                     .then(new FetchItemTask(world, entity, entity.getInventory(), remainingItems))
-                    .then(new MoveToBlockTask(entity, order.getDropoffLocation()))
+                    .then(new MoveToBlockTask(world, entity, order.getDropoffLocation(), 0))
                     .then(new ChestTransferTask(world, entity, entity.getInventory(), remainingItems, order.getDropoffLocation()))
         );
     }

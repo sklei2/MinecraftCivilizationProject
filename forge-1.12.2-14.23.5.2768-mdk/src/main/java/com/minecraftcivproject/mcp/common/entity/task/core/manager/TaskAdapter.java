@@ -4,7 +4,7 @@ import com.minecraftcivproject.mcp.common.entity.task.core.Task;
 import net.minecraft.entity.ai.EntityAIBase;
 
 /**
- * Adapter class that is the only "task" that minecraft is calling. This delegates it out from here.
+ * Adapter class that is the only "task" that Minecraft is calling. This delegates it out from here.
  */
 public class TaskAdapter extends EntityAIBase {
 
