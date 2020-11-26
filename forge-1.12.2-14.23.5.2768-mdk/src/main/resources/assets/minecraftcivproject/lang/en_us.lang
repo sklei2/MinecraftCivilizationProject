@@ -5,6 +5,7 @@
 #item.minecraftcivproject:cement.name=Cement -> THIS DOES NOT WORK!!!
 item.cement.name=Cement
 item.crystal.name=Crystal
+item.deleteomatic=Delete O'Matic
 item.lv_token.name=LV Token
 
 # Blocks
