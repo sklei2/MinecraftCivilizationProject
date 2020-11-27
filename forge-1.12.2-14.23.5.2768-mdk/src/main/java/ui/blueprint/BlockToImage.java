@@ -2,19 +2,31 @@ package ui.blueprint;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 public class BlockToImage {
 
     public static Image getImageForBlock(Block block) {
-        TextureAtlasSprite textureAtlasSprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getDefaultState());
+
+        List<BakedQuad> quads = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(block.getDefaultState()).getQuads(block.getDefaultState(), EnumFacing.DOWN, 0);
+
+        TextureAtlasSprite textureAtlasSprite;
+        if(quads.isEmpty()){
+            textureAtlasSprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getDefaultState());
+        } else {
+            textureAtlasSprite = quads.stream().findFirst().get().getSprite();
+        }
+
         ResourceLocation resourceLocation = getResourceLocation(textureAtlasSprite);
         IResource resource = null;
         try {
