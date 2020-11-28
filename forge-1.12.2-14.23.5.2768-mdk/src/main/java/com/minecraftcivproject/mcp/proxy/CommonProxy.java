@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.proxy;
 
+import com.minecraftcivproject.mcp.World.WorldGenCustomStructures;
 import com.minecraftcivproject.mcp.World.WorldGenOres;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class CommonProxy {
     public void preInit(FMLPreInitializationEvent e) {
         GameRegistry.registerWorldGenerator(new WorldGenOres(), 3);
+        GameRegistry.registerWorldGenerator(new WorldGenCustomStructures(), 0);
     }
     public void init(FMLInitializationEvent e) {}
     public void postInit(FMLPostInitializationEvent e) {}

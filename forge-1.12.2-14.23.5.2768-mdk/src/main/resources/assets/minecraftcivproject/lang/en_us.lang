@@ -16,6 +16,7 @@ tile.lexicon.name=Lexicon
 tile.mudrock_ore.name=Mudrock Ore
 tile.my_block.name=My Block
 tile.reinforced_cobblestone.name=Reinforced Cobblestone
+tile.resource_bin.name=Resource Bin
 tile.snapshot_block.name=Snapshot Block
 tile.sturdy_concrete.name=Sturdy Concrete
 tile.tribe_block.name=Tribe Block

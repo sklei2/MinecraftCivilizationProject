@@ -2,6 +2,7 @@ package com.minecraftcivproject.mcp.common.initialization.items;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -14,33 +15,44 @@ public class DeleteOMatic extends ItemBase {
 
     private BlockPos firstPos;
     private BlockPos secondPos;
-    private int posCounter;
+    private int posCounter = 0;
 
     public DeleteOMatic() {
         super("deleteomatic",
                 CreativeTabs.MISC,
                 64);
-        this.posCounter = 0;
     }
-
-//    @Override
-//    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-//        return new ActionResult(EnumActionResult.PASS, p_onItemRightClick_2_.getHeldItem(p_onItemRightClick_3_));
-//    }
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float f1, float f2, float f3) {
-        System.out.println("DELETE DELETE DELETE");
+        // Only increment on the server side (1. Is catch-all for both single and multi-player 2. Will do twice if not)
         ++posCounter;
-        if (posCounter == 1) {
+        System.out.println("posCounter = " + posCounter);
+        if (posCounter == 2) {
             firstPos = pos;
             System.out.println("First position = " + pos);
-        } else if (posCounter == 2) {
+        } else if (posCounter == 4) {
             secondPos = pos;
             System.out.println("Second position = " + pos);
-            //world.destroyBlock()
+            System.out.println("DELETE DELETE DELETE");
+            deleteBlocks(world);
+            posCounter = 0;
         }
+
         return EnumActionResult.PASS;
+    }
+
+    private void deleteBlocks(World world) {
+        int xExtent = secondPos.getX() - firstPos.getX();
+        int yExtent = secondPos.getY() - firstPos.getY();
+        int zExtent = secondPos.getZ() - firstPos.getZ();
+        for (int y = 0; y <= Math.abs(yExtent); ++y) {
+            for (int x = 0; x <= Math.abs(xExtent); ++x) {
+                for (int z = 0; z <= Math.abs(zExtent); ++z) {
+                    world.destroyBlock(firstPos.add((int)Math.signum(xExtent)*x,(int)Math.signum(yExtent)*y,(int)Math.signum(zExtent)*z),false);
+                }
+            }
+        }
     }
 
 }

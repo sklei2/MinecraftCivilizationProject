@@ -149,7 +149,7 @@ public class BlockRegisterer {
             };
 
             for(Block block : blocks) {
-                if (block instanceof IHasModel) {
+                if (block instanceof IHasModel) {  // Checks if block is an IHasModel to call the registerModels method
                     ((IHasModel)block).registerModels();
                 }
             }

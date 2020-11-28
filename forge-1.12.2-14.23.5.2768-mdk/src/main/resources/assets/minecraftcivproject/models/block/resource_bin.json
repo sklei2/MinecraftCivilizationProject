@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "minecraft:chest"
+    "all": "minecraftcivproject:blocks/resource_bin"
   }
 }

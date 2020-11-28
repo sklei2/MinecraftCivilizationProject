@@ -7,7 +7,8 @@ import registry.TownBlueprintRegistry;
 public class TownBlueprintRegisterer {
     private static final String[] townBlueprintNames = new String[] {
             "test_town",
-            "town_center_lvl1"
+            "town_center_lvl1",
+            "town"
     };
 
     private final TownBlueprintReader townBlueprintReader;

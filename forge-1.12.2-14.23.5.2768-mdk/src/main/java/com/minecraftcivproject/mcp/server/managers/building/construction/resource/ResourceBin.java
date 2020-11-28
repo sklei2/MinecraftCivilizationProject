@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.server.managers.building.construction.resource;
 
+import com.minecraftcivproject.mcp.common.initialization.register.BlockRegisterer;
 import com.minecraftcivproject.mcp.server.managers.building.blueprints.buildings.ResourceRequirements;
 import net.minecraft.item.Item;
 import registry.ResourceBinInventoryRegistry;
@@ -15,7 +16,8 @@ public class ResourceBin extends Observable {
 
     public ResourceBin(ResourceRequirements resourceRequirements, Runnable runnable){
         this.resourceRequirements = resourceRequirements;
-        this.resourceBinBlock = new ResourceBinBlock();
+//        this.resourceBinBlock = new ResourceBinBlock();
+        this.resourceBinBlock = (ResourceBinBlock)BlockRegisterer.RegistrationHandler.RESOURCE_BIN_BLOCK;
         this.fullCallback = runnable;
 
         // because this can be created both by placement and automatedly
