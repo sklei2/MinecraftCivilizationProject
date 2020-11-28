@@ -4,7 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class LVToken extends ItemBase {
 
-    public LVToken(){
+    public LVToken() {
         super("lv_token",
                 CreativeTabs.MISC,
                 64);

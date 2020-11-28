@@ -15,18 +15,19 @@ public class VillagerPoolManager {
     private final BlockPos villagerSpawnPoint;
     private final World world;
 
-    public VillagerPoolManager(World world, BlockPos townLocation){
+    public VillagerPoolManager(World world, BlockPos townLocation) {
         this.world = world;
-        villagerSpawnPoint = townLocation;
+        villagerSpawnPoint = townLocation.add(1,2,1);  // Spawns LV on top on nexus
         addVillager(new LoyalVillager(world));
     }
 
-    public void addVillager(LoyalVillager loyalVillager){
+    public void addVillager(LoyalVillager loyalVillager) {
         villagers.put(loyalVillager.getName(), loyalVillager);
         SpawningUtils.spawn(loyalVillager, world, villagerSpawnPoint);
+        System.out.println("LV has spawned!!!");
     }
 
-    public Optional<LoyalVillager> getAvailableVillager(){
+    public Optional<LoyalVillager> getAvailableVillager() {
 
         Optional<LoyalVillager> loyalVillager = villagers.values().stream().findFirst();
         loyalVillager.ifPresent(lv -> villagers.remove(lv.getName()));

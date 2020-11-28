@@ -24,6 +24,7 @@ public class GoalManager implements TickableManager {
         this.buildingManager = buildingManager;
         this.resourceManager = resourceManager;
         this.villagerManager = villagerManager;
+        System.out.println("Villager Manager = "+this.villagerManager);
         this.queueManager = queueManager;
     }
 
