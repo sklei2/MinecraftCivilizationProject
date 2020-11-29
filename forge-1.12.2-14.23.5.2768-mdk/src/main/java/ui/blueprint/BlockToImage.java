@@ -12,11 +12,21 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BlockToImage {
 
-    public static Image getImageForBlock(Block block) {
+    private static final Map<String, Image>  BLOCK_TO_IMAGE_CACHE = new HashMap<>();
+
+
+    public static Image getImageForBlock(Block block, int size) {
+
+        // hit the cache
+        if(BLOCK_TO_IMAGE_CACHE.containsKey(block.getUnlocalizedName() + "x" + size)){
+            return BLOCK_TO_IMAGE_CACHE.get(block.getUnlocalizedName() + "x" + size);
+        }
 
         List<BakedQuad> quads = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(block.getDefaultState()).getQuads(block.getDefaultState(), EnumFacing.DOWN, 0);
 
@@ -32,7 +42,6 @@ public class BlockToImage {
         try {
             resource = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation);
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
 
@@ -48,6 +57,10 @@ public class BlockToImage {
         if(((BufferedImage) img).getHeight() > 16 || ((BufferedImage) img).getWidth() > 16){
             img = ((BufferedImage) img).getSubimage(0, 0, 16, 16);
         }
+
+        img = img.getScaledInstance(size, size, Image.SCALE_DEFAULT);
+
+        BLOCK_TO_IMAGE_CACHE.put(block.getUnlocalizedName() + "x" + size, img);
 
         return img;
     }

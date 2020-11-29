@@ -84,7 +84,7 @@ public class TabSelectionPanel extends JPanel {
     private JButton getBlockButton(Block block){
         JButton jButton = new JButton(block.getLocalizedName());
 
-        Image image = BlockToImage.getImageForBlock(block);
+        Image image = BlockToImage.getImageForBlock(block, 16);
 
         if(image != null){
             jButton.setIcon(new ImageIcon(image));

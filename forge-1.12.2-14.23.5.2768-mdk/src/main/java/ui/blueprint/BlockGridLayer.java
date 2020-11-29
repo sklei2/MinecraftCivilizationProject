@@ -4,12 +4,16 @@ import net.minecraft.block.Block;
 
 public class BlockGridLayer {
 
-    private final int gridSize;
+    private final int xSize;
+    private final int ySize;
+
     private Block[][] blockGrid;
 
-    public BlockGridLayer(int gridSize) {
-        this.gridSize = gridSize;
-        this.blockGrid = new Block[gridSize][gridSize];
+    public BlockGridLayer(int xSize, int ySize) {
+        this.xSize = xSize;
+        this.ySize = ySize;
+
+        this.blockGrid = new Block[xSize][ySize];
     }
 
     public void fill(int x, int y, Block block) {
@@ -17,7 +21,7 @@ public class BlockGridLayer {
             return;
         }
 
-        if (gridSize < x || gridSize < y) {
+        if (xSize < x || ySize < y) {
             return;
         }
 
@@ -29,7 +33,7 @@ public class BlockGridLayer {
             return;
         }
 
-        if (gridSize < startX || gridSize < startY) {
+        if (xSize < startX || ySize < startY) {
             return;
         }
 
@@ -37,7 +41,7 @@ public class BlockGridLayer {
             return;
         }
 
-        if (gridSize < endX || gridSize < endY) {
+        if (xSize < endX || ySize < endY) {
             return;
         }
 
@@ -69,6 +73,6 @@ public class BlockGridLayer {
     }
 
     public void clear() {
-        blockGrid = new Block[gridSize][gridSize];
+        blockGrid = new Block[xSize][ySize];
     }
 }
