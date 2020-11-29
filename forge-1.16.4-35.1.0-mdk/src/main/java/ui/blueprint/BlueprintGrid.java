@@ -1,7 +1,7 @@
 package ui.blueprint;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 
 import javax.swing.*;
 import java.awt.*;

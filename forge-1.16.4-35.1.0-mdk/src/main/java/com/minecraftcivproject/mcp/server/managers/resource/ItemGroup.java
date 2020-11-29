@@ -95,7 +95,7 @@ public class ItemGroup {
         stringBuilder.append("ItemGroup: {");
 
         for(Item item : getAllItems()){
-            stringBuilder.append(item.getUnlocalizedName() + ": " + this.getNumberOfItem(item) + ", ");
+            stringBuilder.append(item.getRegistryName() + ": " + this.getNumberOfItem(item) + ", ");
         }
 
         return stringBuilder.toString();

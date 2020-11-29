@@ -22,7 +22,7 @@ public class VillagerPoolManager {
     }
 
     public void addVillager(LoyalVillager loyalVillager) {
-        villagers.put(loyalVillager.getName(), loyalVillager);
+        villagers.put(loyalVillager.get(), loyalVillager);
         SpawningUtils.spawn(loyalVillager, world, villagerSpawnPoint);
         System.out.println("LV has spawned!!!");
     }

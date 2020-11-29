@@ -2,17 +2,15 @@ package com.minecraftcivproject.mcp.server.managers.building.construction.resour
 
 import com.minecraftcivproject.mcp.server.managers.resource.ItemGroup;
 import com.minecraftcivproject.mcp.utils.Inventory;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerChest;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.command.arguments.NBTCompoundTagArgument;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.ChestTileEntity;
 import registry.ResourceBinInventoryRegistry;
 
 
-public class ResourceBinTileEntity extends TileEntityChest {
+public class ResourceBinTileEntity extends ChestTileEntity {
 
     private ResourceBinInventory resourceBinInventory;
     private String id;
@@ -32,14 +30,14 @@ public class ResourceBinTileEntity extends TileEntityChest {
     }
 
     @Override
-    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
+    public Container createContainer(Inventory playerInventory, ClientPlayerEntity playerIn)
     {
         this.fillWithLoot(playerIn);
         return new ContainerChest(playerInventory,resourceBinInventory, playerIn);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(NBTCompoundTagArgument compound)
     {
         super.readFromNBT(compound);
         this.id = compound.getString("TileEntityGuid");

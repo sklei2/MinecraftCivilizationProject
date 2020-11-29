@@ -2,9 +2,12 @@ package com.minecraftcivproject.mcp.server.managers.building.construction.resour
 
 import com.minecraftcivproject.mcp.MinecraftCivProject;
 import com.minecraftcivproject.mcp.common.initialization.blocks.BlockTileEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,17 +31,17 @@ public class ResourceBinBlock extends BlockTileEntity<ResourceBinTileEntity> {
     public ResourceBinBlock() {
         super(Material.WOOD, false);
         setRegistryName(MinecraftCivProject.MODID, name);
-        setUnlocalizedName(name);
+        setRegistryName(name);
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(World world, BlockState state) {
         String id = UUID.randomUUID().toString();
         return new ResourceBinTileEntity(id, new ResourceBinInventory(id));
     }
 
     @Override
-    public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+    public void onBlockPlacedBy(final World worldIn, final BlockPos pos, final BlockState state, final LivingEntity placer, final ItemStack stack) {
         if (stack.hasDisplayName()) {
             final ResourceBinTileEntity tileEntity = getTileEntity(worldIn, pos);
             if (tileEntity != null) {

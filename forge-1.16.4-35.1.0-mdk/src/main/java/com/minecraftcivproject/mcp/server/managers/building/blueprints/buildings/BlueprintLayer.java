@@ -109,7 +109,7 @@ public class BlueprintLayer {
 
             try {
                 Block otherValue = other.get(entryKey);
-                if (!entry.getValue().getLocalizedName().equals(otherValue.getLocalizedName())) {
+                if (!entry.getValue().getRegistryName().equals(otherValue.getRegistryName())) {
                     return false;
                 }
             }
@@ -127,7 +127,7 @@ public class BlueprintLayer {
             int j = 0;
             for (Block block : rowOfBlocks) {
                 Block otherBlock = other.get(i).get(j);
-                if (!block.getLocalizedName().equals(otherBlock.getLocalizedName())) {
+                if (!block.getRegistryName().equals(otherBlock.getRegistryName())) {
                     return false;
                 }
                 ++j;

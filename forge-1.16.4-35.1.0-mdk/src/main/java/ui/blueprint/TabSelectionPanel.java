@@ -2,6 +2,7 @@ package ui.blueprint;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,7 @@ public class TabSelectionPanel extends JPanel {
     }
 
     private JPanel getBlocksForTabPanel(String tab){
-        Collection<Block> blocks = ForgeRegistries.BLOCKS.getValuesCollection().stream().filter(block -> {
+        Collection<Block> blocks = ForgeRegistries.BLOCKS.getValues().stream().filter(block -> {
             String blockTab = "";
 
             if(block.getCreativeTabToDisplayOn() == null){

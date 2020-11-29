@@ -6,15 +6,10 @@ import com.minecraftcivproject.mcp.common.entity.task.core.manager.TaskAdapter;
 import com.minecraftcivproject.mcp.common.initialization.register.LootTableRegisterer;
 import com.minecraftcivproject.mcp.utils.Inventory;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -24,7 +19,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 
-public class LoyalVillager extends EntityVillager {
+public class LoyalVillager extends VillagerEntity {
 
     private static Logger logger = Logger.getLogger("LoyalVillager");
     private final String name;
@@ -33,7 +28,7 @@ public class LoyalVillager extends EntityVillager {
     //blockOfInterest will eventually be what the resource manager is requesting for the current build (only applicable for
     //builder class LVs -> no/low atk, high hp)
     private Block blockOfInterest;
-    private IBlockState state;
+    private BlockState state;
     // this.world.getClosestPlayerToEntity - this could be useful in the future
     public boolean buildStuff;
 

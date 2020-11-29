@@ -1,6 +1,6 @@
 package ui.tribe.general;
 
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 public class TribeUi extends DisplayWithList {
 

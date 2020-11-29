@@ -2,10 +2,9 @@ package ui.blueprint;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
@@ -24,15 +23,15 @@ public class BlockToImage {
     public static Image getImageForBlock(Block block, int size) {
 
         // hit the cache
-        if(BLOCK_TO_IMAGE_CACHE.containsKey(block.getUnlocalizedName() + "x" + size)){
-            return BLOCK_TO_IMAGE_CACHE.get(block.getUnlocalizedName() + "x" + size);
+        if(BLOCK_TO_IMAGE_CACHE.containsKey(block.getRegistryName() + "x" + size)){
+            return BLOCK_TO_IMAGE_CACHE.get(block.getRegistryName() + "x" + size);
         }
 
-        List<BakedQuad> quads = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(block.getDefaultState()).getQuads(block.getDefaultState(), EnumFacing.DOWN, 0);
+        List<BakedQuad> quads = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(block.getDefaultState()).getQuads(block.getDefaultState(), EnumFacing.DOWN, 0);
 
         TextureAtlasSprite textureAtlasSprite;
         if(quads.isEmpty()){
-            textureAtlasSprite = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getDefaultState());
+            textureAtlasSprite = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(block.getDefaultState());
         } else {
             textureAtlasSprite = quads.stream().findFirst().get().getSprite();
         }
@@ -40,7 +39,7 @@ public class BlockToImage {
         ResourceLocation resourceLocation = getResourceLocation(textureAtlasSprite);
         IResource resource = null;
         try {
-            resource = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation);
+            resource = Minecraft.getInstance().getResourceManager().getResource(resourceLocation);
         } catch (IOException e) {
             return null;
         }
@@ -60,7 +59,7 @@ public class BlockToImage {
 
         img = img.getScaledInstance(size, size, Image.SCALE_DEFAULT);
 
-        BLOCK_TO_IMAGE_CACHE.put(block.getUnlocalizedName() + "x" + size, img);
+        BLOCK_TO_IMAGE_CACHE.put(block.getRegistryName() + "x" + size, img);
 
         return img;
     }
