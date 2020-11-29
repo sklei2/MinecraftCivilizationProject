@@ -24,11 +24,12 @@ public class ConstructionProject extends Observable implements Observer, Queueab
         this.townBuildingBlueprint = blueprint;
         this.baseLocation = baseLocation;
 
-        this.resourceBin = new ResourceBin(blueprint.getResourceRequirements(), this::completeProject);
+
+        this.resourceBin = ResourceBin.placeResourceBin(world, blueprint.getResourceRequirements(), baseLocation, this::completeProject);
         this.resourceBin.addObserver(this);
 
         constructionProjectLocation = baseLocation.add(townBuildingBlueprint.getStartRow(),0, townBuildingBlueprint.getStartCol());
-        BlockUtils.placeBlock(world, constructionProjectLocation, resourceBin.getResourceBinBlock());
+
     }
 
     public void addResource(String resource, int count){

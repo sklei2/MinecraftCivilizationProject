@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -21,22 +22,18 @@ import java.util.UUID;
 public class ResourceBinBlock extends BlockTileEntity<ResourceBinTileEntity> {
 
     private static final String name = "resource_bin";
-    private String id;
+    private ResourceBinTileEntity resourceBinTileEntity;
 
 
-    public ResourceBinBlock(){
+    public ResourceBinBlock() {
         super(Material.WOOD, false);
         setRegistryName(MinecraftCivProject.MODID, name);
         setUnlocalizedName(name);
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId(){
-        return this.id;
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
+        String id = UUID.randomUUID().toString();
         return new ResourceBinTileEntity(id, new ResourceBinInventory(id));
     }
 
@@ -66,5 +63,10 @@ public class ResourceBinBlock extends BlockTileEntity<ResourceBinTileEntity> {
         } else {
             return (ResourceBinTileEntity) tileentity;
         }
+    }
+
+    @Override
+    public void registerModels() {
+        MinecraftCivProject.PROXY.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
     }
 }

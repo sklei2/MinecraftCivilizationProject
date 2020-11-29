@@ -1,10 +1,7 @@
 package com.minecraftcivproject.mcp.common.initialization.register;
 
 import com.minecraftcivproject.mcp.MinecraftCivProject;
-import com.minecraftcivproject.mcp.common.initialization.items.Cement;
-import com.minecraftcivproject.mcp.common.initialization.items.Crystal;
-import com.minecraftcivproject.mcp.common.initialization.items.CustomSword;
-import com.minecraftcivproject.mcp.common.initialization.items.LVToken;
+import com.minecraftcivproject.mcp.common.initialization.items.*;
 import com.minecraftcivproject.mcp.utils.IHasModel;
 import com.minecraftcivproject.mcp.utils.RegistryUtil;
 import net.minecraft.item.Item;
@@ -45,6 +42,7 @@ public class ItemRegisterer {
         // Item Repository
         public static final Item CRYSTAL = new Crystal();
         public static final Item CEMENT = new Cement();
+        public static final Item DELETE_OMATIC = new DeleteOMatic();
         public static final Item LV_TOKEN = new LVToken();
 
 
@@ -55,25 +53,26 @@ public class ItemRegisterer {
          */
         @SubscribeEvent
         public static void registerItems(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().registerAll(ITEMS.toArray(new Item[0]));
+//            event.getRegistry().registerAll(ITEMS.toArray(new Item[0]));
 
-//            final Item[] items = {
-//                    CRYSTAL,
-//                    CEMENT,
-//                    CRYSTAL_SWORD,
-//                    LV_TOKEN,
-//                    //RegistryUtil.setItemName(CRYSTAL, "crystal"),  // This is how Choonster sets his item/block registry names in his forge 1.12.2 branch
-//                    //RegistryUtil.setItemName(new Cement(), "cement")
-//            };
+            final Item[] items = {
+                    CRYSTAL,
+                    CEMENT,
+                    CRYSTAL_SWORD,
+                    DELETE_OMATIC,
+                    LV_TOKEN,
+                    //RegistryUtil.setItemName(CRYSTAL, "crystal"),  // This is how Choonster sets his item/block registry names in his forge 1.12.2 branch
+                    //RegistryUtil.setItemName(new Cement(), "cement")
+            };
 
             // Create forge registry
-//            final IForgeRegistry<Item> registry = event.getRegistry();
-//
-//            // Register items
-//            for (final Item item : items) {
-//                registry.registerAll(item);
-//                ITEMS.add(item);
-//            }
+            final IForgeRegistry<Item> registry = event.getRegistry();
+
+            // Register items
+            for (final Item item : items) {
+                registry.registerAll(item);
+                ITEMS.add(item);
+            }
         }
 
 
@@ -83,6 +82,7 @@ public class ItemRegisterer {
                     CRYSTAL,
                     CEMENT,
                     CRYSTAL_SWORD,
+                    DELETE_OMATIC,
                     LV_TOKEN
             };
 

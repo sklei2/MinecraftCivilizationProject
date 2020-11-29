@@ -1,5 +1,6 @@
 package com.minecraftcivproject.mcp.common.initialization.blocks;
 
+import com.minecraftcivproject.mcp.utils.IHasModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,7 @@ import javax.annotation.Nullable;
  *
  * @author Choonster
  */
-public abstract class BlockTileEntity<TE extends TileEntity> extends Block {
+public abstract class BlockTileEntity<TE extends TileEntity> extends Block implements IHasModel {
 	/**
 	 * Should the {@link TileEntity} be preserved until after {@link #getDrops} has been called?
 	 */

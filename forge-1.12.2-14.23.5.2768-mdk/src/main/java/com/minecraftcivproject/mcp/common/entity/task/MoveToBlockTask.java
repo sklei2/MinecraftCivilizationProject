@@ -29,7 +29,7 @@ public class MoveToBlockTask extends Task {
         this.entity = entity;
         this.destination = destination;
         this.stuckCnt = stuckCnt;
-        System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " stuck count: " + this.stuckCnt);
+//        System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " stuck count: " + this.stuckCnt);
         this.lastPos = this.entity.getPosition();
         //this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);  // This does well with y positions that can't be reached!
         this.entity.getNavigator().tryMoveToXYZ((double)destination.getX(), (double)destination.getY(), (double)destination.getZ(), 0.8D);  // This doesn't do well with y positions that can't be reached...
@@ -37,7 +37,7 @@ public class MoveToBlockTask extends Task {
 
     @Override
     public void start() {
-        System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " start was called");
+//        System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " start was called");
         // I'm thinking this should be called by the constructor, since start is only called by the TaskQueue class yet every single MoveToBlockTask should have a destination whether they are in a queue or not
         //this.entity.getMoveHelper().setMoveTo(destination.getX(), destination.getY(), destination.getZ(), 1);
     }
@@ -45,10 +45,10 @@ public class MoveToBlockTask extends Task {
     @Override
     public void onTick() {
         if (isRunningSubtasks()) {
-            System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " has a sub-task, onTick was cut short...");
+//            System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " has a sub-task, onTick was cut short...");
             return;
         } else {
-            System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " onTick is executing");
+//            System.out.println("MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " onTick is executing");
         }
 
         if (stuckCnt >= 5) {
@@ -70,12 +70,12 @@ public class MoveToBlockTask extends Task {
         // Update last known position
         this.lastPos = this.entity.getPosition();
 
-        System.out.println("Tick count: " + stuckTicks);
+//        System.out.println("Tick count: " + stuckTicks);
         if (stuckTicks >= 50) {
             if (stuckTicks > 50) {
-                System.out.println("HOLY FUCK I'M STILL STUCK!!!");
+//                System.out.println("HOLY FUCK I'M STILL STUCK!!!");
             } else {
-                System.out.println("HOLY FUCK I AM STUCK!!!");
+//                System.out.println("HOLY FUCK I AM STUCK!!!");
             }
             handleBeingStuck();
             return;
@@ -85,7 +85,7 @@ public class MoveToBlockTask extends Task {
         int dY = destination.getY();
         int dZ = destination.getZ();
 
-        System.out.println("Entity is at: " + this.entity.getPosition() + "             Destination: " + this.destination);
+//        System.out.println("Entity is at: " + this.entity.getPosition() + "             Destination: " + this.destination);
 
         // It seems that this needs to be called continuously.....
         this.entity.getNavigator().tryMoveToXYZ((double)dX, (double)dY, (double)dZ, 0.8D);  // Called to jump properly (This doesn't do well with y positions that can't be reached... but this gets us out of holes!)
@@ -96,7 +96,7 @@ public class MoveToBlockTask extends Task {
     public boolean isDone() {
         //System.out.println("Distance b/w position and destination = " + distanceBetween(this.entity.getPosition(), this.destination));
         if (distanceBetween(this.entity.getPosition(), this.destination) <= 2) {
-            System.out.println("~~~~~~~~~~ MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " is Done! ~~~~~~~~~~");
+//            System.out.println("~~~~~~~~~~ MoveToBlockTask " + Integer.toHexString(this.hashCode()) + " is Done! ~~~~~~~~~~");
             stuckTicks = 0;  // Resets stuck ticks
             return true;
         }
@@ -124,12 +124,12 @@ public class MoveToBlockTask extends Task {
     }
 
     private void digYourselfOut() {
-        System.out.println("          DIG MOFO DIG!!!          ");
+//        System.out.println("          DIG MOFO DIG!!!          ");
         int blocksAway = 1;
         int levelsAboveFeet = 1;
 
         // Find which direction we are facing
-        System.out.println("My Yaw is " + this.entity.rotationYaw);
+//        System.out.println("My Yaw is " + this.entity.rotationYaw);
         int dir = getDirectionFacing(this.entity);
 
         int x1 = 0;
@@ -139,7 +139,7 @@ public class MoveToBlockTask extends Task {
         int x3 = 0;
         int z3 = 0;
         if (dir == 1) {
-            System.out.println("I'm facing South");
+//            System.out.println("I'm facing South");
             x1 = 0;
             z1 = 1;
             x2 = 1;
@@ -147,7 +147,7 @@ public class MoveToBlockTask extends Task {
             x3 = -1;
             z3 = z1;
         } else if (dir == 2) {
-            System.out.println("I'm facing West");
+//            System.out.println("I'm facing West");
             x1 = -1;
             z1 = 0;
             x2 = x1;
@@ -155,7 +155,7 @@ public class MoveToBlockTask extends Task {
             x3 = x1;
             z3 = -1;
         } else if (dir == 3) {
-            System.out.println("I'm facing North");
+//            System.out.println("I'm facing North");
             x1 = 0;
             z1 = -1;
             x2 = 1;
@@ -163,7 +163,7 @@ public class MoveToBlockTask extends Task {
             x3 = -1;
             z3 = z1;
         } else if (dir == 4) {
-            System.out.println("I'm facing East");
+//            System.out.println("I'm facing East");
             x1 = 1;
             z1 = 0;
             x2 = x1;
