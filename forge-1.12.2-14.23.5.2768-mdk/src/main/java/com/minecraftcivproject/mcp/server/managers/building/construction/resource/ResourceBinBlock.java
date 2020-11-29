@@ -22,22 +22,18 @@ import java.util.UUID;
 public class ResourceBinBlock extends BlockTileEntity<ResourceBinTileEntity> {
 
     private static final String name = "resource_bin";
-    private String id;
+    private ResourceBinTileEntity resourceBinTileEntity;
 
 
-    public ResourceBinBlock(){
+    public ResourceBinBlock() {
         super(Material.WOOD, false);
         setRegistryName(MinecraftCivProject.MODID, name);
         setUnlocalizedName(name);
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId(){
-        return this.id;
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
+        String id = UUID.randomUUID().toString();
         return new ResourceBinTileEntity(id, new ResourceBinInventory(id));
     }
 

@@ -16,6 +16,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+import registry.BlockRegistry;
 
 
 public class BlockRegisterer {
@@ -83,7 +84,9 @@ public class BlockRegisterer {
 
             registry.registerAll(BLOCKS);
 
-            //following what the example mod does
+            System.out.println(RESOURCE_BIN_BLOCK.getDefaultState());
+
+            // Following what the example mod does
             TileEntityRegisterer.registerTileEntities();
         }
 
@@ -158,7 +161,13 @@ public class BlockRegisterer {
 
 
 
-    // From TechnoVision's Frabic API tutorial -> THERE IS NO REGISTRY CLASS IN NET.MINECRAFT.UTIL.REGISTRY
+    public static void registerNewBlock(Block block, String id) {
+        BlockRegistry.addBlock(block, id);
+    }
+
+
+
+    // From TechnoVision's Fabric API tutorial -> THERE IS NO REGISTRY CLASS IN NET.MINECRAFT.UTIL.REGISTRY
 //    public static final Block CRYSTAL_ORE = new CrystalOre();
 //
 //    public static void registerItems(){

@@ -27,33 +27,34 @@ public class WorldGenCustomStructures implements IWorldGenerator {
                 break;
             case 0:
                 int chance = 400;  // What is this in reference to?? Smaller numbers = more likely chance to spawn
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomePlains.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.SAND, BiomeBeach.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.SAND, BiomeDesert.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeForest.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeForestMutated.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeHills.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeJungle.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.SAND, BiomeMesa.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeRiver.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeSavanna.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeSavannaMutated.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeSnow.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.STONE, BiomeStoneBeach.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeSwamp.class);
-                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, BiomeTaiga.class);
+                int yOffset = 8;
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomePlains.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.SAND, yOffset, BiomeBeach.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.SAND, yOffset, BiomeDesert.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeForest.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeForestMutated.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeHills.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeJungle.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.SAND, yOffset, BiomeMesa.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeRiver.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeSavanna.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeSavannaMutated.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeSnow.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.STONE, yOffset, BiomeStoneBeach.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeSwamp.class);
+                generateStructure(TOWN, world, random, chunkX, chunkZ, chance, Blocks.GRASS, yOffset, BiomeTaiga.class);
                 break;
             case -1:
 
         }
     }
 
-    private void generateStructure(WorldGenerator generator, World world, Random random, int chunkX, int chunkZ, int chance, Block topBlock, Class<?>... classes) {
+    private void generateStructure(WorldGenerator generator, World world, Random random, int chunkX, int chunkZ, int chance, Block topBlock, int yOffset, Class<?>... classes) {
         ArrayList<Class<?>> classesList = new ArrayList<Class<?>>(Arrays.asList(classes));
 
         int x = (chunkX * 16) + random.nextInt(15);
         int z = (chunkZ * 16) + random.nextInt(15);
-        int y = calculateGenerationHeight(world, x, z, topBlock);
+        int y = calculateGenerationHeight(world, x, z, topBlock, yOffset);
         BlockPos pos = new BlockPos(x,y,z);
 
         Class<?> biome = world.provider.getBiomeForCoords(pos).getClass();
@@ -67,7 +68,7 @@ public class WorldGenCustomStructures implements IWorldGenerator {
         }
     }
 
-    private static int calculateGenerationHeight(World world, int x, int z, Block topBlock) {  // TODO: Make top block an array of block that it looks through
+    private static int calculateGenerationHeight(World world, int x, int z, Block topBlock, int yOffset) {  // TODO: Make top block an array of block that it looks through
         int y = world.getHeight();
         boolean foundGround = false;
 

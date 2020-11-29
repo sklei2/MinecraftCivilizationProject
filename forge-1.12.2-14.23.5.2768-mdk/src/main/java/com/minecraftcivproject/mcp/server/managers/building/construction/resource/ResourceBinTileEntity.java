@@ -27,6 +27,10 @@ public class ResourceBinTileEntity extends TileEntityChest {
         ResourceBinInventoryRegistry.add(id, this.resourceBinInventory);
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
     {
